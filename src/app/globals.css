@@ -1,26 +1,269 @@
 @import "tailwindcss";
 
 :root {
+  /* Theme Colors - Easily customizable */
+  --theme-primary: #000000;
+  --theme-secondary: #ffffff;
+  --theme-accent: #1a1a1a;
+  --theme-border: #e5e5e5;
+  --theme-hover: #f5f5f5;
+  --theme-text-primary: #000000;
+  --theme-text-secondary: #666666;
+  --theme-text-muted: #999999;
+
+  /* Background Colors */
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #000000;
+
+  /* Spacing */
+  --container-padding: 1rem;
+  --section-spacing: 4rem;
+
+  /* Typography Sizes - Mobile First */
+  /* Page Titles */
+  --text-page-title-mobile: 1.5rem;
+  /* 24px */
+  --text-page-title-desktop: 2.5rem;
+  /* 40px */
+
+  /* Section Titles */
+  --text-section-title-mobile: 1.125rem;
+  /* 18px */
+  --text-section-title-desktop: 2rem;
+  /* 32px */
+
+  /* Card Titles */
+  --text-card-title-mobile: 0.875rem;
+  /* 14px */
+  --text-card-title-desktop: 1.125rem;
+  /* 18px */
+
+  /* Body Text */
+  --text-body-mobile: 0.75rem;
+  /* 12px */
+  --text-body-desktop: 1rem;
+  /* 16px */
+
+  /* Small Text */
+  --text-small-mobile: 0.625rem;
+  /* 10px */
+  --text-small-desktop: 0.875rem;
+  /* 14px */
+
+  /* Price Text */
+  --text-price-mobile: 1.125rem;
+  /* 18px */
+  --text-price-desktop: 1.5rem;
+  /* 24px */
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Typography Utility Classes */
+.text-page-title {
+  font-size: var(--text-page-title-mobile);
+  font-weight: 600;
+  line-height: 1.2;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@media (min-width: 768px) {
+  .text-page-title {
+    font-size: var(--text-page-title-desktop);
+    font-weight: 700;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.text-section-title {
+  font-size: var(--text-section-title-mobile);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+@media (min-width: 768px) {
+  .text-section-title {
+    font-size: var(--text-section-title-desktop);
+  }
+}
+
+.text-card-title {
+  font-size: var(--text-card-title-mobile);
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+@media (min-width: 768px) {
+  .text-card-title {
+    font-size: var(--text-card-title-desktop);
+  }
+}
+
+.text-body {
+  font-size: var(--text-body-mobile);
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+@media (min-width: 768px) {
+  .text-body {
+    font-size: var(--text-body-desktop);
+  }
+}
+
+.text-small {
+  font-size: var(--text-small-mobile);
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+@media (min-width: 768px) {
+  .text-small {
+    font-size: var(--text-small-desktop);
+  }
+}
+
+.text-price {
+  font-size: var(--text-price-mobile);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+@media (min-width: 768px) {
+  .text-price {
+    font-size: var(--text-price-desktop);
+    font-weight: 700;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--theme-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--theme-primary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--theme-accent);
+}
+
+/* Hide scrollbar utility */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Smooth transitions */
+a,
+button {
+  transition: all 0.3s ease;
+}
+
+/* Focus styles */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--theme-primary);
+  outline-offset: 2px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes shake {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-4px);
+  }
+
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(4px);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out;
+}
+
+.animate-slide-in {
+  animation: slideIn 0.4s ease-out;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.3s ease-out;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.3s ease-out;
+}
+
+.animate-shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+button:hover {
+  cursor: pointer;
 }
