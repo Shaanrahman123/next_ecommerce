@@ -27,7 +27,7 @@ export default function CartPage() {
                         Add some products to get started
                     </p>
                     <Link href="/products">
-                        <Button size="lg">Continue Shopping</Button>
+                        <Button size="md">Continue Shopping</Button>
                     </Link>
                 </div>
             </div>
@@ -166,14 +166,14 @@ export default function CartPage() {
 
                         <Button
                             fullWidth
-                            size="lg"
+                            size="md"
                             onClick={() => router.push('/checkout')}
                         >
                             Proceed to Checkout
                         </Button>
 
                         <Link href="/products">
-                            <Button fullWidth size="lg" variant="outline" className="mt-4">
+                            <Button fullWidth size="md" variant="outline" className="mt-4">
                                 Continue Shopping
                             </Button>
                         </Link>

@@ -15,11 +15,6 @@ export default function MobileBottomNav() {
     const hideOnPaths = [
         '/checkout',
         '/order-success',
-        '/login',
-        '/signup',
-        '/forgot-password',
-        '/reset-password',
-        '/verify-otp'
     ];
 
     // Check if current path starts with /products (covers both list and details)
@@ -28,7 +23,7 @@ export default function MobileBottomNav() {
     const isCartPage = pathname === '/cart';
     const isOrderSuccessPage = pathname === '/order-success';
 
-    const showBottomNav = !(hideOnPaths.includes(pathname) || isCheckoutPage || isOrderSuccessPage);
+    const showBottomNav = !(hideOnPaths.includes(pathname) || isCheckoutPage || isOrderSuccessPage || isProductPage);
 
     // Add padding to body when bottom nav is shown
     useEffect(() => {
@@ -74,7 +69,7 @@ export default function MobileBottomNav() {
                                     </span>
                                 )}
                             </div>
-                            <span className="text-[12px] uppercase tracking-wider">{item.label}</span>
+                            <span className="text-[10px] uppercase tracking-wider">{item.label}</span>
                         </Link>
                     );
                 })}

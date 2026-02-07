@@ -118,7 +118,7 @@ export default function TrendingSlider({ items, title, bgColor = 'bg-gray-50' }:
                                         className="object-cover group-hover/card:scale-110 transition-transform duration-500"
                                     />
                                     {/* Gradient Overlay */}
-                                    <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent" />
+                                    <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/60 to-transparent" />
                                 </div>
 
                                 {/* Content */}
@@ -126,9 +126,9 @@ export default function TrendingSlider({ items, title, bgColor = 'bg-gray-50' }:
                                     <h3 className="text-[10px] lg:text-sm xl:text-base font-bold mb-0.5 lg:mb-1 leading-tight line-clamp-2">
                                         {item.title}
                                     </h3>
-                                    <p className="text-[9px] lg:text-xs text-gray-200 leading-tight mb-0.5 lg:mb-2 line-clamp-2">
+                                    {/* <p className="text-[9px] lg:text-xs text-gray-200 leading-tight mb-0.5 lg:mb-2 line-clamp-2">
                                         {item.subtitle}
-                                    </p>
+                                    </p> */}
                                     <button className="text-[9px] lg:text-xs font-bold uppercase tracking-wider hover:underline">
                                         + Explore
                                     </button>

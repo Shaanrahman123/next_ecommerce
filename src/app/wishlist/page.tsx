@@ -21,7 +21,7 @@ export default function WishlistPage() {
                         Save your favorite items for later
                     </p>
                     <Link href="/products">
-                        <Button size="lg">Explore Products</Button>
+                        <Button size="md">Explore Products</Button>
                     </Link>
                 </div>
             </div>

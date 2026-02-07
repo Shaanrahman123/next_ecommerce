@@ -2,6 +2,7 @@
 
 import { Package, Eye, Truck, RotateCcw } from 'lucide-react';
 import Link from 'next/link';
+import Button from '@/components/ui/Button';
 
 export default function MyOrders() {
     const orders = [
@@ -74,25 +75,23 @@ export default function MyOrders() {
                             </div>
 
                             <div className="flex flex-wrap gap-3">
-                                <Link
-                                    href={`/account?section=order-details&orderId=${order.id}`}
-                                    className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200 text-sm font-medium"
-                                >
-                                    <Eye className="w-4 h-4" />
-                                    View Details
+                                <Link href={`/account?section=order-details&orderId=${order.id}`}>
+                                    <Button variant="secondary" size="sm" className="flex items-center gap-2">
+                                        <Eye className="w-4 h-4" />
+                                        View Details
+                                    </Button>
                                 </Link>
-                                <Link
-                                    href={`/account?section=track-order&orderId=${order.id}`}
-                                    className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors duration-200 text-sm font-medium"
-                                >
-                                    <Truck className="w-4 h-4" />
-                                    Track Order
+                                <Link href={`/account?section=track-order&orderId=${order.id}`}>
+                                    <Button size="sm" className="flex items-center gap-2">
+                                        <Truck className="w-4 h-4" />
+                                        Track Order
+                                    </Button>
                                 </Link>
                                 {order.status === 'Delivered' && (
-                                    <button className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200 text-sm font-medium">
+                                    <Button variant="secondary" size="sm" className="flex items-center gap-2">
                                         <RotateCcw className="w-4 h-4" />
                                         Return
-                                    </button>
+                                    </Button>
                                 )}
                             </div>
                         </div>
@@ -105,11 +104,8 @@ export default function MyOrders() {
                     <Package className="w-16 h-16 text-gray-300 mx-auto mb-4" />
                     <h3 className="text-xl font-semibold text-gray-900 mb-2">No orders yet</h3>
                     <p className="text-gray-600 mb-6">Start shopping to see your orders here</p>
-                    <Link
-                        href="/products"
-                        className="inline-block px-6 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors duration-300 font-medium"
-                    >
-                        Start Shopping
+                    <Link href="/products">
+                        <Button size="md">Start Shopping</Button>
                     </Link>
                 </div>
             )}

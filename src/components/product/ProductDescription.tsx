@@ -54,15 +54,15 @@ export default function ProductDescription({ description, category }: ProductDes
                                 </li>
                                 <li className="flex items-start gap-3">
                                     <span className="w-1.5 h-1.5 bg-black rounded-full mt-2" />
-                                    <span className="text-gray-700">Carefully crafted with attention to detail</span>
+                                    <span className="text-body text-gray-700">Carefully crafted with attention to detail</span>
                                 </li>
                                 <li className="flex items-start gap-3">
                                     <span className="w-1.5 h-1.5 bg-black rounded-full mt-2" />
-                                    <span className="text-gray-700">Versatile design suitable for various occasions</span>
+                                    <span className="text-body text-gray-700">Versatile design suitable for various occasions</span>
                                 </li>
                                 <li className="flex items-start gap-3">
                                     <span className="w-1.5 h-1.5 bg-black rounded-full mt-2" />
-                                    <span className="text-gray-700">Comfortable fit for all-day wear</span>
+                                    <span className="text-body text-gray-700">Comfortable fit for all-day wear</span>
                                 </li>
                             </ul>
                         </div>
@@ -78,24 +78,24 @@ export default function ProductDescription({ description, category }: ProductDes
                                 <span className="text-body font-medium text-gray-900">Premium Cotton Blend</span>
                             </div>
                             <div className="flex justify-between py-3 border-b border-gray-200">
-                                <span className="text-gray-600">Fit</span>
-                                <span className="font-medium">Regular Fit</span>
+                                <span className="text-body text-gray-600">Fit</span>
+                                <span className="text-body font-medium text-gray-900">Regular Fit</span>
                             </div>
                             <div className="flex justify-between py-3 border-b border-gray-200">
-                                <span className="text-gray-600">Pattern</span>
-                                <span className="font-medium">Solid</span>
+                                <span className="text-body text-gray-600">Pattern</span>
+                                <span className="text-body font-medium text-gray-900">Solid</span>
                             </div>
                             <div className="flex justify-between py-3 border-b border-gray-200">
-                                <span className="text-gray-600">Occasion</span>
-                                <span className="font-medium">Casual</span>
+                                <span className="text-body text-gray-600">Occasion</span>
+                                <span className="text-body font-medium text-gray-900">Casual</span>
                             </div>
                             <div className="flex justify-between py-3 border-b border-gray-200">
-                                <span className="text-gray-600">Sleeve</span>
-                                <span className="font-medium">Full Sleeve</span>
+                                <span className="text-body text-gray-600">Sleeve</span>
+                                <span className="text-body font-medium text-gray-900">Full Sleeve</span>
                             </div>
                             <div className="flex justify-between py-3 border-b border-gray-200">
-                                <span className="text-gray-600">Neck Type</span>
-                                <span className="font-medium">Round Neck</span>
+                                <span className="text-body text-gray-600">Neck Type</span>
+                                <span className="text-body font-medium text-gray-900">Round Neck</span>
                             </div>
                         </div>
                     </div>
@@ -115,22 +115,22 @@ export default function ProductDescription({ description, category }: ProductDes
                             <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg">
                                 <span className="text-2xl">🌡️</span>
                                 <div>
-                                    <p className="font-semibold">Low Temperature</p>
-                                    <p className="text-gray-600 text-sm">Iron on low heat if needed</p>
+                                    <p className="text-card-title text-gray-900 font-semibold">Low Temperature</p>
+                                    <p className="text-small text-gray-600">Iron on low heat if needed</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg">
                                 <span className="text-2xl">☀️</span>
                                 <div>
-                                    <p className="font-semibold">Dry Naturally</p>
-                                    <p className="text-gray-600 text-sm">Hang to dry, avoid direct sunlight</p>
+                                    <p className="text-card-title text-gray-900 font-semibold">Dry Naturally</p>
+                                    <p className="text-small text-gray-600">Hang to dry, avoid direct sunlight</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg">
                                 <span className="text-2xl">❌</span>
                                 <div>
-                                    <p className="font-semibold">Do Not Bleach</p>
-                                    <p className="text-gray-600 text-sm">Avoid using bleach or harsh chemicals</p>
+                                    <p className="text-card-title text-gray-900 font-semibold">Do Not Bleach</p>
+                                    <p className="text-small text-gray-600">Avoid using bleach or harsh chemicals</p>
                                 </div>
                             </div>
                         </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Star } from 'lucide-react';
 
 const reviews = [
@@ -32,17 +32,31 @@ const reviews = [
 
 export default function CustomerReviews() {
     const [currentIndex, setCurrentIndex] = useState(0);
-    const reviewsPerPage = 3;
+    const [reviewsPerPage, setReviewsPerPage] = useState(3);
+
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth < 768) {
+                setReviewsPerPage(1);
+            } else {
+                setReviewsPerPage(3);
+            }
+        };
+
+        handleResize();
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     const nextReviews = () => {
         setCurrentIndex((prev) =>
-            prev + reviewsPerPage >= reviews.length ? 0 : prev + reviewsPerPage
+            prev + reviewsPerPage >= reviews.length ? 0 : prev + 1
         );
     };
 
     const prevReviews = () => {
         setCurrentIndex((prev) =>
-            prev === 0 ? Math.max(0, reviews.length - reviewsPerPage) : Math.max(0, prev - reviewsPerPage)
+            prev === 0 ? reviews.length - reviewsPerPage : prev - 1
         );
     };
 
@@ -66,41 +80,41 @@ export default function CustomerReviews() {
                 {/* Navigation Arrows */}
                 <button
                     onClick={prevReviews}
-                    className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 md:-translate-x-4 bg-white rounded-full p-2 md:p-3 shadow-lg hover:shadow-xl transition-all duration-300 z-10 hover:scale-110"
+                    className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 bg-white rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-300 z-10 hover:scale-110"
                     aria-label="Previous reviews"
                 >
-                    <ChevronLeft className="w-4 h-4 md:w-6 md:h-6 text-gray-900" />
+                    <ChevronLeft className="w-6 h-6 text-gray-900" />
                 </button>
 
                 <button
                     onClick={nextReviews}
-                    className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 md:translate-x-4 bg-white rounded-full p-2 md:p-3 shadow-lg hover:shadow-xl transition-all duration-300 z-10 hover:scale-110"
+                    className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 bg-white rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-300 z-10 hover:scale-110"
                     aria-label="Next reviews"
                 >
-                    <ChevronRight className="w-4 h-4 md:w-6 md:h-6 text-gray-900" />
+                    <ChevronRight className="w-6 h-6 text-gray-900" />
                 </button>
 
                 {/* Reviews Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-                    {visibleReviews.map((review) => (
+                <div className="flex md:grid md:grid-cols-3 gap-4 md:gap-6 overflow-x-auto md:overflow-x-visible snap-x snap-mandatory scrollbar-hide pb-4 md:pb-0 -mx-4 px-4 md:mx-0 md:px-0">
+                    {(reviewsPerPage === 1 ? reviews : visibleReviews).map((review) => (
                         <div
                             key={review.id}
-                            className="bg-white border border-gray-200 rounded-lg p-4 md:p-6 hover:shadow-lg transition-shadow duration-300"
+                            className="min-w-[75vw] md:min-w-0 bg-white border border-gray-200 rounded-lg p-5 md:p-6 hover:shadow-lg transition-shadow duration-300 snap-center"
                         >
                             {/* Stars */}
-                            <div className="flex gap-1 mb-2 md:mb-4">
+                            <div className="flex gap-1 mb-3 md:mb-4">
                                 {[...Array(review.rating)].map((_, i) => (
-                                    <Star key={i} className="w-3 h-3 md:w-4 md:h-4 fill-gray-900 text-gray-900" />
+                                    <Star key={i} className="w-3.5 h-3.5 md:w-4 md:h-4 fill-gray-900 text-gray-900" />
                                 ))}
                             </div>
 
                             {/* Review Text */}
-                            <p className="text-gray-700 text-[11px] md:text-sm leading-relaxed mb-3 md:mb-4">
+                            <p className="text-gray-700 text-[12px] md:text-sm leading-relaxed mb-4 md:mb-4">
                                 {review.text}
                             </p>
 
                             {/* Author */}
-                            <p className="text-gray-900 font-semibold text-[11px] md:text-sm">
+                            <p className="text-gray-900 font-bold text-[11px] md:text-sm">
                                 _{review.name}
                             </p>
                         </div>

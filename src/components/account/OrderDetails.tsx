@@ -133,6 +133,7 @@ export default function OrderDetails({ orderId }: OrderDetailsProps) {
                 </div>
                 <div className="hidden lg:block">
                     <Button
+                        size="sm"
                         onClick={handleDownloadInvoice}
                         disabled={downloading}
                         className="flex items-center gap-2"
@@ -144,7 +145,7 @@ export default function OrderDetails({ orderId }: OrderDetailsProps) {
             </div>
 
             {/* Order Status Card */}
-            <div className="bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-xl p-6">
+            <div className="bg-linear-to-br from-gray-50 to-white border border-gray-200 rounded-xl p-6">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                     <div>
                         <div className="flex items-center gap-2 mb-2">
@@ -182,7 +183,7 @@ export default function OrderDetails({ orderId }: OrderDetailsProps) {
 
             {/* Track Order Button */}
             <Link href={`/account?section=track-order&orderId=${order.id}`}>
-                <Button variant="outline" className="w-full flex items-center justify-center gap-2">
+                <Button variant="outline" size="sm" className="w-full flex items-center justify-center gap-2">
                     <Truck className="w-4 h-4" />
                     Track Your Order
                 </Button>
@@ -196,7 +197,7 @@ export default function OrderDetails({ orderId }: OrderDetailsProps) {
                 <div className="divide-y divide-gray-200">
                     {order.items.map((item) => (
                         <div key={item.id} className="p-6 flex gap-4">
-                            <div className="relative w-20 h-20 md:w-24 md:h-24 flex-shrink-0 bg-gray-100 rounded-lg overflow-hidden">
+                            <div className="relative w-20 h-20 md:w-24 md:h-24 shrink-0 bg-gray-100 rounded-lg overflow-hidden">
                                 <Image
                                     src={item.image}
                                     alt={item.name}
@@ -295,8 +296,9 @@ export default function OrderDetails({ orderId }: OrderDetailsProps) {
             </div>
 
             {/* Fixed Bottom Button for Mobile */}
-            <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 shadow-lg z-50">
+            <div className="lg:hidden fixed bottom-16 left-0 right-0 bg-white border-t border-gray-200 p-3 shadow-lg z-50">
                 <Button
+                    size="sm"
                     onClick={handleDownloadInvoice}
                     disabled={downloading}
                     className="w-full flex items-center justify-center gap-2"

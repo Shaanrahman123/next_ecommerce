@@ -29,7 +29,7 @@ export default function ImageLightbox({ images, currentIndex, onClose, onNavigat
     }, [currentIndex, images.length, onClose, onNavigate]);
 
     return (
-        <div className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4 animate-fade-in">
+        <div className="fixed inset-0 z-200 bg-black/95 flex items-center justify-center p-4 animate-fade-in">
             {/* Close Button */}
             <button
                 onClick={onClose}
@@ -65,7 +65,7 @@ export default function ImageLightbox({ images, currentIndex, onClose, onNavigat
             )}
 
             {/* Main Image */}
-            <div className="relative w-full max-w-6xl aspect-[4/3] animate-scale-in">
+            <div className="relative w-full max-w-6xl aspect-4/3 animate-scale-in">
                 <Image
                     src={images[currentIndex]}
                     alt={`Product image ${currentIndex + 1}`}
@@ -82,8 +82,8 @@ export default function ImageLightbox({ images, currentIndex, onClose, onNavigat
                         key={index}
                         onClick={() => onNavigate(index)}
                         className={`relative w-16 h-16 rounded-lg overflow-hidden border-2 transition-all duration-300 ${index === currentIndex
-                                ? 'border-white scale-110'
-                                : 'border-white/30 hover:border-white/60'
+                            ? 'border-white scale-110'
+                            : 'border-white/30 hover:border-white/60'
                             }`}
                     >
                         <Image

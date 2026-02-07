@@ -110,10 +110,10 @@ function ResetPasswordContent() {
                     <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl mb-6 shadow-lg animate-scale-in">
                         <Lock className="w-8 h-8 text-white" />
                     </div>
-                    <h1 className="text-4xl font-bold text-[var(--theme-primary)] mb-2">
+                    <h1 className="text-2xl font-bold text-[var(--theme-primary)] mb-2 uppercase tracking-wide">
                         Reset Password
                     </h1>
-                    <p className="text-[var(--theme-text-secondary)] max-w-sm mx-auto">
+                    <p className="text-xs text-[var(--theme-text-secondary)] max-w-sm mx-auto">
                         Create a strong password to secure your account
                     </p>
                     {email && (
@@ -155,8 +155,8 @@ function ResetPasswordContent() {
                                 <div className="flex items-center justify-between text-sm">
                                     <span className="text-[var(--theme-text-secondary)]">Password Strength:</span>
                                     <span className={`font-semibold ${strength?.label === 'Weak' ? 'text-red-500' :
-                                            strength?.label === 'Medium' ? 'text-yellow-500' :
-                                                'text-green-500'
+                                        strength?.label === 'Medium' ? 'text-yellow-500' :
+                                            'text-green-500'
                                         }`}>
                                         {strength?.label}
                                     </span>
@@ -218,8 +218,8 @@ function ResetPasswordContent() {
                         {/* Match Indicator */}
                         {formData.confirmPassword && (
                             <div className={`flex items-center gap-2 text-sm animate-fade-in ${formData.password === formData.confirmPassword
-                                    ? 'text-green-600'
-                                    : 'text-red-500'
+                                ? 'text-green-600'
+                                : 'text-red-500'
                                 }`}>
                                 {formData.password === formData.confirmPassword ? (
                                     <>

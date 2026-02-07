@@ -149,13 +149,13 @@ function VerifyOTPContent() {
                     <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl mb-6 shadow-lg animate-scale-in">
                         <Shield className="w-8 h-8 text-white" />
                     </div>
-                    <h1 className="text-4xl font-bold text-[var(--theme-primary)] mb-2">
+                    <h1 className="text-2xl font-bold text-[var(--theme-primary)] mb-2 uppercase tracking-wide">
                         Verify Your Email
                     </h1>
-                    <p className="text-[var(--theme-text-secondary)] mb-2">
+                    <p className="text-xs text-[var(--theme-text-secondary)] mb-1">
                         We've sent a 6-digit code to
                     </p>
-                    <p className="text-[var(--theme-primary)] font-semibold">
+                    <p className="text-xs text-[var(--theme-primary)] font-semibold">
                         {email || 'your email'}
                     </p>
                 </div>

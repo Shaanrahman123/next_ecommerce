@@ -50,6 +50,8 @@ export interface Order {
 }
 
 export interface Address {
+    id: string;
+    type?: string;
     fullName: string;
     addressLine1: string;
     addressLine2?: string;
@@ -58,6 +60,8 @@ export interface Address {
     zipCode: string;
     country: string;
     phone: string;
+    email?: string;
+    isDefault?: boolean;
 }
 
 export interface PaymentDetails {

@@ -54,13 +54,13 @@ export default function ForgotPasswordPage() {
                         <div className="w-20 h-20 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
                             <CheckCircle2 className="w-10 h-10 text-white" />
                         </div>
-                        <h2 className="text-2xl font-bold text-[var(--theme-primary)] mb-3">
+                        <h2 className="text-xl font-bold text-[var(--theme-primary)] mb-3">
                             Check Your Email
                         </h2>
-                        <p className="text-[var(--theme-text-secondary)] mb-6">
+                        <p className="text-xs text-[var(--theme-text-secondary)] mb-6">
                             We've sent a 6-digit verification code to
                         </p>
-                        <p className="text-[var(--theme-primary)] font-semibold mb-6">
+                        <p className="text-xs text-[var(--theme-primary)] font-semibold mb-6">
                             {email}
                         </p>
                         <div className="w-12 h-1 bg-gradient-to-r from-[var(--theme-primary)] to-[var(--theme-accent)] mx-auto rounded-full animate-pulse" />
@@ -77,10 +77,10 @@ export default function ForgotPasswordPage() {
                     <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[var(--theme-primary)] to-[var(--theme-accent)] rounded-2xl mb-6 shadow-lg">
                         <Mail className="w-8 h-8 text-white" />
                     </div>
-                    <h1 className="text-4xl font-bold text-[var(--theme-primary)] mb-2">
+                    <h1 className="text-2xl font-bold text-[var(--theme-primary)] mb-2 uppercase tracking-wide">
                         Forgot Password?
                     </h1>
-                    <p className="text-[var(--theme-text-secondary)] max-w-sm mx-auto">
+                    <p className="text-xs text-[var(--theme-text-secondary)] max-w-sm mx-auto">
                         No worries! Enter your email address and we'll send you a code to reset your password.
                     </p>
                 </div>

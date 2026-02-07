@@ -47,7 +47,7 @@ export default function Header() {
     }, [userMenuOpen]);
 
     return (
-        <header className="sticky top-8 z-50 bg-white border-b border-gray-200 shadow-sm">
+        <header className="sticky top-8 z-100 bg-white border-b border-gray-200 shadow-sm">
             <div className="container mx-auto px-4 lg:px-4 xl:px-4">
                 <div className="flex items-center justify-between h-16">
                     {/* Logo */}
@@ -205,12 +205,12 @@ export default function Header() {
                                     <>
                                         {/* Overlay - black-40 */}
                                         <div
-                                            className="fixed inset-0 bg-black/40 z-[60] lg:hidden animate-fade-in"
+                                            className="fixed inset-0 bg-black/40 z-60 lg:hidden animate-fade-in"
                                             onClick={() => setUserMenuOpen(false)}
                                         />
 
                                         {/* Drawer - Left to Right, 80% width */}
-                                        <div className="fixed inset-y-0 left-0 z-[70] w-[80%] bg-white shadow-2xl transform transition-transform duration-300 animate-slide-right lg:hidden flex flex-col">
+                                        <div className="fixed inset-y-0 left-0 z-70 w-[80%] bg-white shadow-2xl transform transition-transform duration-300 animate-slide-right lg:hidden flex flex-col">
                                             {/* User Info Header */}
                                             <div className="p-6 border-b border-gray-100 bg-linear-to-r from-gray-50 to-white">
                                                 <div className="flex items-center gap-4 mb-4">
@@ -380,7 +380,13 @@ export default function Header() {
                                 className="text-gray-700 hover:text-black p-2"
                                 aria-label="Toggle Menu"
                             >
-                                {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                                {mobileMenuOpen ? (
+                                    <X className="w-6 h-6" />
+                                ) : (
+                                    <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M0 1C0 0.734784 0.105357 0.48043 0.292893 0.292893C0.48043 0.105357 0.734784 0 1 0H19C19.2652 0 19.5196 0.105357 19.7071 0.292893C19.8946 0.48043 20 0.734784 20 1C20 1.26522 19.8946 1.51957 19.7071 1.70711C19.5196 1.89464 19.2652 2 19 2H1C0.734784 2 0.48043 1.89464 0.292893 1.70711C0.105357 1.51957 0 1.26522 0 1ZM1 10H19C19.2652 10 19.5196 9.89464 19.7071 9.70711C19.8946 9.51957 20 9.26522 20 9C20 8.73478 19.8946 8.48043 19.7071 8.29289C19.5196 8.10536 19.2652 8 19 8H1C0.734784 8 0.48043 8.10536 0.292893 8.29289C0.105357 8.48043 0 8.73478 0 9C0 9.26522 0.105357 9.51957 0.292893 9.70711C0.48043 9.89464 0.734784 10 1 10ZM19 16H10C9.73478 16 9.48043 16.1054 9.29289 16.2929C9.10536 16.4804 9 16.7348 9 17C9 17.2652 9.10536 17.5196 9.29289 17.7071C9.48043 17.8946 9.73478 18 10 18H19C19.2652 18 19.5196 17.8946 19.7071 17.7071C19.8946 17.5196 20 17.2652 20 17C20 16.7348 19.8946 16.4804 19.7071 16.2929C19.5196 16.1054 19.2652 16 19 16Z" fill="currentColor" />
+                                    </svg>
+                                )}
                             </button>
                         </div>
                     </div>

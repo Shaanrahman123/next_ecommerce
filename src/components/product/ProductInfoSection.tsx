@@ -177,7 +177,7 @@ export default function ProductInfoSection({
                     <Button
                         onClick={onBuyNow}
                         fullWidth
-                        className="flex items-center justify-center gap-2 py-4 text-base bg-gradient-to-r from-black to-gray-800 hover:from-gray-800 hover:to-black"
+                        className="flex items-center justify-center gap-2 py-4 text-base bg-linear-to-r from-black to-gray-800 hover:from-gray-800 hover:to-black"
                     >
                         <Zap className="w-5 h-5" />
                         Buy Now

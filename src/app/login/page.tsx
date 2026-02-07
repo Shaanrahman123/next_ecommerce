@@ -62,10 +62,10 @@ export default function LoginPage() {
         <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
             <div className="max-w-md w-full space-y-8">
                 <div className="text-center">
-                    <h1 className="text-4xl font-bold text-[var(--theme-primary)] mb-2">
+                    <h1 className="text-2xl font-bold text-[var(--theme-primary)] mb-2 uppercase tracking-wide">
                         Welcome Back
                     </h1>
-                    <p className="text-[var(--theme-text-secondary)]">
+                    <p className="text-xs text-[var(--theme-text-secondary)]">
                         Sign in to your account to continue
                     </p>
                 </div>

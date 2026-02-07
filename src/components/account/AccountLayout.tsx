@@ -50,7 +50,7 @@ export default function AccountLayout({ children, currentSection }: AccountLayou
 
     useEffect(() => {
         if (mounted && !isAuthenticated) {
-            router.push('/login');
+            router.replace('/login');
         }
     }, [isAuthenticated, router, mounted]);
 

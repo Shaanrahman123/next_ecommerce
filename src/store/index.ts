@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { User, CartItem, WishlistItem, Product } from '@/types';
+import { User, CartItem, WishlistItem, Product, Address } from '@/types';
 
 interface AuthState {
     user: User | null;
@@ -27,6 +27,15 @@ interface WishlistState {
     isInWishlist: (productId: string) => boolean;
     clearWishlist: () => void;
 }
+
+interface AddressState {
+    addresses: Address[];
+    addAddress: (address: Address) => void;
+    updateAddress: (id: string, address: Partial<Address>) => void;
+    deleteAddress: (id: string) => void;
+    setDefaultAddress: (id: string) => void;
+}
+
 
 export const useAuthStore = create<AuthState>()(
     persist(
@@ -129,6 +138,61 @@ export const useWishlistStore = create<WishlistState>()(
         }),
         {
             name: 'wishlist-storage',
+        }
+    )
+);
+
+export const useAddressStore = create<AddressState>()(
+    persist(
+        (set) => ({
+            addresses: [
+                {
+                    id: '1',
+                    type: 'Home',
+                    fullName: 'John Doe',
+                    addressLine1: '123 Main Street, Apt 4B',
+                    city: 'New York',
+                    state: 'NY',
+                    zipCode: '10001',
+                    country: 'USA',
+                    phone: '+1 (555) 123-4567',
+                    isDefault: true,
+                },
+                {
+                    id: '2',
+                    type: 'Work',
+                    fullName: 'John Doe',
+                    addressLine1: '456 Office Plaza, Suite 200',
+                    city: 'New York',
+                    state: 'NY',
+                    zipCode: '10002',
+                    country: 'USA',
+                    phone: '+1 (555) 987-6543',
+                    isDefault: false,
+                },
+            ],
+            addAddress: (address) =>
+                set((state) => ({ addresses: [...state.addresses, address] })),
+            updateAddress: (id, updatedAddress) =>
+                set((state) => ({
+                    addresses: state.addresses.map((a) =>
+                        a.id === id ? { ...a, ...updatedAddress } : a
+                    ),
+                })),
+            deleteAddress: (id) =>
+                set((state) => ({
+                    addresses: state.addresses.filter((a) => a.id !== id),
+                })),
+            setDefaultAddress: (id) =>
+                set((state) => ({
+                    addresses: state.addresses.map((a) => ({
+                        ...a,
+                        isDefault: a.id === id,
+                    })),
+                })),
+        }),
+        {
+            name: 'address-storage',
         }
     )
 );
