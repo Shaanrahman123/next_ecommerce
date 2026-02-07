@@ -37,7 +37,7 @@ export default function FeaturesSection() {
                             <div className="mb-1 md:mb-4">
                                 <Icon className="w-5 h-5 md:w-12 md:h-12 text-gray-900 stroke-[1.5]" />
                             </div>
-                            <h3 className="text-[7px] md:text-sm font-bold text-gray-900 uppercase tracking-wide mb-1 md:mb-2 leading-tight">
+                            <h3 className="text-[12px] md:text-sm font-bold text-gray-900 uppercase tracking-wide mb-1 md:mb-2 leading-tight">
                                 {feature.title}
                             </h3>
                             <p className="text-[9px] md:text-xs text-gray-600 hidden md:block">

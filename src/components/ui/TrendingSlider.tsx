@@ -61,7 +61,7 @@ export default function TrendingSlider({ items, title, bgColor = 'bg-gray-50' }:
             <div className="container mx-auto px-4 lg:px-4 xl:px-4">
                 {/* Section Header */}
                 <div className="mb-4 lg:mb-12">
-                    <h2 className="text-[10px] sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-black text-gray-900 uppercase tracking-tight">
+                    <h2 className="text-section-title font-black text-gray-900 uppercase tracking-tight">
                         {title}
                     </h2>
                 </div>
@@ -104,7 +104,7 @@ export default function TrendingSlider({ items, title, bgColor = 'bg-gray-50' }:
                             >
                                 {/* Badge */}
                                 {item.badge && (
-                                    <div className="absolute top-1 left-1 lg:top-3 lg:left-3 bg-red-500 text-white text-[6px] lg:text-xs font-bold px-1.5 py-0.5 rounded z-10">
+                                    <div className="absolute top-1 left-1 lg:top-3 lg:left-3 bg-red-500 text-white text-[8px] lg:text-xs font-bold px-1.5 py-0.5 rounded z-10">
                                         {item.badge}
                                     </div>
                                 )}
@@ -123,13 +123,13 @@ export default function TrendingSlider({ items, title, bgColor = 'bg-gray-50' }:
 
                                 {/* Content */}
                                 <div className="absolute bottom-0 left-0 right-0 p-1.5 lg:p-4 text-white">
-                                    <h3 className="text-[8px] lg:text-sm xl:text-base font-bold mb-0.5 lg:mb-1 leading-tight line-clamp-2">
+                                    <h3 className="text-[10px] lg:text-sm xl:text-base font-bold mb-0.5 lg:mb-1 leading-tight line-clamp-2">
                                         {item.title}
                                     </h3>
-                                    <p className="text-[7px] lg:text-xs text-gray-200 leading-tight mb-0.5 lg:mb-2 line-clamp-2">
+                                    <p className="text-[9px] lg:text-xs text-gray-200 leading-tight mb-0.5 lg:mb-2 line-clamp-2">
                                         {item.subtitle}
                                     </p>
-                                    <button className="text-[7px] lg:text-xs font-bold uppercase tracking-wider hover:underline">
+                                    <button className="text-[9px] lg:text-xs font-bold uppercase tracking-wider hover:underline">
                                         + Explore
                                     </button>
                                 </div>

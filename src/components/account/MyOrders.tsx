@@ -46,7 +46,7 @@ export default function MyOrders() {
     return (
         <div className="space-y-8">
             <div>
-                <h1 className="text-3xl font-bold text-gray-900 mb-2">My Orders</h1>
+                <h1 className="text-page-title text-gray-900 mb-2">My Orders</h1>
                 <p className="text-gray-600">Track, return, or buy items again</p>
             </div>
 
@@ -58,7 +58,7 @@ export default function MyOrders() {
                     >
                         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
                             <div className="flex items-start gap-4 flex-1">
-                                <div className="w-20 h-20 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <div className="w-20 h-20 bg-gray-100 rounded-lg flex items-center justify-center shrink-0">
                                     <Package className="w-8 h-8 text-gray-400" />
                                 </div>
                                 <div className="flex-1">

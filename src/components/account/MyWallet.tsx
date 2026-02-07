@@ -12,16 +12,16 @@ export default function MyWallet() {
     return (
         <div className="space-y-8">
             <div>
-                <h1 className="text-3xl font-bold text-gray-900 mb-2">My Wallet</h1>
+                <h1 className="text-page-title text-gray-900 mb-2">My Wallet</h1>
                 <p className="text-gray-600">Manage your store credit and wallet balance</p>
             </div>
 
             {/* Balance Card */}
-            <div className="bg-gradient-to-br from-black to-gray-800 text-white rounded-2xl p-8 shadow-xl">
+            <div className="bg-linear-to-br from-black to-gray-800 text-white rounded-2xl p-8 shadow-xl">
                 <div className="flex items-center justify-between mb-6">
                     <div>
                         <p className="text-gray-300 text-sm mb-2">Available Balance</p>
-                        <h2 className="text-4xl font-bold">$250.00</h2>
+                        <h2 className="text-price font-bold">$250.00</h2>
                     </div>
                     <WalletIcon className="w-12 h-12 text-gray-400" />
                 </div>
@@ -33,7 +33,7 @@ export default function MyWallet() {
 
             {/* Transaction History */}
             <div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">Transaction History</h2>
+                <h2 className="text-section-title font-bold text-gray-900 mb-6">Transaction History</h2>
                 <div className="space-y-4">
                     {transactions.map((transaction) => (
                         <div

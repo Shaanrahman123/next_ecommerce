@@ -90,7 +90,7 @@ export default function Header() {
                                     aria-label="User Account"
                                 >
                                     <User className="w-5 h-5" />
-                                    <span className="text-[10px] font-bold uppercase tracking-wider">Profile</span>
+                                    <span className="text-[12px] font-bold uppercase tracking-wider">Profile</span>
                                 </button>
                                 {/* Dropdown logic remains same */}
 
@@ -341,12 +341,12 @@ export default function Header() {
                             <div className="relative">
                                 <Heart className="w-5 h-5" />
                                 {wishlistItems.length > 0 && (
-                                    <span className="absolute -top-2 -right-2 bg-black text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center font-bold">
+                                    <span className="absolute -top-2 -right-2 bg-black text-white text-[12px] rounded-full w-4 h-4 flex items-center justify-center font-bold">
                                         {wishlistItems.length}
                                     </span>
                                 )}
                             </div>
-                            <span className="text-[10px] font-bold uppercase tracking-wider">Wishlist</span>
+                            <span className="text-[12px] font-bold uppercase tracking-wider">Wishlist</span>
                         </Link>
 
                         {/* Cart - Desktop with Label */}
@@ -358,12 +358,12 @@ export default function Header() {
                             <div className="relative">
                                 <ShoppingCart className="w-5 h-5" />
                                 {cartItemCount > 0 && (
-                                    <span className="absolute -top-2 -right-2 bg-black text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center font-bold">
+                                    <span className="absolute -top-2 -right-2 bg-black text-white text-[12px] rounded-full w-4 h-4 flex items-center justify-center font-bold">
                                         {cartItemCount}
                                     </span>
                                 )}
                             </div>
-                            <span className="text-[10px] font-bold uppercase tracking-wider">Bag</span>
+                            <span className="text-[12px] font-bold uppercase tracking-wider">Bag</span>
                         </Link>
 
                         {/* Mobile Actions */}

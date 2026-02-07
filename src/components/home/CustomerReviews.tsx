@@ -52,10 +52,10 @@ export default function CustomerReviews() {
         <section className="py-6 px-4 lg:px-4 xl:px-4 container mx-auto">
             {/* Header */}
             <div className="text-center mb-4 lg:mb-8">
-                <h2 className="text-[10px] sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-black text-gray-900 uppercase tracking-tight">
+                <h2 className="text-section-title font-black text-gray-900 uppercase tracking-tight">
                     CUSTOMER REVIEWS
                 </h2>
-                <p className="text-[8px] text-gray-600 mt-1.5">
+                <p className="text-body text-gray-600 mt-1.5">
                     What our customers say about us
                 </p>
                 <div className="h-0.5 w-12 md:w-24 bg-gray-900 mx-auto mt-2 md:mt-4" />
@@ -95,12 +95,12 @@ export default function CustomerReviews() {
                             </div>
 
                             {/* Review Text */}
-                            <p className="text-gray-700 text-[9px] md:text-sm leading-relaxed mb-3 md:mb-4">
+                            <p className="text-gray-700 text-[11px] md:text-sm leading-relaxed mb-3 md:mb-4">
                                 {review.text}
                             </p>
 
                             {/* Author */}
-                            <p className="text-gray-900 font-semibold text-[9px] md:text-sm">
+                            <p className="text-gray-900 font-semibold text-[11px] md:text-sm">
                                 _{review.name}
                             </p>
                         </div>

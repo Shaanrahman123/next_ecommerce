@@ -23,7 +23,7 @@ export default function MyReviews() {
     return (
         <div className="space-y-8">
             <div>
-                <h1 className="text-3xl font-bold text-gray-900 mb-2">My Reviews</h1>
+                <h1 className="text-page-title text-gray-900 mb-2">My Reviews</h1>
                 <p className="text-gray-600">Your product reviews and ratings</p>
             </div>
 
@@ -41,8 +41,8 @@ export default function MyReviews() {
                                         <Star
                                             key={i}
                                             className={`w-5 h-5 ${i < review.rating
-                                                    ? 'fill-yellow-400 text-yellow-400'
-                                                    : 'text-gray-300'
+                                                ? 'fill-yellow-400 text-yellow-400'
+                                                : 'text-gray-300'
                                                 }`}
                                         />
                                     ))}

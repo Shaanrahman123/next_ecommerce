@@ -104,7 +104,7 @@ export default function MobileFilterDrawer({
                                     {section.title}
                                 </span>
                                 {selectedCount > 0 && (
-                                    <span className="text-[10px] bg-gray-900 text-white rounded-full w-4 h-4 flex items-center justify-center">
+                                    <span className="text-[12px] bg-gray-900 text-white rounded-full w-4 h-4 flex items-center justify-center">
                                         {selectedCount}
                                     </span>
                                 )}
@@ -139,7 +139,7 @@ export default function MobileFilterDrawer({
                             {/* Top Picks Section */}
                             {topPicks.length > 0 && (
                                 <>
-                                    <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider mb-2">
+                                    <div className="text-[12px] font-semibold text-gray-500 uppercase tracking-wider mb-2">
                                         TOP PICKS
                                     </div>
                                     <div className="space-y-1 mb-4">

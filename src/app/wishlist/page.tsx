@@ -14,7 +14,7 @@ export default function WishlistPage() {
             <div className="min-h-[60vh] flex items-center justify-center px-4">
                 <div className="text-center space-y-6">
                     <Heart className="w-24 h-24 mx-auto text-[var(--theme-text-muted)]" />
-                    <h1 className="text-3xl font-bold text-[var(--theme-primary)]">
+                    <h1 className="text-page-title text-[var(--theme-primary)]">
                         Your wishlist is empty
                     </h1>
                     <p className="text-[var(--theme-text-secondary)]">
@@ -32,10 +32,10 @@ export default function WishlistPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div className="flex items-center justify-between mb-8">
                 <div>
-                    <h1 className="text-4xl font-bold text-[var(--theme-primary)] mb-2">
+                    <h1 className="text-page-title text-[var(--theme-primary)] mb-2">
                         My Wishlist
                     </h1>
-                    <p className="text-[var(--theme-text-secondary)]">
+                    <p className="text-body text-[var(--theme-text-secondary)]">
                         {items.length} item{items.length !== 1 ? 's' : ''} saved
                     </p>
                 </div>

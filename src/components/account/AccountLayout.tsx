@@ -81,23 +81,23 @@ export default function AccountLayout({ children, currentSection }: AccountLayou
                                 {sidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
                             </button>
                             <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-black to-gray-700 flex items-center justify-center text-white font-semibold text-sm">
+                                <div className="w-10 h-10 rounded-full bg-linear-to-br from-black to-gray-700 flex items-center justify-center text-white font-semibold text-small">
                                     {user?.name?.charAt(0).toUpperCase() || 'U'}
                                 </div>
                                 <div>
-                                    <h2 className="text-lg font-semibold text-gray-900">
+                                    <h2 className="text-body font-semibold text-gray-900">
                                         {user?.name || 'User'}
                                     </h2>
-                                    <p className="text-xs text-gray-500">{user?.email}</p>
+                                    <p className="text-small text-gray-500">{user?.email}</p>
                                 </div>
                             </div>
                         </div>
                         <button
                             onClick={handleLogout}
-                            className="flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors duration-300"
+                            className="flex items-center gap-2 px-4 py-2 text-body text-red-600 hover:bg-red-50 rounded-lg transition-colors duration-300"
                         >
                             <LogOut className="w-4 h-4" />
-                            <span className="hidden sm:inline">Logout</span>
+                            <span className="hidden sm:inline text-body">Logout</span>
                         </button>
                     </div>
                 </div>
@@ -125,7 +125,7 @@ export default function AccountLayout({ children, currentSection }: AccountLayou
                                         `}
                                     >
                                         <Icon className="w-5 h-5" />
-                                        <span className="font-medium text-sm">{item.label}</span>
+                                        <span className="font-medium text-body">{item.label}</span>
                                     </Link>
                                 );
                             })}

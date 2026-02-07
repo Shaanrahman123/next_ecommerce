@@ -56,7 +56,7 @@ export default function Notifications() {
         <div className="space-y-8">
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-3xl font-bold text-gray-900 mb-2">Notifications</h1>
+                    <h1 className="text-page-title text-gray-900 mb-2">Notifications</h1>
                     <p className="text-gray-600">Stay updated with your account activity</p>
                 </div>
                 <button className="px-4 py-2 text-sm font-medium text-black hover:bg-gray-100 rounded-lg transition-colors duration-300">
@@ -71,8 +71,8 @@ export default function Notifications() {
                         <div
                             key={notification.id}
                             className={`flex items-start gap-4 p-4 rounded-lg border transition-all duration-300 hover:shadow-md ${notification.read
-                                    ? 'bg-white border-gray-200'
-                                    : 'bg-blue-50 border-blue-200'
+                                ? 'bg-white border-gray-200'
+                                : 'bg-blue-50 border-blue-200'
                                 }`}
                         >
                             <div className={`p-3 rounded-lg ${getIconColor(notification.type)}`}>

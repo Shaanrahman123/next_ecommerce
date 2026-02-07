@@ -96,8 +96,8 @@ export default function Search({ variant = 'desktop', isOpen, onClose }: SearchP
                                         <img src={item.images[0]} alt={item.name} className="w-full h-full object-cover" />
                                     </div>
                                     <div className="min-w-0">
-                                        <div className="text-[11px] font-semibold text-gray-900 truncate">{item.name}</div>
-                                        <div className="text-[10px] text-gray-500">{item.category}</div>
+                                        <div className="text-[13px] font-semibold text-gray-900 truncate">{item.name}</div>
+                                        <div className="text-[12px] text-gray-500">{item.category}</div>
                                     </div>
                                 </Link>
                             ))}
@@ -148,7 +148,7 @@ export default function Search({ variant = 'desktop', isOpen, onClose }: SearchP
                                             </span>
                                         </div>
                                         <div className="flex items-center space-x-3">
-                                            <span className="text-[10px] text-gray-400 font-medium">
+                                            <span className="text-[12px] text-gray-400 font-medium">
                                                 {(item.reviews * 123 + 456).toLocaleString()}
                                             </span>
                                             <ArrowLeft className="w-4 h-4 text-gray-300 rotate-135 shrink-0" />
@@ -163,7 +163,7 @@ export default function Search({ variant = 'desktop', isOpen, onClose }: SearchP
                         </div>
                     ) : (
                         <div className="p-6">
-                            <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-6">Popular Searches</h3>
+                            <h3 className="text-[12px] font-bold text-gray-400 uppercase tracking-widest mb-6">Popular Searches</h3>
                             <div className="flex flex-col gap-1">
                                 {['Linen Shirt', 'Silk Kurta', 'Denim Jacket', 'Sneakers', 'Cologne', 'Leather Belt'].map(cat => (
                                     <button

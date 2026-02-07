@@ -25,16 +25,16 @@ export default function DripDropBanner() {
 
                             {/* Content */}
                             <div className="absolute bottom-0 left-0 right-0 p-3 lg:p-8 text-white">
-                                <p className="text-[6px] lg:text-sm font-semibold mb-1 tracking-wider uppercase">
+                                <p className="text-[8px] lg:text-sm font-semibold mb-1 tracking-wider uppercase">
                                     Just Dropped
                                 </p>
-                                <h3 className="text-sm lg:text-4xl font-black mb-1 lg:mb-3 leading-tight">
+                                <h3 className="text-section-title font-black mb-1 lg:mb-3 leading-tight">
                                     NEW ARRIVALS
                                 </h3>
-                                <p className="text-[7px] lg:text-sm text-gray-200 mb-2 lg:mb-4 max-w-[200px] lg:max-w-md line-clamp-1 lg:line-clamp-none">
+                                <p className="text-[9px] lg:text-sm text-gray-200 mb-2 lg:mb-4 max-w-[200px] lg:max-w-md line-clamp-1 lg:line-clamp-none">
                                     Discover the latest trends in men's fashion
                                 </p>
-                                <button className="bg-white text-black px-3 py-1 lg:px-6 lg:py-2.5 rounded-full font-bold text-[7px] lg:text-sm hover:bg-gray-100 transition-colors duration-300 inline-flex items-center gap-1 lg:gap-2">
+                                <button className="bg-white text-black px-3 py-1 lg:px-6 lg:py-2.5 rounded-full font-bold text-[9px] lg:text-sm hover:bg-gray-100 transition-colors duration-300 inline-flex items-center gap-1 lg:gap-2">
                                     Shop Now
                                     <svg className="w-2 h-2 lg:w-4 lg:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -61,16 +61,16 @@ export default function DripDropBanner() {
 
                             {/* Content */}
                             <div className="absolute bottom-0 left-0 right-0 p-3 lg:p-8 text-white">
-                                <p className="text-[6px] lg:text-sm font-semibold mb-1 tracking-wider uppercase">
+                                <p className="text-[8px] lg:text-sm font-semibold mb-1 tracking-wider uppercase">
                                     Customer Favorites
                                 </p>
-                                <h3 className="text-sm lg:text-4xl font-black mb-1 lg:mb-3 leading-tight">
+                                <h3 className="text-section-title font-black mb-1 lg:mb-3 leading-tight">
                                     BEST SELLERS
                                 </h3>
-                                <p className="text-[7px] lg:text-sm text-gray-200 mb-2 lg:mb-4 max-w-[200px] lg:max-w-md line-clamp-1 lg:line-clamp-none">
+                                <p className="text-[9px] lg:text-sm text-gray-200 mb-2 lg:mb-4 max-w-[200px] lg:max-w-md line-clamp-1 lg:line-clamp-none">
                                     Shop our most-loved styles this season
                                 </p>
-                                <button className="bg-white text-black px-3 py-1 lg:px-6 lg:py-2.5 rounded-full font-bold text-[7px] lg:text-sm hover:bg-gray-100 transition-colors duration-300 inline-flex items-center gap-1 lg:gap-2">
+                                <button className="bg-white text-black px-3 py-1 lg:px-6 lg:py-2.5 rounded-full font-bold text-[9px] lg:text-sm hover:bg-gray-100 transition-colors duration-300 inline-flex items-center gap-1 lg:gap-2">
                                     Explore Now
                                     <svg className="w-2 h-2 lg:w-4 lg:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />

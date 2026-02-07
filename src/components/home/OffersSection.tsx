@@ -51,10 +51,10 @@ export default function OffersSection() {
         <section className="py-6 px-4 lg:px-4 xl:px-4 container mx-auto">
             {/* Header */}
             <div className="text-center mb-4 lg:mb-8">
-                <h2 className="text-[10px] sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-black text-gray-900 mb-1 uppercase tracking-tight">
+                <h2 className="text-section-title font-black text-gray-900 mb-1 uppercase tracking-tight">
                     SPECIAL OFFERS
                 </h2>
-                <p className="text-[8px] text-gray-600">Limited time deals you don't want to miss</p>
+                <p className="text-body text-gray-600">Limited time deals you don't want to miss</p>
                 <div className="h-0.5 w-12 md:w-24 bg-gray-900 mx-auto mt-2 md:mt-4" />
             </div>
 
@@ -72,13 +72,13 @@ export default function OffersSection() {
                                 <div className={`${offer.iconBg} p-1.5 md:p-4 rounded-full group-hover:scale-110 transition-transform duration-300`}>
                                     <Icon className={`w-4 h-4 md:w-10 md:h-10 ${offer.textColor}`} />
                                 </div>
-                                <h3 className={`text-[10px] md:text-2xl font-black tracking-tight ${offer.textColor}`}>
+                                <h3 className={`text-[12px] md:text-2xl font-black tracking-tight ${offer.textColor}`}>
                                     {offer.title}
                                 </h3>
-                                <p className={`text-[8px] md:text-base font-medium ${offer.textColor} opacity-70`}>
+                                <p className={`text-[10px] md:text-base font-medium ${offer.textColor} opacity-70`}>
                                     {offer.description}
                                 </p>
-                                <button className="mt-1 text-[8px] md:text-sm bg-gray-900 text-white px-3 py-1 md:px-6 md:py-2 rounded-full font-semibold hover:bg-gray-800 transition-colors duration-300">
+                                <button className="mt-1 text-[10px] md:text-sm bg-gray-900 text-white px-3 py-1 md:px-6 md:py-2 rounded-full font-semibold hover:bg-gray-800 transition-colors duration-300">
                                     Shop Now
                                 </button>
                             </div>

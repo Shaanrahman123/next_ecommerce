@@ -80,13 +80,13 @@ export default function HeroBanner() {
                     <div className="absolute inset-x-0 bottom-0 top-0 flex flex-col items-center justify-center text-center px-6 pb-12 md:pb-0">
                         <div className="max-w-3xl mx-auto space-y-4 md:space-y-8 animate-fade-in">
                             <div className="space-y-2 md:space-y-4">
-                                <h2 className="text-white text-[10px] md:text-xl font-medium tracking-[0.4em] uppercase opacity-90">
+                                <h2 className="text-white text-[12px] md:text-xl font-medium tracking-[0.4em] uppercase opacity-90">
                                     {banner.subtitle}
                                 </h2>
-                                <h1 className="text-3xl md:text-7xl font-black text-white leading-tight tracking-tight uppercase">
+                                <h1 className="text-page-title font-black text-white leading-tight tracking-tight uppercase">
                                     {banner.title}
                                 </h1>
-                                <p className="text-gray-300 text-xs md:text-xl max-w-xl mx-auto hidden md:block">
+                                <p className="text-body text-gray-300 max-w-xl mx-auto hidden md:block">
                                     {banner.description}
                                 </p>
                             </div>
@@ -94,7 +94,7 @@ export default function HeroBanner() {
                             <div className="pt-4 md:pt-8">
                                 <Link href={banner.link}>
                                     <button
-                                        className="bg-black text-white hover:bg-white hover:text-black border border-white/20 px-8 py-3 md:px-12 md:py-5 text-[10px] md:text-base font-bold uppercase tracking-[0.3em] transition-all duration-500 rounded-none shadow-2xl backdrop-blur-sm"
+                                        className="bg-black text-white hover:bg-white hover:text-black border border-white/20 px-8 py-3 md:px-12 md:py-5 text-[12px] md:text-base font-bold uppercase tracking-[0.3em] transition-all duration-500 rounded-none shadow-2xl backdrop-blur-sm"
                                     >
                                         Shop Collection
                                     </button>

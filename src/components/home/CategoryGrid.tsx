@@ -27,7 +27,7 @@ const categories = [
     },
     {
         id: 4,
-        title: 'Shorts & Trousers',
+        title: 'Shorts',
         image: 'https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=600&q=80',
         link: '/products?category=bottomwear&item=trousers',
         bgColor: 'bg-gradient-to-br from-pink-100 to-pink-50',
@@ -68,7 +68,7 @@ export default function CategoryGrid() {
             <div className="container mx-auto px-4 lg:px-4 xl:px-4">
                 {/* Section Header */}
                 <div className="mb-4 lg:mb-12">
-                    <h2 className="text-[10px] sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-black text-gray-900 uppercase tracking-tight">
+                    <h2 className="text-section-title font-black text-gray-900 uppercase tracking-tight">
                         Categories To Bag
                     </h2>
                 </div>
@@ -92,7 +92,7 @@ export default function CategoryGrid() {
                                         />
                                     </div>
                                 </div>
-                                <span className="text-[8px] font-semibold text-gray-900 text-center leading-tight">
+                                <span className="text-[10px] font-semibold text-gray-900 text-center leading-tight">
                                     {category.title}
                                 </span>
                             </Link>

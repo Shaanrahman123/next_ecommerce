@@ -33,7 +33,7 @@ export default function MyAddresses() {
         <div className="space-y-8">
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-3xl font-bold text-gray-900 mb-2">My Addresses</h1>
+                    <h1 className="text-page-title text-gray-900 mb-2">My Addresses</h1>
                     <p className="text-gray-600">Manage your delivery addresses</p>
                 </div>
                 <Link

@@ -28,7 +28,7 @@ export default function MobileBottomNav() {
     const isCartPage = pathname === '/cart';
     const isOrderSuccessPage = pathname === '/order-success';
 
-    const showBottomNav = !(hideOnPaths.includes(pathname) || isProductPage || isCheckoutPage || isCartPage || isOrderSuccessPage);
+    const showBottomNav = !(hideOnPaths.includes(pathname) || isCheckoutPage || isOrderSuccessPage);
 
     // Add padding to body when bottom nav is shown
     useEffect(() => {
@@ -69,12 +69,12 @@ export default function MobileBottomNav() {
                             <div className="relative">
                                 <Icon className={`w-6 h-6 ${isActive ? 'fill-current' : ''}`} />
                                 {item.count !== undefined && item.count > 0 && (
-                                    <span className="absolute -top-2 -right-2 bg-black text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center font-bold">
+                                    <span className="absolute -top-2 -right-2 bg-black text-white text-[12px] rounded-full w-4 h-4 flex items-center justify-center font-bold">
                                         {item.count}
                                     </span>
                                 )}
                             </div>
-                            <span className="text-[10px] uppercase tracking-wider">{item.label}</span>
+                            <span className="text-[12px] uppercase tracking-wider">{item.label}</span>
                         </Link>
                     );
                 })}

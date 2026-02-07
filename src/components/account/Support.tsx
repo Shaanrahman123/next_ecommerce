@@ -30,12 +30,12 @@ export default function Support() {
     return (
         <div className="space-y-8">
             <div>
-                <h1 className="text-3xl font-bold text-gray-900 mb-2">Support</h1>
+                <h1 className="text-page-title text-gray-900 mb-2">Support</h1>
                 <p className="text-gray-600">Get help with your orders and account</p>
             </div>
 
             {/* Create Ticket */}
-            <div className="bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-xl p-6">
+            <div className="bg-linear-to-br from-gray-50 to-white border border-gray-200 rounded-xl p-6">
                 <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
                     <Plus className="w-5 h-5" />
                     Raise a New Ticket
@@ -70,7 +70,7 @@ export default function Support() {
 
             {/* Existing Tickets */}
             <div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">Your Tickets</h2>
+                <h2 className="text-section-title font-bold text-gray-900 mb-6">Your Tickets</h2>
                 <div className="space-y-4">
                     {tickets.map((ticket) => (
                         <div
