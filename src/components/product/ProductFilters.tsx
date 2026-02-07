@@ -459,7 +459,7 @@ export default function ProductFilters({ onFilterChange, category = 'all' }: Pro
                 <h3 className="text-sm font-bold uppercase">FILTERS</h3>
                 <button
                     onClick={clearAll}
-                    className="text-xs text-red-600 font-semibold hover:underline"
+                    className="text-xs text-[var(--theme-primary)] font-semibold hover:underline"
                 >
                     CLEAR ALL
                 </button>

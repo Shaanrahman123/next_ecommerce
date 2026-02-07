@@ -31,7 +31,7 @@ export default function AppliedFiltersBar({ filters, onRemove, onClearAll }: App
             ))}
             <button
                 onClick={onClearAll}
-                className="text-xs text-red-600 font-semibold hover:underline ml-2"
+                className="text-xs text-black font-semibold hover:underline ml-2"
             >
                 Clear All
             </button>

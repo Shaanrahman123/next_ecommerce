@@ -1,11 +1,22 @@
 'use client';
 
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { Facebook, Instagram, Twitter, Mail } from 'lucide-react';
 
 export default function Footer() {
+    const pathname = usePathname();
+
+    const hideOnMobilePaths = [
+        '/checkout',
+        '/order-success',
+        '/products'
+    ];
+
+    const isHiddenOnMobile = hideOnMobilePaths.some(path => pathname.startsWith(path));
+
     return (
-        <footer className="bg-[var(--theme-primary)] text-[var(--theme-secondary)] mt-5 lg:mt-10">
+        <footer className={`bg-[var(--theme-primary)] text-[var(--theme-secondary)] mt-5 lg:mt-10 ${isHiddenOnMobile ? 'hidden lg:block' : ''}`}>
             <div className="container mx-auto px-8 lg:px-16 xl:px-24 py-12">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                     {/* Brand */}

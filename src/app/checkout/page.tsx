@@ -185,7 +185,7 @@ export default function CheckoutPage() {
     ];
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-gray-50 pb-16 lg:pb-0">
             {/* Header / Stepper */}
             <div className="bg-white border-b border-gray-300 pt-5 pb-5">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

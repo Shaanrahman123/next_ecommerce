@@ -115,7 +115,7 @@ export default function ProductDetailPage() {
 
     return (
         <>
-            <div className="bg-gray-50 min-h-screen">
+            <div className="bg-gray-50 min-h-screen pb-12 lg:pb-0">
                 {/* Breadcrumb */}
                 <div className="bg-white border-b border-gray-200">
                     <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-3 md:py-4">

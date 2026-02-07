@@ -46,8 +46,16 @@ export default function Header() {
         };
     }, [userMenuOpen]);
 
+    const hideOnMobilePaths = [
+        '/checkout',
+        '/order-success',
+        '/products'
+    ];
+
+    const isHiddenOnMobile = hideOnMobilePaths.some(path => pathname.startsWith(path));
+
     return (
-        <header className="sticky top-8 z-100 bg-white border-b border-gray-200 shadow-sm">
+        <header className={`sticky top-8 z-100 bg-white border-b border-gray-200 shadow-sm ${isHiddenOnMobile ? 'hidden lg:block' : ''}`}>
             <div className="container mx-auto px-4 lg:px-4 xl:px-4">
                 <div className="flex items-center justify-between h-16">
                     {/* Logo */}

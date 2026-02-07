@@ -38,7 +38,7 @@ export default function ProductInfoSection({
 
     return (
         <>
-            <div className="space-y-3 md:space-y-6 pb-20 md:pb-0">
+            <div className="space-y-3 md:space-y-6 pb-4 md:pb-0">
                 {/* Header */}
                 <div>
                     <div className="flex items-start justify-between mb-2 gap-2">

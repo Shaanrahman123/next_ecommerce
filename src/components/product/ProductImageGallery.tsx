@@ -84,7 +84,7 @@ export default function ProductImageGallery({
                                 onImageClick();
                             }}
                         >
-                            <div className="relative aspect-[3/4] rounded-xl overflow-hidden bg-gray-100">
+                            <div className="relative aspect-3/4 rounded-xl overflow-hidden bg-gray-100">
                                 <Image
                                     src={image}
                                     alt={`${productName} ${index + 1}`}
@@ -94,26 +94,6 @@ export default function ProductImageGallery({
                                 />
                             </div>
                         </div>
-                    ))}
-                </div>
-                {/* Scroll Indicators */}
-                <div className="flex justify-center gap-1.5 mt-3">
-                    {images.map((_, index) => (
-                        <button
-                            key={index}
-                            onClick={() => {
-                                onImageSelect(index);
-                                scrollRef.current?.children[index]?.scrollIntoView({
-                                    behavior: 'smooth',
-                                    block: 'nearest',
-                                    inline: 'center',
-                                });
-                            }}
-                            className={`h-1.5 rounded-full transition-all duration-300 ${selectedImage === index
-                                    ? 'w-6 bg-black'
-                                    : 'w-1.5 bg-gray-300'
-                                }`}
-                        />
                     ))}
                 </div>
             </div>
@@ -126,8 +106,8 @@ export default function ProductImageGallery({
                             key={index}
                             onClick={() => onImageSelect(index)}
                             className={`relative aspect-square rounded-lg overflow-hidden border-2 transition-all duration-300 ${selectedImage === index
-                                    ? 'border-black shadow-lg scale-105'
-                                    : 'border-gray-200 hover:border-gray-400'
+                                ? 'border-black shadow-lg scale-105'
+                                : 'border-gray-200 hover:border-gray-400'
                                 }`}
                         >
                             <Image

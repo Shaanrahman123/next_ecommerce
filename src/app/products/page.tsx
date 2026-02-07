@@ -274,7 +274,7 @@ function ProductsContent() {
                                 <p className="text-gray-600 text-base lg:text-lg mb-4">No products found</p>
                                 <button
                                     onClick={handleClearAllFilters}
-                                    className="text-sm text-red-600 font-semibold hover:underline"
+                                    className="text-sm text-black font-semibold hover:underline"
                                 >
                                     Clear all filters
                                 </button>
@@ -362,7 +362,7 @@ function ProductsContent() {
                             <div className="flex items-center gap-3">
                                 <button
                                     onClick={handleClearAllFilters}
-                                    className="text-xs text-red-600 font-semibold uppercase"
+                                    className="text-xs text-[var(--theme-primary)] font-semibold uppercase"
                                 >
                                     CLEAR ALL
                                 </button>
@@ -411,7 +411,7 @@ function ProductsContent() {
                                 </button>
                                 <button
                                     onClick={() => setShowMobileFilters(false)}
-                                    className="flex-1 bg-red-600 text-white py-3 rounded text-sm font-semibold hover:bg-red-700 transition-colors uppercase"
+                                    className="flex-1 bg-black text-white py-3 rounded text-sm font-semibold hover:bg-gray-900 transition-colors uppercase"
                                 >
                                     APPLY
                                 </button>
