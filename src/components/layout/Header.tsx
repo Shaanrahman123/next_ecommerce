@@ -8,10 +8,13 @@ import { useRouter } from 'next/navigation';
 import MegaMenu from './MegaMenu';
 import { mainNavigation, megaMenuImages } from '@/data/categories';
 import MobileSidebar from './MobileSidebar';
+import { usePathname } from 'next/navigation';
+import SearchBar from './Search';
 
 export default function Header() {
+    const pathname = usePathname();
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-    const [searchOpen, setSearchOpen] = useState(false);
+    const [isSearchOverlayOpen, setIsSearchOverlayOpen] = useState(false);
     const [userMenuOpen, setUserMenuOpen] = useState(false);
     const { isAuthenticated, user, logout } = useAuthStore();
     const { getItemCount } = useCartStore();
@@ -44,23 +47,23 @@ export default function Header() {
     }, [userMenuOpen]);
 
     return (
-        <header className="sticky top-9 z-50 bg-white border-b border-gray-200 shadow-sm">
-            <div className="container mx-auto px-8 lg:px-16 xl:px-24">
+        <header className="sticky top-8 z-50 bg-white border-b border-gray-200 shadow-sm">
+            <div className="container mx-auto px-4 lg:px-4 xl:px-4">
                 <div className="flex items-center justify-between h-16">
                     {/* Logo */}
                     <Link href="/" className="flex items-center space-x-2 group">
-                        <div className="text-2xl font-bold text-black tracking-tight transition-transform duration-300 group-hover:scale-105">
+                        <div className="text-lg lg:text-2xl font-bold text-black tracking-tight transition-transform duration-300 group-hover:scale-105">
                             MINIMAL
                         </div>
                     </Link>
 
-                    {/* Desktop Navigation with Mega Menus */}
-                    <nav className="hidden lg:flex items-center space-x-8">
-                        {mainNavigation.map((category) => (
+                    {/* Desktop Navigation - Hidden on Desktop Header to make room for Search, as per modern design */}
+                    <nav className="hidden xl:flex items-center space-x-8">
+                        {mainNavigation.slice(0, 3).map((category) => (
                             <div key={category.id} className="relative group">
                                 <Link
                                     href={category.basePath}
-                                    className="text-sm font-semibold text-gray-900 hover:text-black transition-colors duration-300 py-6 inline-block uppercase tracking-wide"
+                                    className="text-xs font-bold text-gray-900 hover:text-black transition-colors duration-300 py-6 inline-block uppercase tracking-widest"
                                 >
                                     {category.label}
                                 </Link>
@@ -73,63 +76,23 @@ export default function Header() {
                         ))}
                     </nav>
 
+                    {/* Search Bar - Center on Desktop */}
+                    <SearchBar variant="desktop" />
+
                     {/* Right Icons */}
-                    <div className="flex items-center space-x-6">
-                        {/* Search */}
-                        <button
-                            onClick={() => setSearchOpen(!searchOpen)}
-                            className="text-gray-700 hover:text-black transition-all duration-300 hover:scale-110"
-                            aria-label="Search"
-                        >
-                            <Search className="w-5 h-5" />
-                        </button>
-
-                        {/* Wishlist */}
-                        <Link
-                            href="/wishlist"
-                            className="relative text-gray-700 hover:text-black transition-all duration-300 hover:scale-110"
-                            aria-label="Wishlist"
-                        >
-                            <Heart className="w-5 h-5" />
-                            {wishlistItems.length > 0 && (
-                                <span className="absolute -top-2 -right-2 bg-black text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
-                                    {wishlistItems.length}
-                                </span>
-                            )}
-                        </Link>
-
-                        {/* Cart */}
-                        <Link
-                            href="/cart"
-                            className="relative text-gray-700 hover:text-black transition-all duration-300 hover:scale-110"
-                            aria-label="Shopping Cart"
-                        >
-                            <ShoppingCart className="w-5 h-5" />
-                            {cartItemCount > 0 && (
-                                <span className="absolute -top-2 -right-2 bg-black text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
-                                    {cartItemCount}
-                                </span>
-                            )}
-                        </Link>
-
-                        {/* User Account */}
+                    <div className="flex items-center space-x-2 lg:space-x-8">
+                        {/* Profile - Desktop with Label */}
                         {isAuthenticated ? (
-                            <div className="relative" ref={dropdownRef}>
+                            <div className="hidden lg:block relative" ref={dropdownRef}>
                                 <button
                                     onClick={() => setUserMenuOpen(!userMenuOpen)}
-                                    className="flex items-center gap-2 text-gray-700 hover:text-black transition-all duration-300 group"
+                                    className="flex flex-col items-center gap-1 text-gray-700 hover:text-black transition-all duration-300 group"
                                     aria-label="User Account"
                                 >
-                                    {/* User Avatar with First Letter */}
-                                    <div className="w-8 h-8 rounded-full bg-linear-to-br from-black to-gray-700 flex items-center justify-center text-white font-semibold text-sm shadow-md group-hover:shadow-lg transition-all duration-300">
-                                        {user?.name?.charAt(0).toUpperCase() || 'U'}
-                                    </div>
-                                    {/* Rotating Chevron - Hidden on Mobile since it opens a drawer */}
-                                    <ChevronDown
-                                        className={`hidden lg:block w-4 h-4 transition-transform duration-300 ${userMenuOpen ? 'rotate-180' : ''
-                                            }`}
-                                    />
+                                    <User className="w-5 h-5" />
+                                    <span className="text-[10px] font-bold uppercase tracking-wider">Profile</span>
                                 </button>
+                                {/* Dropdown logic remains same */}
 
                                 {/* Desktop Dropdown Menu */}
                                 {userMenuOpen && (
@@ -361,35 +324,74 @@ export default function Header() {
                         ) : (
                             <Link
                                 href="/login"
-                                className="text-gray-700 hover:text-black transition-all duration-300 hover:scale-110"
+                                className="hidden lg:flex flex-col items-center gap-1 text-gray-700 hover:text-black transition-all duration-300"
                                 aria-label="Login"
                             >
                                 <User className="w-5 h-5" />
+                                <span className="text-[10px] font-bold uppercase tracking-wider">Profile</span>
                             </Link>
                         )}
 
-                        {/* Mobile Menu Button */}
-                        <button
-                            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                            className="lg:hidden text-gray-700 hover:text-black transition-all duration-300"
-                            aria-label="Toggle Menu"
+                        {/* Wishlist - Desktop with Label */}
+                        <Link
+                            href="/wishlist"
+                            className="hidden lg:flex flex-col items-center gap-1 relative text-gray-700 hover:text-black"
+                            aria-label="Wishlist"
                         >
-                            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-                        </button>
+                            <div className="relative">
+                                <Heart className="w-5 h-5" />
+                                {wishlistItems.length > 0 && (
+                                    <span className="absolute -top-2 -right-2 bg-black text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center font-bold">
+                                        {wishlistItems.length}
+                                    </span>
+                                )}
+                            </div>
+                            <span className="text-[10px] font-bold uppercase tracking-wider">Wishlist</span>
+                        </Link>
+
+                        {/* Cart - Desktop with Label */}
+                        <Link
+                            href="/cart"
+                            className="hidden lg:flex flex-col items-center gap-1 relative text-gray-700 hover:text-black"
+                            aria-label="Shopping Cart"
+                        >
+                            <div className="relative">
+                                <ShoppingCart className="w-5 h-5" />
+                                {cartItemCount > 0 && (
+                                    <span className="absolute -top-2 -right-2 bg-black text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center font-bold">
+                                        {cartItemCount}
+                                    </span>
+                                )}
+                            </div>
+                            <span className="text-[10px] font-bold uppercase tracking-wider">Bag</span>
+                        </Link>
+
+                        {/* Mobile Actions */}
+                        <div className="flex items-center lg:hidden">
+                            <button
+                                onClick={() => setIsSearchOverlayOpen(true)}
+                                className="text-gray-700 hover:text-black p-2"
+                                aria-label="Search"
+                            >
+                                <Search className="w-5 h-5" />
+                            </button>
+                            <button
+                                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                                className="text-gray-700 hover:text-black p-2"
+                                aria-label="Toggle Menu"
+                            >
+                                {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                            </button>
+                        </div>
                     </div>
                 </div>
 
-                {/* Search Bar */}
-                {searchOpen && (
-                    <div className="py-4 animate-slide-in">
-                        <input
-                            type="text"
-                            placeholder="Search for products, brands and more..."
-                            className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all duration-300"
-                            autoFocus
-                        />
-                    </div>
-                )}
+                {/* Mobile Search Overlay */}
+                <SearchBar
+                    variant="overlay"
+                    isOpen={isSearchOverlayOpen}
+                    onClose={() => setIsSearchOverlayOpen(false)}
+                />
             </div>
 
             {/* Mobile Sidebar */}

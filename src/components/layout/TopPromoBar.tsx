@@ -8,7 +8,7 @@ export default function TopPromoBar() {
             <div className="container mx-auto px-1 lg:px-16 xl:px-24">
                 <p className="flex items-center text-xs md:text-sm justify-center gap-2 flex-wrap">
                     {/* <span className="animate-pulse">🎉</span> */}
-                    <span>MEGA SALE! Get Up to 70% OFF on All Products</span>
+                    <span>Get Up to 70% OFF on All Products</span>
                     {/* <span className="animate-pulse">🎉</span> */}
                     <Link href="/products?sale=mega" className="underline hover:text-yellow-200 ml-2">
                         Shop Now →

@@ -4,6 +4,7 @@ import "./globals.css";
 import TopPromoBar from "@/components/layout/TopPromoBar";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import MobileBottomNav from "@/components/layout/MobileBottomNav";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,10 +33,11 @@ export default function RootLayout({
       >
         <TopPromoBar />
         <Header />
-        <main className="min-h-screen">
+        <main className="min-h-screen pb-0 lg:pb-0">
           {children}
         </main>
         <Footer />
+        <MobileBottomNav />
       </body>
     </html>
   );

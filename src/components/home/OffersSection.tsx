@@ -48,14 +48,14 @@ const offers = [
 
 export default function OffersSection() {
     return (
-        <section className="py-12 px-8 lg:px-16 xl:px-24 container mx-auto">
+        <section className="py-6 px-4 lg:px-4 xl:px-4 container mx-auto">
             {/* Header */}
-            <div className="text-center mb-6 lg:mb-8">
-                <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-black text-gray-900 mb-2 uppercase tracking-tight">
+            <div className="text-center mb-4 lg:mb-8">
+                <h2 className="text-[10px] sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-black text-gray-900 mb-1 uppercase tracking-tight">
                     SPECIAL OFFERS
                 </h2>
-                <p className="text-gray-600 text-sm md:text-base lg:text-lg">Limited time deals you don't want to miss</p>
-                <div className="h-0.5 w-24 bg-gray-900 mx-auto mt-4" />
+                <p className="text-[8px] text-gray-600">Limited time deals you don't want to miss</p>
+                <div className="h-0.5 w-12 md:w-24 bg-gray-900 mx-auto mt-2 md:mt-4" />
             </div>
 
             {/* Offers Grid */}
@@ -68,17 +68,17 @@ export default function OffersSection() {
                             href={offer.link}
                             className="group relative overflow-hidden rounded-lg shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-200"
                         >
-                            <div className={`${offer.bgColor} p-4 md:p-8 h-full flex flex-col items-center justify-center text-center space-y-2 md:space-y-4`}>
-                                <div className={`${offer.iconBg} p-2 md:p-4 rounded-full group-hover:scale-110 transition-transform duration-300`}>
-                                    <Icon className={`w-6 h-6 md:w-10 md:h-10 ${offer.textColor}`} />
+                            <div className={`${offer.bgColor} p-3 md:p-8 h-full flex flex-col items-center justify-center text-center space-y-1.5 md:space-y-4`}>
+                                <div className={`${offer.iconBg} p-1.5 md:p-4 rounded-full group-hover:scale-110 transition-transform duration-300`}>
+                                    <Icon className={`w-4 h-4 md:w-10 md:h-10 ${offer.textColor}`} />
                                 </div>
-                                <h3 className={`text-sm md:text-2xl font-black tracking-tight ${offer.textColor}`}>
+                                <h3 className={`text-[10px] md:text-2xl font-black tracking-tight ${offer.textColor}`}>
                                     {offer.title}
                                 </h3>
-                                <p className={`text-xs md:text-base font-medium ${offer.textColor} opacity-70`}>
+                                <p className={`text-[8px] md:text-base font-medium ${offer.textColor} opacity-70`}>
                                     {offer.description}
                                 </p>
-                                <button className="mt-2 text-[10px] md:text-sm bg-gray-900 text-white px-3 py-1 md:px-6 md:py-2 rounded-full font-semibold hover:bg-gray-800 transition-colors duration-300">
+                                <button className="mt-1 text-[8px] md:text-sm bg-gray-900 text-white px-3 py-1 md:px-6 md:py-2 rounded-full font-semibold hover:bg-gray-800 transition-colors duration-300">
                                     Shop Now
                                 </button>
                             </div>

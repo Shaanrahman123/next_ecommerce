@@ -64,11 +64,11 @@ const categories = [
 
 export default function CategoryGrid() {
     return (
-        <section className="py-12 lg:py-16 bg-gray-50">
-            <div className="container mx-auto px-4 lg:px-16 xl:px-24">
+        <section className="py-6 lg:py-16 bg-gray-50">
+            <div className="container mx-auto px-4 lg:px-4 xl:px-4">
                 {/* Section Header */}
-                <div className="mb-6 lg:mb-12">
-                    <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-black text-gray-900 uppercase tracking-tight">
+                <div className="mb-4 lg:mb-12">
+                    <h2 className="text-[10px] sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-black text-gray-900 uppercase tracking-tight">
                         Categories To Bag
                     </h2>
                 </div>
@@ -80,9 +80,9 @@ export default function CategoryGrid() {
                             <Link
                                 key={category.id}
                                 href={category.link}
-                                className="flex flex-col items-center gap-3 min-w-[100px] snap-start group"
+                                className="flex flex-col items-center gap-3 min-w-[80px] snap-start group"
                             >
-                                <div className={`relative w-24 h-24 rounded-full overflow-hidden ${category.bgColor} p-2 shadow-md group-hover:shadow-xl transition-all duration-300`}>
+                                <div className={`relative w-20 h-20 rounded-full overflow-hidden ${category.bgColor} p-2 shadow-md group-hover:shadow-xl transition-all duration-300`}>
                                     <div className="relative w-full h-full rounded-full overflow-hidden">
                                         <Image
                                             src={category.image}
@@ -92,7 +92,7 @@ export default function CategoryGrid() {
                                         />
                                     </div>
                                 </div>
-                                <span className="text-xs font-semibold text-gray-900 text-center leading-tight">
+                                <span className="text-[8px] font-semibold text-gray-900 text-center leading-tight">
                                     {category.title}
                                 </span>
                             </Link>

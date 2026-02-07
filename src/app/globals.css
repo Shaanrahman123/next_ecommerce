@@ -21,20 +21,20 @@
 
   /* Typography Sizes - Mobile First */
   /* Page Titles */
-  --text-page-title-mobile: 1.5rem;
-  /* 24px */
+  --text-page-title-mobile: 1.25rem;
+  /* 20px */
   --text-page-title-desktop: 2.5rem;
   /* 40px */
 
   /* Section Titles */
-  --text-section-title-mobile: 1.125rem;
-  /* 18px */
+  --text-section-title-mobile: 1rem;
+  /* 16px */
   --text-section-title-desktop: 2rem;
   /* 32px */
 
   /* Card Titles */
-  --text-card-title-mobile: 0.875rem;
-  /* 14px */
+  --text-card-title-mobile: 0.8125rem;
+  /* 13px */
   --text-card-title-desktop: 1.125rem;
   /* 18px */
 
@@ -266,4 +266,15 @@ textarea:focus-visible {
 
 button:hover {
   cursor: pointer;
+}
+
+.has-bottom-nav {
+  padding-bottom: 5rem;
+  /* 80px */
+}
+
+@media (min-width: 1024px) {
+  .has-bottom-nav {
+    padding-bottom: 0;
+  }
 }

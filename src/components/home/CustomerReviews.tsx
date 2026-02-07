@@ -49,16 +49,16 @@ export default function CustomerReviews() {
     const visibleReviews = reviews.slice(currentIndex, currentIndex + reviewsPerPage);
 
     return (
-        <section className="py-12 px-8 lg:px-16 xl:px-24 container mx-auto">
+        <section className="py-6 px-4 lg:px-4 xl:px-4 container mx-auto">
             {/* Header */}
-            <div className="text-center mb-6 lg:mb-8">
-                <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-black text-gray-900 uppercase tracking-tight">
+            <div className="text-center mb-4 lg:mb-8">
+                <h2 className="text-[10px] sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-black text-gray-900 uppercase tracking-tight">
                     CUSTOMER REVIEWS
                 </h2>
-                <p className="text-sm text-gray-600 mt-2">
+                <p className="text-[8px] text-gray-600 mt-1.5">
                     What our customers say about us
                 </p>
-                <div className="h-0.5 w-24 bg-gray-900 mx-auto mt-4" />
+                <div className="h-0.5 w-12 md:w-24 bg-gray-900 mx-auto mt-2 md:mt-4" />
             </div>
 
             {/* Reviews Carousel */}
@@ -66,41 +66,41 @@ export default function CustomerReviews() {
                 {/* Navigation Arrows */}
                 <button
                     onClick={prevReviews}
-                    className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 bg-white rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-300 z-10 hover:scale-110"
+                    className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 md:-translate-x-4 bg-white rounded-full p-2 md:p-3 shadow-lg hover:shadow-xl transition-all duration-300 z-10 hover:scale-110"
                     aria-label="Previous reviews"
                 >
-                    <ChevronLeft className="w-6 h-6 text-gray-900" />
+                    <ChevronLeft className="w-4 h-4 md:w-6 md:h-6 text-gray-900" />
                 </button>
 
                 <button
                     onClick={nextReviews}
-                    className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 bg-white rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-300 z-10 hover:scale-110"
+                    className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 md:translate-x-4 bg-white rounded-full p-2 md:p-3 shadow-lg hover:shadow-xl transition-all duration-300 z-10 hover:scale-110"
                     aria-label="Next reviews"
                 >
-                    <ChevronRight className="w-6 h-6 text-gray-900" />
+                    <ChevronRight className="w-4 h-4 md:w-6 md:h-6 text-gray-900" />
                 </button>
 
                 {/* Reviews Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
                     {visibleReviews.map((review) => (
                         <div
                             key={review.id}
-                            className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-lg transition-shadow duration-300"
+                            className="bg-white border border-gray-200 rounded-lg p-4 md:p-6 hover:shadow-lg transition-shadow duration-300"
                         >
                             {/* Stars */}
-                            <div className="flex gap-1 mb-4">
+                            <div className="flex gap-1 mb-2 md:mb-4">
                                 {[...Array(review.rating)].map((_, i) => (
-                                    <Star key={i} className="w-4 h-4 fill-gray-900 text-gray-900" />
+                                    <Star key={i} className="w-3 h-3 md:w-4 md:h-4 fill-gray-900 text-gray-900" />
                                 ))}
                             </div>
 
                             {/* Review Text */}
-                            <p className="text-gray-700 text-sm leading-relaxed mb-4">
+                            <p className="text-gray-700 text-[9px] md:text-sm leading-relaxed mb-3 md:mb-4">
                                 {review.text}
                             </p>
 
                             {/* Author */}
-                            <p className="text-gray-900 font-semibold text-sm">
+                            <p className="text-gray-900 font-semibold text-[9px] md:text-sm">
                                 _{review.name}
                             </p>
                         </div>

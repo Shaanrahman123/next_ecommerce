@@ -57,11 +57,11 @@ export default function TrendingSlider({ items, title, bgColor = 'bg-gray-50' }:
     };
 
     return (
-        <section className={`py-12 lg:py-16 ${bgColor}`}>
-            <div className="container mx-auto px-4 lg:px-16 xl:px-24">
+        <section className={`py-6 lg:py-16 ${bgColor}`}>
+            <div className="container mx-auto px-4 lg:px-4 xl:px-4">
                 {/* Section Header */}
-                <div className="mb-6 lg:mb-12">
-                    <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-black text-gray-900 uppercase tracking-tight">
+                <div className="mb-4 lg:mb-12">
+                    <h2 className="text-[10px] sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-black text-gray-900 uppercase tracking-tight">
                         {title}
                     </h2>
                 </div>
@@ -94,17 +94,17 @@ export default function TrendingSlider({ items, title, bgColor = 'bg-gray-50' }:
                     <div
                         ref={scrollContainerRef}
                         onScroll={checkScrollPosition}
-                        className="flex overflow-x-auto gap-3 lg:gap-6 scrollbar-hide snap-x snap-mandatory scroll-smooth ps-4 lg:ps-0"
+                        className="flex overflow-x-auto gap-3 lg:gap-6 scrollbar-hide snap-x snap-mandatory scroll-smooth ps-2 lg:ps-0"
                     >
                         {items.map((item) => (
                             <Link
                                 key={item.id}
                                 href={item.link}
-                                className="shrink-0 w-[calc(40%-6px)] sm:w-[calc(33.333%-8px)] md:w-[calc(25%-12px)] lg:w-[calc(20%-19.2px)] snap-start group/card relative overflow-hidden rounded-lg shadow-md hover:shadow-2xl transition-all duration-300"
+                                className="shrink-0 w-[calc(35%-6px)] sm:w-[calc(33.333%-8px)] md:w-[calc(25%-12px)] lg:w-[calc(20%-19.2px)] snap-start group/card relative overflow-hidden rounded-lg shadow-md hover:shadow-2xl transition-all duration-300"
                             >
                                 {/* Badge */}
                                 {item.badge && (
-                                    <div className="absolute top-2 left-2 lg:top-3 lg:left-3 bg-red-500 text-white text-[10px] lg:text-xs font-bold px-2 py-1 rounded z-10">
+                                    <div className="absolute top-1 left-1 lg:top-3 lg:left-3 bg-red-500 text-white text-[6px] lg:text-xs font-bold px-1.5 py-0.5 rounded z-10">
                                         {item.badge}
                                     </div>
                                 )}
@@ -122,14 +122,14 @@ export default function TrendingSlider({ items, title, bgColor = 'bg-gray-50' }:
                                 </div>
 
                                 {/* Content */}
-                                <div className="absolute bottom-0 left-0 right-0 p-2 lg:p-4 text-white">
-                                    <h3 className="text-xs lg:text-sm xl:text-base font-bold mb-0.5 lg:mb-1 leading-tight line-clamp-2">
+                                <div className="absolute bottom-0 left-0 right-0 p-1.5 lg:p-4 text-white">
+                                    <h3 className="text-[8px] lg:text-sm xl:text-base font-bold mb-0.5 lg:mb-1 leading-tight line-clamp-2">
                                         {item.title}
                                     </h3>
-                                    <p className="text-[10px] lg:text-xs text-gray-200 leading-tight mb-1 lg:mb-2 line-clamp-2">
+                                    <p className="text-[7px] lg:text-xs text-gray-200 leading-tight mb-0.5 lg:mb-2 line-clamp-2">
                                         {item.subtitle}
                                     </p>
-                                    <button className="text-[10px] lg:text-xs font-bold uppercase tracking-wider hover:underline">
+                                    <button className="text-[7px] lg:text-xs font-bold uppercase tracking-wider hover:underline">
                                         + Explore
                                     </button>
                                 </div>

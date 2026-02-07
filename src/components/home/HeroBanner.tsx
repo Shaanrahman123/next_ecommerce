@@ -56,7 +56,7 @@ export default function HeroBanner() {
     };
 
     return (
-        <div className="relative h-[80vh] min-h-[500px] w-full overflow-hidden bg-black">
+        <div className="relative h-[50vh] md:h-[85vh] min-h-[350px] md:min-h-[600px] w-full overflow-hidden bg-black">
             {/* Slides */}
             {banners.map((banner, index) => (
                 <div
@@ -69,36 +69,36 @@ export default function HeroBanner() {
                         src={banner.image}
                         alt={banner.title}
                         fill
-                        className="object-cover"
+                        className="object-cover object-top md:object-center"
                         priority={index === 0}
                     />
 
-                    {/* Gradient Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                    {/* Gradient Overlay - Darker at bottom for text legibility */}
+                    <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/20 to-transparent" />
 
                     {/* Content */}
-                    <div className="absolute inset-0 flex items-center justify-center text-center">
-                        <div className="container mx-auto px-6">
-                            <div className="max-w-3xl mx-auto space-y-6 animate-fade-in">
-                                <h2 className="text-white text-lg md:text-xl font-medium tracking-[0.2em] uppercase">
+                    <div className="absolute inset-x-0 bottom-0 top-0 flex flex-col items-center justify-center text-center px-6 pb-12 md:pb-0">
+                        <div className="max-w-3xl mx-auto space-y-4 md:space-y-8 animate-fade-in">
+                            <div className="space-y-2 md:space-y-4">
+                                <h2 className="text-white text-[10px] md:text-xl font-medium tracking-[0.4em] uppercase opacity-90">
                                     {banner.subtitle}
                                 </h2>
-                                <h1 className="text-4xl md:text-6xl lg:text-7xl font-black text-white leading-tight tracking-tight">
+                                <h1 className="text-3xl md:text-7xl font-black text-white leading-tight tracking-tight uppercase">
                                     {banner.title}
                                 </h1>
-                                <p className="text-gray-300 text-lg md:text-xl max-w-xl mx-auto hidden md:block">
+                                <p className="text-gray-300 text-xs md:text-xl max-w-xl mx-auto hidden md:block">
                                     {banner.description}
                                 </p>
-                                <div className="pt-4">
-                                    <Link href={banner.link}>
-                                        <Button
-                                            size="lg"
-                                            className="bg-white text-black hover:bg-gray-100 border-none px-8 py-4 text-base font-bold uppercase tracking-wider"
-                                        >
-                                            Shop Collection
-                                        </Button>
-                                    </Link>
-                                </div>
+                            </div>
+
+                            <div className="pt-4 md:pt-8">
+                                <Link href={banner.link}>
+                                    <button
+                                        className="bg-black text-white hover:bg-white hover:text-black border border-white/20 px-8 py-3 md:px-12 md:py-5 text-[10px] md:text-base font-bold uppercase tracking-[0.3em] transition-all duration-500 rounded-none shadow-2xl backdrop-blur-sm"
+                                    >
+                                        Shop Collection
+                                    </button>
+                                </Link>
                             </div>
                         </div>
                     </div>
