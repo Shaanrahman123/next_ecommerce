@@ -65,14 +65,14 @@ export default function ChangePassword() {
                                 }}
                                 error={errors.currentPassword}
                                 required
-                                className="bg-gray-50 border-none rounded-md h-14 pr-12"
+                                className="h-14 pr-12"
                             />
                             <button
                                 type="button"
                                 onClick={() => setShowPasswords({ ...showPasswords, current: !showPasswords.current })}
-                                className="absolute right-4 top-[44px] text-gray-400 hover:text-black transition-colors"
+                                className="absolute right-4 top-[38px] text-gray-400 hover:text-black transition-colors"
                             >
-                                {showPasswords.current ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                                {showPasswords.current ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                             </button>
                         </div>
 
@@ -87,14 +87,14 @@ export default function ChangePassword() {
                                 }}
                                 error={errors.newPassword}
                                 required
-                                className="bg-gray-50 border-none rounded-md h-14 pr-12"
+                                className="h-14 pr-12"
                             />
                             <button
                                 type="button"
                                 onClick={() => setShowPasswords({ ...showPasswords, new: !showPasswords.new })}
-                                className="absolute right-4 top-[44px] text-gray-400 hover:text-black transition-colors"
+                                className="absolute right-4 top-[38px] text-gray-400 hover:text-black transition-colors"
                             >
-                                {showPasswords.new ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                                {showPasswords.new ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                             </button>
                         </div>
 
@@ -109,14 +109,14 @@ export default function ChangePassword() {
                                 }}
                                 error={errors.confirmPassword}
                                 required
-                                className="bg-gray-50 border-none rounded-md h-14 pr-12"
+                                className="h-14 pr-12"
                             />
                             <button
                                 type="button"
                                 onClick={() => setShowPasswords({ ...showPasswords, confirm: !showPasswords.confirm })}
-                                className="absolute right-4 top-[44px] text-gray-400 hover:text-black transition-colors"
+                                className="absolute right-4 top-[38px] text-gray-400 hover:text-black transition-colors"
                             >
-                                {showPasswords.confirm ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                                {showPasswords.confirm ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                             </button>
                         </div>
                     </div>
@@ -148,7 +148,7 @@ export default function ChangePassword() {
                         <Button type="submit" isLoading={isLoading} className="h-14 lg:px-12 rounded-md bg-black text-white font-black uppercase tracking-widest text-[10px] hover:bg-gray-900 transition-all">
                             Update Password
                         </Button>
-                        <Button type="button" variant="secondary" onClick={() => window.history.back()} className="h-14 lg:px-12 rounded-md font-black uppercase tracking-widest text-[10px] bg-gray-50 border-none text-gray-500 hover:bg-gray-100">
+                        <Button type="button" variant="outline" onClick={() => window.history.back()} className="h-14 lg:px-12 rounded-md font-black uppercase tracking-widest text-[10px] border-gray-300 text-gray-500 hover:bg-black hover:text-white transition-all shadow-none">
                             Cancel
                         </Button>
                     </div>

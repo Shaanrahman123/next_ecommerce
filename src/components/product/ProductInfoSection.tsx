@@ -242,7 +242,7 @@ export default function ProductInfoSection({
             </div>
 
             {/* Fixed Bottom Bar - Mobile Only */}
-            <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-3 shadow-lg z-40">
+            <div className="md:hidden fixed bottom-0 pb-[calc(0.5rem+env(safe-area-inset-bottom,0px))] left-0 right-0 bg-white border-t border-gray-200 p-3 shadow-lg z-40">
                 <div className="flex gap-2">
                     {/* Buy Now Button - 80% */}
                     <Button

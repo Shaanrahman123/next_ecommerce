@@ -145,27 +145,28 @@ function VerifyOTPContent() {
     return (
         <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
             <div className="max-w-md w-full space-y-8">
-                <div className="text-center">
-                    <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl mb-6 shadow-lg animate-scale-in">
-                        <Shield className="w-8 h-8 text-white" />
+                <div className="text-center space-y-2">
+                    <div className="flex items-center justify-center gap-2 mb-2">
+                        <div className="w-6 h-0.5 bg-black rounded-full" />
+                        <span className="text-[9px] font-black uppercase tracking-[0.2em] text-gray-400">Identity Verification</span>
                     </div>
-                    <h1 className="text-2xl font-bold text-[var(--theme-primary)] mb-2 uppercase tracking-wide">
+                    <h1 className="text-section-title font-black text-gray-900 uppercase tracking-tight">
                         Verify Your Email
                     </h1>
-                    <p className="text-xs text-[var(--theme-text-secondary)] mb-1">
+                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">
                         We've sent a 6-digit code to
                     </p>
-                    <p className="text-xs text-[var(--theme-primary)] font-semibold">
+                    <p className="text-[12px] font-black text-black uppercase tracking-tight">
                         {email || 'your email'}
                     </p>
                 </div>
 
-                <form onSubmit={handleSubmit} className="mt-8 space-y-6">
+                <form onSubmit={handleSubmit} className="mt-12 space-y-8">
                     <div>
-                        <label className="block text-sm font-medium text-[var(--theme-text-primary)] mb-4 text-center">
+                        <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-6 text-center">
                             Enter Verification Code
                         </label>
-                        <div className="flex gap-3 justify-center">
+                        <div className="flex gap-2 sm:gap-3 justify-center">
                             {otp.map((digit, index) => (
                                 <input
                                     key={index}
@@ -180,25 +181,24 @@ function VerifyOTPContent() {
                                     disabled={isLoading}
                                     className={`
                                         w-12 h-14 sm:w-14 sm:h-16 
-                                        text-center text-2xl font-bold
+                                        text-center text-xl font-black
                                         bg-white
-                                        border-2 rounded-xl
+                                        border border-gray-300 rounded-md
                                         transition-all duration-300
                                         focus:outline-none
                                         disabled:opacity-50 disabled:cursor-not-allowed
                                         ${digit
-                                            ? 'border-[var(--theme-primary)] bg-gradient-to-br from-blue-50 to-indigo-50'
-                                            : 'border-[var(--theme-border)] hover:border-gray-400'
+                                            ? 'border-black bg-gray-50'
+                                            : 'border-gray-300 hover:border-gray-400'
                                         }
-                                        ${error ? 'border-red-500 animate-shake' : ''}
-                                        focus:border-[var(--theme-primary)] focus:ring-4 focus:ring-blue-100
-                                        transform hover:scale-105
+                                        ${error ? 'border-red-500 bg-red-50' : ''}
+                                        focus:border-black focus:ring-0
                                     `}
                                 />
                             ))}
                         </div>
                         {error && (
-                            <p className="mt-3 text-sm text-red-500 text-center animate-fade-in">
+                            <p className="mt-4 text-[10px] font-bold text-red-500 text-center uppercase tracking-widest animate-fade-in">
                                 {error}
                             </p>
                         )}
@@ -209,12 +209,13 @@ function VerifyOTPContent() {
                         fullWidth
                         isLoading={isLoading}
                         disabled={!isComplete || isLoading}
+                        className="h-14 bg-black text-white rounded-md font-black uppercase tracking-widest text-[10px] hover:bg-gray-900 transition-all shadow-none"
                     >
                         {isLoading ? 'Verifying...' : 'Verify Code'}
                     </Button>
 
-                    <div className="text-center space-y-3">
-                        <p className="text-sm text-[var(--theme-text-secondary)]">
+                    <div className="text-center space-y-4">
+                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
                             Didn't receive the code?
                         </p>
                         <button
@@ -222,15 +223,15 @@ function VerifyOTPContent() {
                             onClick={handleResend}
                             disabled={!canResend}
                             className={`
-                                inline-flex items-center gap-2 text-sm font-medium
+                                inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest
                                 transition-all duration-300
                                 ${canResend
-                                    ? 'text-[var(--theme-primary)] hover:text-[var(--theme-accent)] cursor-pointer'
-                                    : 'text-[var(--theme-text-muted)] cursor-not-allowed'
+                                    ? 'text-black hover:underline cursor-pointer'
+                                    : 'text-gray-300 cursor-not-allowed'
                                 }
                             `}
                         >
-                            <RefreshCw className={`w-4 h-4 ${canResend ? 'hover:rotate-180 transition-transform duration-500' : ''}`} />
+                            <RefreshCw className={`w-3.5 h-3.5 ${canResend ? 'hover:rotate-180 transition-transform duration-500' : ''}`} />
                             {canResend ? 'Resend Code' : `Resend in ${resendTimer}s`}
                         </button>
                     </div>
@@ -238,17 +239,17 @@ function VerifyOTPContent() {
                     <div className="text-center pt-4">
                         <Link
                             href="/forgot-password"
-                            className="inline-flex items-center gap-2 text-sm text-[var(--theme-primary)] hover:text-[var(--theme-accent)] font-medium transition-colors duration-300"
+                            className="inline-flex items-center gap-2 text-[10px] font-black text-black hover:underline uppercase tracking-widest"
                         >
                             <ArrowLeft className="w-4 h-4" />
-                            Back to Forgot Password
+                            Back
                         </Link>
                     </div>
                 </form>
 
-                <div className="mt-8 p-4 bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl border border-amber-100">
-                    <p className="text-sm text-[var(--theme-text-secondary)] text-center">
-                        <span className="font-semibold text-[var(--theme-primary)]">Security Tip:</span> Never share this code with anyone. Our team will never ask for it.
+                <div className="mt-12 p-6 bg-gray-50 border border-gray-200 rounded-lg">
+                    <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest text-center leading-relaxed">
+                        <span className="text-black font-black">Security:</span> Never share this code with anyone. Our team will never ask for it.
                     </p>
                 </div>
             </div>

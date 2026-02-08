@@ -38,7 +38,7 @@ export default function SizeChartModal({ isOpen, onClose }: SizeChartModalProps)
     const currentData = activeTab === 'inches' ? sizeData.inches : sizeData.cm;
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fade-in">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 animate-fade-in">
             <div className="bg-white rounded-xl shadow-2xl w-full max-w-5xl max-h-[90vh] overflow-hidden animate-scale-in">
                 {/* Header */}
                 <div className="flex items-center justify-between p-4 md:p-6 border-b border-gray-200">
@@ -59,8 +59,8 @@ export default function SizeChartModal({ isOpen, onClose }: SizeChartModalProps)
                             <button
                                 onClick={() => setActiveTab('inches')}
                                 className={`pb-3 px-4 text-xs md:text-sm font-semibold transition-colors duration-200 ${activeTab === 'inches'
-                                        ? 'text-black border-b-2 border-black'
-                                        : 'text-gray-500 hover:text-gray-700'
+                                    ? 'text-black border-b-2 border-black'
+                                    : 'text-gray-500 hover:text-gray-700'
                                     }`}
                             >
                                 SIZE IN INCHES
@@ -68,8 +68,8 @@ export default function SizeChartModal({ isOpen, onClose }: SizeChartModalProps)
                             <button
                                 onClick={() => setActiveTab('cm')}
                                 className={`pb-3 px-4 text-xs md:text-sm font-semibold transition-colors duration-200 ${activeTab === 'cm'
-                                        ? 'text-black border-b-2 border-black'
-                                        : 'text-gray-500 hover:text-gray-700'
+                                    ? 'text-black border-b-2 border-black'
+                                    : 'text-gray-500 hover:text-gray-700'
                                     }`}
                             >
                                 SIZE IN CM

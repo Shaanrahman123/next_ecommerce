@@ -48,7 +48,7 @@ export default function EditProfile() {
                             value={formData.name}
                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                             required
-                            className="bg-gray-50 border-none rounded-md h-14"
+                            className="h-14"
                         />
                         <Input
                             label="Email Address"
@@ -56,21 +56,21 @@ export default function EditProfile() {
                             value={formData.email}
                             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                             required
-                            className="bg-gray-50 border-none rounded-md h-14"
+                            className="h-14"
                         />
                         <Input
                             label="Phone Number"
                             type="tel"
                             value={formData.phone}
                             onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                            className="bg-gray-50 border-none rounded-md h-14"
+                            className="h-14"
                         />
                         <Input
                             label="Date of Birth"
                             type="date"
                             value={formData.dateOfBirth}
                             onChange={(e) => setFormData({ ...formData, dateOfBirth: e.target.value })}
-                            className="bg-gray-50 border-none rounded-md h-14 text-sm"
+                            className="h-14 text-sm"
                         />
                     </div>
 
@@ -83,7 +83,7 @@ export default function EditProfile() {
                                     type="text"
                                     value={formData.address}
                                     onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                                    className="bg-gray-50 border-none rounded-md h-14"
+                                    className="h-14"
                                 />
                             </div>
                             <Input
@@ -91,28 +91,28 @@ export default function EditProfile() {
                                 type="text"
                                 value={formData.city}
                                 onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                                className="bg-gray-50 border-none rounded-md h-14"
+                                className="h-14"
                             />
                             <Input
                                 label="State/Province"
                                 type="text"
                                 value={formData.state}
                                 onChange={(e) => setFormData({ ...formData, state: e.target.value })}
-                                className="bg-gray-50 border-none rounded-md h-14"
+                                className="h-14"
                             />
                             <Input
                                 label="ZIP/Postal Code"
                                 type="text"
                                 value={formData.zipCode}
                                 onChange={(e) => setFormData({ ...formData, zipCode: e.target.value })}
-                                className="bg-gray-50 border-none rounded-md h-14"
+                                className="h-14"
                             />
                             <Input
                                 label="Country"
                                 type="text"
                                 value={formData.country}
                                 onChange={(e) => setFormData({ ...formData, country: e.target.value })}
-                                className="bg-gray-50 border-none rounded-md h-14"
+                                className="h-14"
                             />
                         </div>
                     </div>
@@ -122,7 +122,7 @@ export default function EditProfile() {
                             <Save className="w-4 h-4" />
                             Save Changes
                         </Button>
-                        <Button type="button" variant="secondary" onClick={() => window.history.back()} className="h-14 lg:px-12 rounded-md font-black uppercase tracking-widest text-[10px] bg-gray-50 border-none text-gray-500 hover:bg-gray-100">
+                        <Button type="button" variant="outline" onClick={() => window.history.back()} className="h-14 lg:px-12 rounded-md font-black uppercase tracking-widest text-[10px] border-gray-300 text-gray-500 hover:bg-black hover:text-white transition-all shadow-none">
                             Cancel
                         </Button>
                     </div>

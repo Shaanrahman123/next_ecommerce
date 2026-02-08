@@ -9,7 +9,12 @@ export default function Footer() {
 
     const hideTotallyPaths = [
         '/order-success',
-        '/orders'
+        '/orders',
+        '/login',
+        '/signup',
+        '/forgot-password',
+        '/reset-password',
+        '/verify-otp'
     ];
 
     const hideOnMobilePaths = [

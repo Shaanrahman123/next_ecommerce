@@ -149,8 +149,9 @@ export default function AccountLayout({ children, currentSection }: AccountLayou
                                     >
                                         <ArrowLeft className="w-5 h-5 text-gray-900" />
                                     </Link>
-                                    <h1 className="text-body font-bold text-gray-900 uppercase tracking-wider">
-                                        {menuItems.find(i => i.id === currentSection)?.label || 'Account'}
+                                    <h1 className="text-body font-black text-gray-900 uppercase tracking-widest">
+                                        {menuItems.find(i => i.id === currentSection)?.label ||
+                                            currentSection.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
                                     </h1>
                                 </div>
                             )}

@@ -379,7 +379,7 @@ export default function CheckoutPage() {
             </div>
 
             {/* Sticky Bottom Action Bar (Mobile & Tablet) */}
-            <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 p-4 pb-safe z-40 animate-slide-up">
+            <div className="lg:hidden fixed bottom-0 left-0 right-0 pb-[calc(0.5rem+env(safe-area-inset-bottom,0px))] bg-white border-t border-gray-100 p-4 pb-safe z-40 animate-slide-up">
                 <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
                     <div className="flex items-center gap-2">
                         <div className="flex flex-col">

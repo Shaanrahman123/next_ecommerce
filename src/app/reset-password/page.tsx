@@ -81,20 +81,17 @@ function ResetPasswordContent() {
         return (
             <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
                 <div className="max-w-md w-full">
-                    <div className="bg-white rounded-2xl shadow-2xl p-8 text-center animate-scale-in">
-                        <div className="w-20 h-20 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center mx-auto mb-6 animate-bounce">
-                            <CheckCircle2 className="w-10 h-10 text-white" />
+                    <div className="bg-white border border-gray-300 rounded-lg p-8 text-center animate-scale-in">
+                        <div className="w-16 h-16 bg-black rounded-md flex items-center justify-center mx-auto mb-6">
+                            <CheckCircle2 className="w-8 h-8 text-white" />
                         </div>
-                        <h2 className="text-2xl font-bold text-[var(--theme-primary)] mb-3">
-                            Password Reset Successful!
+                        <h2 className="text-section-title font-black text-gray-900 uppercase tracking-tight mb-3">
+                            Success
                         </h2>
-                        <p className="text-[var(--theme-text-secondary)] mb-6">
-                            Your password has been successfully reset. You can now log in with your new password.
+                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-8">
+                            Your password has been reset. Redirecting to login...
                         </p>
-                        <div className="flex items-center justify-center gap-2 text-sm text-[var(--theme-text-muted)]">
-                            <div className="w-6 h-6 border-2 border-[var(--theme-primary)] border-t-transparent rounded-full animate-spin" />
-                            <span>Redirecting to login...</span>
-                        </div>
+                        <div className="w-12 h-0.5 bg-black mx-auto rounded-full animate-pulse" />
                     </div>
                 </div>
             </div>
@@ -106,31 +103,31 @@ function ResetPasswordContent() {
     return (
         <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
             <div className="max-w-md w-full space-y-8">
-                <div className="text-center">
-                    <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl mb-6 shadow-lg animate-scale-in">
-                        <Lock className="w-8 h-8 text-white" />
+                <div className="text-center space-y-2">
+                    <div className="flex items-center justify-center gap-2 mb-2">
+                        <div className="w-6 h-0.5 bg-black rounded-full" />
+                        <span className="text-[9px] font-black uppercase tracking-[0.2em] text-gray-400">Security Update</span>
                     </div>
-                    <h1 className="text-2xl font-bold text-[var(--theme-primary)] mb-2 uppercase tracking-wide">
+                    <h1 className="text-section-title font-black text-gray-900 uppercase tracking-tight">
                         Reset Password
                     </h1>
-                    <p className="text-xs text-[var(--theme-text-secondary)] max-w-sm mx-auto">
-                        Create a strong password to secure your account
+                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest max-w-sm mx-auto">
+                        Create a strong password for your account
                     </p>
                     {email && (
-                        <p className="text-sm text-[var(--theme-text-muted)] mt-2">
-                            for <span className="font-semibold text-[var(--theme-primary)]">{email}</span>
+                        <p className="text-[10px] font-black text-black uppercase tracking-tight mt-2">
+                            for {email}
                         </p>
                     )}
                 </div>
 
-                <form onSubmit={handleSubmit} className="mt-8 space-y-6">
-                    <div className="space-y-5">
-                        {/* New Password */}
+                <form onSubmit={handleSubmit} className="mt-12 space-y-8">
+                    <div className="space-y-6">
                         <div className="relative">
                             <Input
                                 label="New Password"
                                 type={showPassword ? 'text' : 'password'}
-                                placeholder="Enter your new password"
+                                placeholder="••••••••"
                                 value={formData.password}
                                 onChange={(e) => {
                                     setFormData({ ...formData, password: e.target.value });
@@ -138,50 +135,47 @@ function ResetPasswordContent() {
                                 }}
                                 error={errors.password}
                                 required
-                                className="pr-12"
                             />
                             <button
                                 type="button"
                                 onClick={() => setShowPassword(!showPassword)}
-                                className="absolute right-4 top-[42px] text-[var(--theme-text-muted)] hover:text-[var(--theme-primary)] transition-colors duration-300"
+                                className="absolute right-4 top-[38px] text-gray-400 hover:text-black transition-colors duration-300"
                             >
-                                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                             </button>
                         </div>
 
-                        {/* Password Strength Indicator */}
                         {formData.password && (
-                            <div className="space-y-3 animate-fade-in">
-                                <div className="flex items-center justify-between text-sm">
-                                    <span className="text-[var(--theme-text-secondary)]">Password Strength:</span>
-                                    <span className={`font-semibold ${strength?.label === 'Weak' ? 'text-red-500' :
-                                        strength?.label === 'Medium' ? 'text-yellow-500' :
-                                            'text-green-500'
+                            <div className="space-y-4 pt-2 animate-fade-in">
+                                <div className="flex items-center justify-between">
+                                    <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Strength:</span>
+                                    <span className={`text-[9px] font-black uppercase tracking-widest ${strength?.label === 'Weak' ? 'text-red-500' :
+                                        strength?.label === 'Medium' ? 'text-yellow-600' :
+                                            'text-green-600'
                                         }`}>
                                         {strength?.label}
                                     </span>
                                 </div>
-                                <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                                <div className="h-1 bg-gray-100 rounded-full overflow-hidden">
                                     <div
-                                        className={`h-full ${strength?.color} transition-all duration-500 ease-out`}
+                                        className={`h-full ${strength?.label === 'Weak' ? 'bg-red-500' : strength?.label === 'Medium' ? 'bg-yellow-500' : 'bg-black'} transition-all duration-500 ease-out`}
                                         style={{ width: strength?.width }}
                                     />
                                 </div>
 
-                                {/* Password Requirements */}
-                                <div className="space-y-2 pt-2">
+                                <div className="grid grid-cols-1 gap-2 pt-2">
                                     {passwordCriteria.map((criterion, index) => {
                                         const isPassed = criterion.test(formData.password);
                                         return (
                                             <div
                                                 key={index}
-                                                className={`flex items-center gap-2 text-sm transition-all duration-300 ${isPassed ? 'text-green-600' : 'text-[var(--theme-text-muted)]'
+                                                className={`flex items-center gap-2 text-[9px] font-bold uppercase tracking-widest transition-all duration-300 ${isPassed ? 'text-black' : 'text-gray-300'
                                                     }`}
                                             >
                                                 {isPassed ? (
-                                                    <CheckCircle2 className="w-4 h-4 flex-shrink-0" />
+                                                    <CheckCircle2 className="w-3 h-3 flex-shrink-0" />
                                                 ) : (
-                                                    <X className="w-4 h-4 flex-shrink-0" />
+                                                    <X className="w-3 h-3 flex-shrink-0" />
                                                 )}
                                                 <span>{criterion.label}</span>
                                             </div>
@@ -191,12 +185,11 @@ function ResetPasswordContent() {
                             </div>
                         )}
 
-                        {/* Confirm Password */}
                         <div className="relative">
                             <Input
                                 label="Confirm Password"
                                 type={showConfirmPassword ? 'text' : 'password'}
-                                placeholder="Re-enter your new password"
+                                placeholder="••••••••"
                                 value={formData.confirmPassword}
                                 onChange={(e) => {
                                     setFormData({ ...formData, confirmPassword: e.target.value });
@@ -204,46 +197,30 @@ function ResetPasswordContent() {
                                 }}
                                 error={errors.confirmPassword}
                                 required
-                                className="pr-12"
                             />
                             <button
                                 type="button"
                                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                className="absolute right-4 top-[42px] text-[var(--theme-text-muted)] hover:text-[var(--theme-primary)] transition-colors duration-300"
+                                className="absolute right-4 top-[38px] text-gray-400 hover:text-black transition-colors duration-300"
                             >
-                                {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                                {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                             </button>
                         </div>
-
-                        {/* Match Indicator */}
-                        {formData.confirmPassword && (
-                            <div className={`flex items-center gap-2 text-sm animate-fade-in ${formData.password === formData.confirmPassword
-                                ? 'text-green-600'
-                                : 'text-red-500'
-                                }`}>
-                                {formData.password === formData.confirmPassword ? (
-                                    <>
-                                        <CheckCircle2 className="w-4 h-4" />
-                                        <span>Passwords match</span>
-                                    </>
-                                ) : (
-                                    <>
-                                        <X className="w-4 h-4" />
-                                        <span>Passwords do not match</span>
-                                    </>
-                                )}
-                            </div>
-                        )}
                     </div>
 
-                    <Button type="submit" fullWidth isLoading={isLoading}>
+                    <Button
+                        type="submit"
+                        fullWidth
+                        isLoading={isLoading}
+                        className="h-14 bg-black text-white rounded-md font-black uppercase tracking-widest text-[10px] hover:bg-gray-900 transition-all shadow-none"
+                    >
                         Reset Password
                     </Button>
                 </form>
 
-                <div className="mt-8 p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl border border-purple-100">
-                    <p className="text-sm text-[var(--theme-text-secondary)] text-center">
-                        <span className="font-semibold text-[var(--theme-primary)]">Remember:</span> Use a unique password that you don't use for other accounts.
+                <div className="mt-12 p-6 bg-gray-50 border border-gray-200 rounded-lg">
+                    <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest text-center leading-relaxed">
+                        <span className="text-black font-black">Remember:</span> Use a unique password that you don't use for other accounts.
                     </p>
                 </div>
             </div>

@@ -83,17 +83,21 @@ export default function SignupPage() {
     return (
         <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
             <div className="max-w-md w-full space-y-8">
-                <div className="text-center">
-                    <h1 className="text-2xl font-bold text-[var(--theme-primary)] mb-2 uppercase tracking-wide">
+                <div className="text-center space-y-2">
+                    <div className="flex items-center justify-center gap-2 mb-2">
+                        <div className="w-6 h-0.5 bg-black rounded-full" />
+                        <span className="text-[9px] font-black uppercase tracking-[0.2em] text-gray-400">Join the Vault</span>
+                    </div>
+                    <h1 className="text-section-title font-black text-gray-900 uppercase tracking-tight">
                         Create Account
                     </h1>
-                    <p className="text-xs text-[var(--theme-text-secondary)]">
-                        Join us and start shopping
+                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                        Join our premium community
                     </p>
                 </div>
 
-                <form onSubmit={handleSubmit} className="mt-8 space-y-6">
-                    <div className="space-y-4">
+                <form onSubmit={handleSubmit} className="mt-12 space-y-8">
+                    <div className="space-y-6">
                         <Input
                             label="Full Name"
                             type="text"
@@ -138,42 +142,47 @@ export default function SignupPage() {
                         />
                     </div>
 
-                    <div className="flex items-start">
+                    <div className="flex items-center gap-3">
                         <input
                             id="terms"
                             name="terms"
                             type="checkbox"
                             required
-                            className="h-4 w-4 mt-1 rounded border-[var(--theme-border)] text-[var(--theme-primary)] focus:ring-[var(--theme-primary)]"
+                            className="w-4 h-4 rounded border-gray-300 text-black focus:ring-black cursor-pointer"
                         />
-                        <label htmlFor="terms" className="ml-2 block text-sm text-[var(--theme-text-secondary)]">
+                        <label htmlFor="terms" className="text-[10px] font-black text-gray-400 uppercase tracking-widest cursor-pointer select-none">
                             I agree to the{' '}
                             <Link
                                 href="/terms"
-                                className="text-[var(--theme-primary)] hover:text-[var(--theme-accent)] transition-colors duration-300"
+                                className="text-black hover:underline font-black transition-colors duration-300"
                             >
-                                Terms of Service
+                                Terms
                             </Link>{' '}
                             and{' '}
                             <Link
                                 href="/privacy"
-                                className="text-[var(--theme-primary)] hover:text-[var(--theme-accent)] transition-colors duration-300"
+                                className="text-black hover:underline font-black transition-colors duration-300"
                             >
-                                Privacy Policy
+                                Privacy
                             </Link>
                         </label>
                     </div>
 
-                    <Button type="submit" fullWidth isLoading={isLoading}>
+                    <Button
+                        type="submit"
+                        fullWidth
+                        isLoading={isLoading}
+                        className="h-14 bg-black text-white rounded-md font-black uppercase tracking-widest text-[10px] hover:bg-gray-900 transition-all shadow-none"
+                    >
                         Create Account
                     </Button>
 
-                    <div className="text-center">
-                        <p className="text-sm text-[var(--theme-text-secondary)]">
+                    <div className="text-center pt-4">
+                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
                             Already have an account?{' '}
                             <Link
                                 href="/login"
-                                className="text-[var(--theme-primary)] hover:text-[var(--theme-accent)] font-medium transition-colors duration-300"
+                                className="text-black hover:underline font-black transition-colors duration-300 ml-1"
                             >
                                 Sign in
                             </Link>

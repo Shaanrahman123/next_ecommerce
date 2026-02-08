@@ -50,20 +50,20 @@ export default function ForgotPasswordPage() {
         return (
             <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
                 <div className="max-w-md w-full">
-                    <div className="bg-white rounded-2xl shadow-2xl p-8 text-center animate-scale-in">
-                        <div className="w-20 h-20 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                            <CheckCircle2 className="w-10 h-10 text-white" />
+                    <div className="bg-white border border-gray-300 rounded-lg p-8 text-center animate-scale-in">
+                        <div className="w-16 h-16 bg-black rounded-md flex items-center justify-center mx-auto mb-6">
+                            <CheckCircle2 className="w-8 h-8 text-white" />
                         </div>
-                        <h2 className="text-xl font-bold text-[var(--theme-primary)] mb-3">
+                        <h2 className="text-section-title font-black text-gray-900 uppercase tracking-tight mb-3">
                             Check Your Email
                         </h2>
-                        <p className="text-xs text-[var(--theme-text-secondary)] mb-6">
+                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">
                             We've sent a 6-digit verification code to
                         </p>
-                        <p className="text-xs text-[var(--theme-primary)] font-semibold mb-6">
+                        <p className="text-[12px] font-black text-black uppercase tracking-tight mb-8">
                             {email}
                         </p>
-                        <div className="w-12 h-1 bg-gradient-to-r from-[var(--theme-primary)] to-[var(--theme-accent)] mx-auto rounded-full animate-pulse" />
+                        <div className="w-12 h-0.5 bg-black mx-auto rounded-full animate-pulse" />
                     </div>
                 </div>
             </div>
@@ -73,20 +73,21 @@ export default function ForgotPasswordPage() {
     return (
         <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
             <div className="max-w-md w-full space-y-8">
-                <div className="text-center">
-                    <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[var(--theme-primary)] to-[var(--theme-accent)] rounded-2xl mb-6 shadow-lg">
-                        <Mail className="w-8 h-8 text-white" />
+                <div className="text-center space-y-2">
+                    <div className="flex items-center justify-center gap-2 mb-2">
+                        <div className="w-6 h-0.5 bg-black rounded-full" />
+                        <span className="text-[9px] font-black uppercase tracking-[0.2em] text-gray-400">Recovery</span>
                     </div>
-                    <h1 className="text-2xl font-bold text-[var(--theme-primary)] mb-2 uppercase tracking-wide">
+                    <h1 className="text-section-title font-black text-gray-900 uppercase tracking-tight">
                         Forgot Password?
                     </h1>
-                    <p className="text-xs text-[var(--theme-text-secondary)] max-w-sm mx-auto">
-                        No worries! Enter your email address and we'll send you a code to reset your password.
+                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest max-w-sm mx-auto">
+                        Enter your email address to receive a recovery code
                     </p>
                 </div>
 
-                <form onSubmit={handleSubmit} className="mt-8 space-y-6">
-                    <div className="relative">
+                <form onSubmit={handleSubmit} className="mt-12 space-y-8">
+                    <div className="space-y-6">
                         <Input
                             label="Email Address"
                             type="email"
@@ -98,19 +99,22 @@ export default function ForgotPasswordPage() {
                             }}
                             error={error}
                             required
-                            className="pl-12"
                         />
-                        <Mail className="absolute left-4 top-[42px] w-5 h-5 text-[var(--theme-text-muted)]" />
                     </div>
 
-                    <Button type="submit" fullWidth isLoading={isLoading}>
+                    <Button
+                        type="submit"
+                        fullWidth
+                        isLoading={isLoading}
+                        className="h-14 bg-black text-white rounded-md font-black uppercase tracking-widest text-[10px] hover:bg-gray-900 transition-all shadow-none"
+                    >
                         Send Verification Code
                     </Button>
 
-                    <div className="text-center">
+                    <div className="text-center pt-4">
                         <Link
                             href="/login"
-                            className="inline-flex items-center gap-2 text-sm text-[var(--theme-primary)] hover:text-[var(--theme-accent)] font-medium transition-colors duration-300"
+                            className="inline-flex items-center gap-2 text-[10px] font-black text-black hover:underline uppercase tracking-widest"
                         >
                             <ArrowLeft className="w-4 h-4" />
                             Back to Login
@@ -118,9 +122,9 @@ export default function ForgotPasswordPage() {
                     </div>
                 </form>
 
-                <div className="mt-8 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-100">
-                    <p className="text-sm text-[var(--theme-text-secondary)] text-center">
-                        <span className="font-semibold text-[var(--theme-primary)]">Tip:</span> Check your spam folder if you don't receive the email within a few minutes.
+                <div className="mt-12 p-6 bg-gray-50 border border-gray-200 rounded-lg">
+                    <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest text-center leading-relaxed">
+                        <span className="text-black font-black">Tip:</span> Check your spam folder if you don't receive the email within a few minutes.
                     </p>
                 </div>
             </div>
