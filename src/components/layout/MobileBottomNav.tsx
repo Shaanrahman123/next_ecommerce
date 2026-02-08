@@ -53,7 +53,7 @@ function NavContent() {
     ];
 
     return (
-        <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 pb-safe-area-inset-bottom">
+        <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 pb-[calc(1rem+env(safe-area-inset-bottom,0px))]">
             <div className="flex items-center justify-around h-16">
                 {navItems.map((item) => {
                     const Icon = item.icon;
