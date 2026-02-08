@@ -1,13 +1,14 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { Home, Heart, User, ShoppingCart } from 'lucide-react';
 import { useCartStore, useWishlistStore } from '@/store';
-import { useEffect } from 'react';
+import { useEffect, Suspense } from 'react';
 
-export default function MobileBottomNav() {
+function NavContent() {
     const pathname = usePathname();
+    const searchParams = useSearchParams();
     const { getItemCount } = useCartStore();
     const { items: wishlistItems } = useWishlistStore();
 
@@ -17,13 +18,16 @@ export default function MobileBottomNav() {
         '/order-success',
     ];
 
+    const currentSection = searchParams.get('section');
+
     // Check if current path starts with /products (covers both list and details)
     const isProductPage = pathname.startsWith('/products');
     const isCheckoutPage = pathname.startsWith('/checkout');
     const isCartPage = pathname === '/cart';
     const isOrderSuccessPage = pathname === '/order-success';
+    const isOrderDetails = pathname === '/account' && (currentSection === 'order-details' || currentSection === 'track-order');
 
-    const showBottomNav = !(hideOnPaths.includes(pathname) || isCheckoutPage || isOrderSuccessPage || isProductPage);
+    const showBottomNav = !(hideOnPaths.includes(pathname) || isCheckoutPage || isOrderSuccessPage || isProductPage || isOrderDetails);
 
     // Add padding to body when bottom nav is shown
     useEffect(() => {
@@ -75,5 +79,13 @@ export default function MobileBottomNav() {
                 })}
             </div>
         </div>
+    );
+}
+
+export default function MobileBottomNav() {
+    return (
+        <Suspense fallback={null}>
+            <NavContent />
+        </Suspense>
     );
 }
