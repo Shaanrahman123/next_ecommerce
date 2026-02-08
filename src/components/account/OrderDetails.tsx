@@ -288,7 +288,7 @@ export default function OrderDetails({ orderId }: OrderDetailsProps) {
             </div>
 
             {/* Mobile Actions Overlay - Positioned above MobileBottomNav (4rem = 64px) */}
-            <div className="lg:hidden fixed bottom-[calc(4rem+env(safe-area-inset-bottom,0px))] left-0 right-0 p-4 bg-white border-t border-gray-300 flex gap-3 z-40">
+            <div className="lg:hidden sticky bottom-[calc(4rem+env(safe-area-inset-bottom,0px))] left-0 right-0 p-4 bg-white border-t border-gray-300 flex gap-3 z-40">
                 <Button variant="outline" onClick={handleDownloadInvoice} disabled={downloading} className="flex-1 h-11 border-gray-300 rounded-md font-bold uppercase tracking-widest text-[10px] shadow-none">
                     Invoice
                 </Button>
