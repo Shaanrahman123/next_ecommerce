@@ -8,11 +8,13 @@ interface MegaMenuProps {
     items: Array<{ name: string; slug: string; image: string }>;
     image: string; // Featured image
     type: string;
+    isOpen: boolean;
+    onNavItemClick: () => void;
 }
 
-export default function MegaMenu({ items, image, type }: MegaMenuProps) {
+export default function MegaMenu({ items, image, type, isOpen, onNavItemClick }: MegaMenuProps) {
     return (
-        <div className="fixed left-0 right-0 top-[100px] bottom-0 w-full bg-white shadow-2xl border-t border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-40 overflow-y-auto">
+        <div className={`fixed left-0 right-0 top-[100px] bottom-0 w-full bg-white shadow-2xl border-t border-gray-200 transition-all duration-300 z-40 overflow-y-auto ${isOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'}`}>
             <div className="container mx-auto px-8 lg:px-16 xl:px-24 py-8">
                 <div className="grid grid-cols-12 gap-8">
                     {/* Items Grid - 9 columns */}
@@ -22,6 +24,7 @@ export default function MegaMenu({ items, image, type }: MegaMenuProps) {
                                 <Link
                                     key={item.slug}
                                     href={`/products?category=${type.toLowerCase()}&item=${item.slug}`}
+                                    onClick={onNavItemClick}
                                     className="group/item block space-y-3"
                                 >
                                     <div className="relative aspect-3/4 overflow-hidden rounded-lg bg-gray-100">
@@ -60,6 +63,7 @@ export default function MegaMenu({ items, image, type }: MegaMenuProps) {
                                 </h3>
                                 <Link
                                     href={`/products?category=${type.toLowerCase()}`}
+                                    onClick={onNavItemClick}
                                     className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wider hover:gap-3 transition-all duration-300 border-b border-white pb-1"
                                 >
                                     Shop All

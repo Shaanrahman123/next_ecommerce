@@ -16,6 +16,7 @@ export default function Header() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [isSearchOverlayOpen, setIsSearchOverlayOpen] = useState(false);
     const [userMenuOpen, setUserMenuOpen] = useState(false);
+    const [activeMegaMenu, setActiveMegaMenu] = useState<string | null>(null);
     const { isAuthenticated, user, logout } = useAuthStore();
     const { getItemCount } = useCartStore();
     const { items: wishlistItems } = useWishlistStore();
@@ -46,6 +47,13 @@ export default function Header() {
         };
     }, [userMenuOpen]);
 
+    // Close all menus on navigation
+    useEffect(() => {
+        setActiveMegaMenu(null);
+        setMobileMenuOpen(false);
+        setUserMenuOpen(false);
+    }, [pathname]);
+
     const hideOnMobilePaths = [
         '/checkout',
         '/order-success',
@@ -68,9 +76,15 @@ export default function Header() {
                     {/* Desktop Navigation - Hidden on Desktop Header to make room for Search, as per modern design */}
                     <nav className="hidden xl:flex items-center space-x-8">
                         {mainNavigation.slice(0, 3).map((category) => (
-                            <div key={category.id} className="relative group">
+                            <div
+                                key={category.id}
+                                className="relative"
+                                onMouseEnter={() => setActiveMegaMenu(category.id)}
+                                onMouseLeave={() => setActiveMegaMenu(null)}
+                            >
                                 <Link
                                     href={category.basePath}
+                                    onClick={() => setActiveMegaMenu(null)}
                                     className="text-xs font-bold text-gray-900 hover:text-black transition-colors duration-300 py-6 inline-block uppercase tracking-widest"
                                 >
                                     {category.label}
@@ -79,6 +93,8 @@ export default function Header() {
                                     items={category.items}
                                     image={megaMenuImages[category.id as keyof typeof megaMenuImages]}
                                     type={category.label}
+                                    isOpen={activeMegaMenu === category.id}
+                                    onNavItemClick={() => setActiveMegaMenu(null)}
                                 />
                             </div>
                         ))}
