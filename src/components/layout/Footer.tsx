@@ -7,13 +7,20 @@ import { Facebook, Instagram, Twitter, Mail } from 'lucide-react';
 export default function Footer() {
     const pathname = usePathname();
 
+    const hideTotallyPaths = [
+        '/order-success',
+        '/orders'
+    ];
+
     const hideOnMobilePaths = [
         '/checkout',
-        '/order-success',
         '/products'
     ];
 
+    const isHiddenTotally = hideTotallyPaths.some(path => pathname.startsWith(path));
     const isHiddenOnMobile = hideOnMobilePaths.some(path => pathname.startsWith(path));
+
+    if (isHiddenTotally) return null;
 
     return (
         <footer className={`bg-[var(--theme-primary)] text-[var(--theme-secondary)] mt-5 lg:mt-10 ${isHiddenOnMobile ? 'hidden lg:block' : ''}`}>

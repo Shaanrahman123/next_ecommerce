@@ -4,7 +4,7 @@ import { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import AccountLayout from '@/components/account/AccountLayout';
 import Dashboard from '@/components/account/Dashboard';
-// import MyProfile from '@/components/account/MyProfile';
+import MyProfile from '@/components/account/MyProfile';
 import EditProfile from '@/components/account/EditProfile';
 import ChangePassword from '@/components/account/ChangePassword';
 import MyOrders from '@/components/account/MyOrders';
@@ -16,7 +16,6 @@ import MyReviews from '@/components/account/MyReviews';
 import MyWallet from '@/components/account/MyWallet';
 import Support from '@/components/account/Support';
 import Notifications from '@/components/account/Notifications';
-import MyProfile from '@/components/account/MyProfile';
 
 function AccountContent() {
     const searchParams = useSearchParams();

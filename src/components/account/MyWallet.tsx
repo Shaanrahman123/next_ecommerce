@@ -1,6 +1,7 @@
 'use client';
 
 import { Wallet as WalletIcon, Plus, ArrowUpRight, ArrowDownLeft } from 'lucide-react';
+import Button from '@/components/ui/Button';
 
 export default function MyWallet() {
     const transactions = [
@@ -10,56 +11,69 @@ export default function MyWallet() {
     ];
 
     return (
-        <div className="space-y-8">
-            <div>
-                <h1 className="text-page-title text-gray-900 mb-2">My Wallet</h1>
-                <p className="text-gray-600">Manage your store credit and wallet balance</p>
+        <div className="animate-fade-in pb-20 lg:pb-0">
+            <div className="hidden lg:block mb-10">
+                <h1 className="text-section-title font-black text-gray-900 mb-2 uppercase tracking-tight">My Wallet</h1>
+                <p className="text-body text-gray-600">Manage your store credit and wallet balance</p>
             </div>
 
-            {/* Balance Card */}
-            <div className="bg-linear-to-br from-black to-gray-800 text-white rounded-2xl p-8 shadow-xl">
-                <div className="flex items-center justify-between mb-6">
-                    <div>
-                        <p className="text-gray-300 text-sm mb-2">Available Balance</p>
-                        <h2 className="text-price font-bold">$250.00</h2>
-                    </div>
-                    <WalletIcon className="w-12 h-12 text-gray-400" />
-                </div>
-                <button className="flex items-center gap-2 px-6 py-3 bg-white text-black rounded-lg hover:bg-gray-100 transition-colors duration-300 font-medium">
-                    <Plus className="w-4 h-4" />
-                    Add Money
-                </button>
-            </div>
-
-            {/* Transaction History */}
-            <div>
-                <h2 className="text-section-title font-bold text-gray-900 mb-6">Transaction History</h2>
-                <div className="space-y-4">
-                    {transactions.map((transaction) => (
-                        <div
-                            key={transaction.id}
-                            className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:shadow-md transition-all duration-300"
-                        >
-                            <div className="flex items-center gap-4">
-                                <div className={`p-3 rounded-lg ${transaction.type === 'credit' ? 'bg-green-100' : 'bg-red-100'
-                                    }`}>
-                                    {transaction.type === 'credit' ? (
-                                        <ArrowDownLeft className="w-5 h-5 text-green-600" />
-                                    ) : (
-                                        <ArrowUpRight className="w-5 h-5 text-red-600" />
-                                    )}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+                {/* Balance Card */}
+                <div className="lg:col-span-1">
+                    <div className="bg-black text-white rounded-lg p-8 relative overflow-hidden group">
+                        <div className="absolute -right-10 -top-10 w-40 h-40 bg-white/5 rounded-full transition-transform duration-700 group-hover:scale-150" />
+                        <div className="relative z-10">
+                            <div className="flex items-center gap-3 mb-10">
+                                <div className="w-12 h-12 rounded-md bg-white/10 flex items-center justify-center">
+                                    <WalletIcon className="w-6 h-6 text-white" />
                                 </div>
-                                <div>
-                                    <p className="font-semibold text-gray-900">{transaction.description}</p>
-                                    <p className="text-sm text-gray-500">{transaction.date}</p>
-                                </div>
+                                <p className="text-[10px] font-black uppercase tracking-widest text-gray-400">Available Balance</p>
                             </div>
-                            <p className={`font-semibold text-lg ${transaction.type === 'credit' ? 'text-green-600' : 'text-red-600'
-                                }`}>
-                                {transaction.type === 'credit' ? '+' : '-'}{transaction.amount}
-                            </p>
+                            <h2 className="text-4xl lg:text-5xl font-black uppercase tracking-tight mb-10">₹25,000.00</h2>
+                            <Button className="w-full h-14 bg-white text-black rounded-md font-black uppercase tracking-widest text-[10px] hover:bg-gray-100 transition-all flex items-center justify-center gap-3">
+                                <Plus className="w-4 h-4" />
+                                Add Money
+                            </Button>
                         </div>
-                    ))}
+                    </div>
+                </div>
+
+                {/* Transaction History */}
+                <div className="lg:col-span-2">
+                    <div className="bg-white border border-gray-300 rounded-lg overflow-hidden">
+                        <div className="p-6 border-b border-gray-300 bg-gray-50/50">
+                            <h2 className="text-small font-black text-gray-900 uppercase tracking-widest border-l-4 border-black pl-3">Recent Transactions</h2>
+                        </div>
+                        <div className="divide-y divide-gray-300">
+                            {transactions.map((transaction) => (
+                                <div
+                                    key={transaction.id}
+                                    className="p-6 flex items-center justify-between group transition-colors hover:bg-gray-50/50"
+                                >
+                                    <div className="flex items-center gap-4 lg:gap-6">
+                                        <div className={`w-12 h-12 rounded-md flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 ${transaction.type === 'credit'
+                                            ? 'bg-green-50 text-green-600 border border-gray-300'
+                                            : 'bg-red-50 text-red-600 border border-gray-300'
+                                            }`}>
+                                            {transaction.type === 'credit' ? (
+                                                <ArrowDownLeft className="w-5 h-5" />
+                                            ) : (
+                                                <ArrowUpRight className="w-5 h-5" />
+                                            )}
+                                        </div>
+                                        <div>
+                                            <p className="text-small font-black text-gray-900 uppercase tracking-tight mb-1">{transaction.description}</p>
+                                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{transaction.date}</p>
+                                        </div>
+                                    </div>
+                                    <p className={`text-body font-black uppercase tracking-tight ${transaction.type === 'credit' ? 'text-green-600' : 'text-red-600'
+                                        }`}>
+                                        {transaction.type === 'credit' ? '+' : '-'}{transaction.amount}
+                                    </p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

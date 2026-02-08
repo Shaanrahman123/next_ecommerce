@@ -45,106 +45,110 @@ export default function ChangePassword() {
     };
 
     return (
-        <div className="space-y-8">
-            <div>
-                <h1 className="text-page-title text-gray-900 mb-2">Change Password</h1>
-                <p className="text-gray-600">Update your password to keep your account secure</p>
+        <div className="animate-fade-in">
+            <div className="hidden lg:block mb-8">
+                <h1 className="text-section-title font-black text-gray-900 mb-2 uppercase tracking-tight">Change Password</h1>
+                <p className="text-body text-gray-600">Update your password to keep your account secure</p>
             </div>
 
-            <div className="max-w-2xl">
-                <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="relative">
-                        <Input
-                            label="Current Password"
-                            type={showPasswords.current ? 'text' : 'password'}
-                            value={formData.currentPassword}
-                            onChange={(e) => {
-                                setFormData({ ...formData, currentPassword: e.target.value });
-                                setErrors({ ...errors, currentPassword: '' });
-                            }}
-                            error={errors.currentPassword}
-                            required
-                            className="pr-12"
-                        />
-                        <button
-                            type="button"
-                            onClick={() => setShowPasswords({ ...showPasswords, current: !showPasswords.current })}
-                            className="absolute right-4 top-[42px] text-gray-400 hover:text-gray-600"
-                        >
-                            {showPasswords.current ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                        </button>
+            <div className="lg:bg-white lg:border lg:border-gray-300 lg:rounded-md lg:p-8">
+                <form onSubmit={handleSubmit} className="space-y-8">
+                    <div className="grid grid-cols-1 md:grid-cols-1 gap-6 lg:gap-8 max-w-2xl">
+                        <div className="relative group">
+                            <Input
+                                label="Current Password"
+                                type={showPasswords.current ? 'text' : 'password'}
+                                value={formData.currentPassword}
+                                onChange={(e) => {
+                                    setFormData({ ...formData, currentPassword: e.target.value });
+                                    setErrors({ ...errors, currentPassword: '' });
+                                }}
+                                error={errors.currentPassword}
+                                required
+                                className="bg-gray-50 border-none rounded-md h-14 pr-12"
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowPasswords({ ...showPasswords, current: !showPasswords.current })}
+                                className="absolute right-4 top-[44px] text-gray-400 hover:text-black transition-colors"
+                            >
+                                {showPasswords.current ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                            </button>
+                        </div>
+
+                        <div className="relative group">
+                            <Input
+                                label="New Password"
+                                type={showPasswords.new ? 'text' : 'password'}
+                                value={formData.newPassword}
+                                onChange={(e) => {
+                                    setFormData({ ...formData, newPassword: e.target.value });
+                                    setErrors({ ...errors, newPassword: '' });
+                                }}
+                                error={errors.newPassword}
+                                required
+                                className="bg-gray-50 border-none rounded-md h-14 pr-12"
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowPasswords({ ...showPasswords, new: !showPasswords.new })}
+                                className="absolute right-4 top-[44px] text-gray-400 hover:text-black transition-colors"
+                            >
+                                {showPasswords.new ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                            </button>
+                        </div>
+
+                        <div className="relative group">
+                            <Input
+                                label="Confirm New Password"
+                                type={showPasswords.confirm ? 'text' : 'password'}
+                                value={formData.confirmPassword}
+                                onChange={(e) => {
+                                    setFormData({ ...formData, confirmPassword: e.target.value });
+                                    setErrors({ ...errors, confirmPassword: '' });
+                                }}
+                                error={errors.confirmPassword}
+                                required
+                                className="bg-gray-50 border-none rounded-md h-14 pr-12"
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowPasswords({ ...showPasswords, confirm: !showPasswords.confirm })}
+                                className="absolute right-4 top-[44px] text-gray-400 hover:text-black transition-colors"
+                            >
+                                {showPasswords.confirm ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                            </button>
+                        </div>
                     </div>
 
-                    <div className="relative">
-                        <Input
-                            label="New Password"
-                            type={showPasswords.new ? 'text' : 'password'}
-                            value={formData.newPassword}
-                            onChange={(e) => {
-                                setFormData({ ...formData, newPassword: e.target.value });
-                                setErrors({ ...errors, newPassword: '' });
-                            }}
-                            error={errors.newPassword}
-                            required
-                            className="pr-12"
-                        />
-                        <button
-                            type="button"
-                            onClick={() => setShowPasswords({ ...showPasswords, new: !showPasswords.new })}
-                            className="absolute right-4 top-[42px] text-gray-400 hover:text-gray-600"
-                        >
-                            {showPasswords.new ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                        </button>
-                    </div>
-
-                    <div className="relative">
-                        <Input
-                            label="Confirm New Password"
-                            type={showPasswords.confirm ? 'text' : 'password'}
-                            value={formData.confirmPassword}
-                            onChange={(e) => {
-                                setFormData({ ...formData, confirmPassword: e.target.value });
-                                setErrors({ ...errors, confirmPassword: '' });
-                            }}
-                            error={errors.confirmPassword}
-                            required
-                            className="pr-12"
-                        />
-                        <button
-                            type="button"
-                            onClick={() => setShowPasswords({ ...showPasswords, confirm: !showPasswords.confirm })}
-                            className="absolute right-4 top-[42px] text-gray-400 hover:text-gray-600"
-                        >
-                            {showPasswords.confirm ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                        </button>
-                    </div>
-
-                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                        <h4 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                            <Lock className="w-4 h-4" />
+                    <div className="bg-gray-50/50 rounded-md p-6 lg:p-8 max-w-2xl border border-gray-300">
+                        <h4 className="text-[10px] font-black text-gray-900 mb-6 uppercase tracking-widest flex items-center gap-3">
+                            <div className="w-8 h-8 rounded-md bg-black flex items-center justify-center text-white">
+                                <Lock className="w-4 h-4" />
+                            </div>
                             Password Requirements
                         </h4>
-                        <ul className="space-y-1 text-sm text-gray-600">
-                            <li className="flex items-center gap-2">
-                                <CheckCircle2 className="w-4 h-4 text-green-600" />
-                                At least 8 characters long
-                            </li>
-                            <li className="flex items-center gap-2">
-                                <CheckCircle2 className="w-4 h-4 text-green-600" />
-                                Include uppercase and lowercase letters
-                            </li>
-                            <li className="flex items-center gap-2">
-                                <CheckCircle2 className="w-4 h-4 text-green-600" />
-                                Include at least one number
-                            </li>
+                        <ul className="space-y-4">
+                            {[
+                                'At least 8 characters long',
+                                'Include uppercase and lowercase letters',
+                                'Include at least one number'
+                            ].map((req, idx) => (
+                                <li key={idx} className="flex items-center gap-3 text-small font-bold text-gray-500 uppercase tracking-tight">
+                                    <div className="w-5 h-5 rounded-full bg-green-50 flex items-center justify-center border border-gray-300">
+                                        <CheckCircle2 className="w-3 h-3 text-green-600" />
+                                    </div>
+                                    {req}
+                                </li>
+                            ))}
                         </ul>
                     </div>
 
-                    <div className="flex gap-4 pt-6">
-                        <Button type="submit" isLoading={isLoading}>
+                    <div className="flex flex-col lg:flex-row gap-4 pt-4 max-w-2xl">
+                        <Button type="submit" isLoading={isLoading} className="h-14 lg:px-12 rounded-md bg-black text-white font-black uppercase tracking-widest text-[10px] hover:bg-gray-900 transition-all">
                             Update Password
                         </Button>
-                        <Button type="button" variant="secondary" onClick={() => window.history.back()}>
+                        <Button type="button" variant="secondary" onClick={() => window.history.back()} className="h-14 lg:px-12 rounded-md font-black uppercase tracking-widest text-[10px] bg-gray-50 border-none text-gray-500 hover:bg-gray-100">
                             Cancel
                         </Button>
                     </div>

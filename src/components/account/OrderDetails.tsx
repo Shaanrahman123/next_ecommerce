@@ -104,208 +104,199 @@ export default function OrderDetails({ orderId }: OrderDetailsProps) {
     const getStatusColor = (status: string) => {
         switch (status.toLowerCase()) {
             case 'delivered':
-                return 'bg-green-100 text-green-700 border-green-200';
-            case '(processing':
-                return 'bg-blue-100 text-blue-700 border-blue-200';
+                return 'bg-green-100 text-green-700 border-gray-300';
+            case 'processing':
+                return 'bg-blue-100 text-blue-700 border-gray-300';
             case 'shipped':
-                return 'bg-purple-100 text-purple-700 border-purple-200';
+                return 'bg-purple-100 text-purple-700 border-gray-300';
             case 'cancelled':
-                return 'bg-red-100 text-red-700 border-red-200';
+                return 'bg-red-100 text-red-700 border-gray-300';
             default:
-                return 'bg-gray-100 text-gray-700 border-gray-200';
+                return 'bg-gray-100 text-gray-700 border-gray-300';
         }
     };
 
     return (
-        <div className="space-y-6 pb-24 lg:pb-6">
-            {/* Header */}
-            <div className="flex items-center justify-between flex-wrap gap-4">
-                <div>
-                    <Link
-                        href="/account?section=orders"
-                        className="inline-flex items-center gap-2 text-body text-gray-600 hover:text-gray-900 mb-3"
-                    >
-                        <ArrowLeft className="w-4 h-4" />
-                        Back to Orders
-                    </Link>
-                    <h1 className="text-page-title text-gray-900">Order Details</h1>
-                    <p className="text-body text-gray-600 mt-1">Order {orderId || order.id}</p>
+        <div className="animate-fade-in pb-6 lg:pb-0">
+            {/* Header - Desktop */}
+            <div className="hidden lg:flex items-center justify-between mb-10">
+                <div className="flex items-center gap-5">
+                    <div className="w-16 h-16 bg-black rounded-md flex items-center justify-center text-white">
+                        <Package className="w-8 h-8" />
+                    </div>
+                    <div>
+                        <h1 className="text-section-title font-black text-gray-900 uppercase tracking-tight">Order #{order.id.split('-').pop()}</h1>
+                        <p className="text-body text-gray-500 font-bold uppercase tracking-widest text-[10px] mt-1">Placed on {order.orderDate}</p>
+                    </div>
                 </div>
-                <div className="hidden lg:block">
+                <div className="flex gap-4">
                     <Button
-                        size="sm"
+                        variant="outline"
                         onClick={handleDownloadInvoice}
                         disabled={downloading}
-                        className="flex items-center gap-2"
+                        className="h-11 px-6 border-gray-300 rounded-md font-bold uppercase tracking-widest text-[10px] flex items-center gap-2 hover:bg-black hover:text-white transition-all shadow-none"
                     >
                         <Download className="w-4 h-4" />
-                        {downloading ? 'Generating...' : 'Download Invoice'}
+                        {downloading ? '...' : 'Invoice'}
                     </Button>
+                    <Link href={`/account?section=track-order&orderId=${order.id}`}>
+                        <Button className="h-11 px-6 bg-black text-white rounded-md font-bold uppercase tracking-widest text-[10px] flex items-center gap-2 shadow-none">
+                            <Truck className="w-4 h-4" />
+                            Track
+                        </Button>
+                    </Link>
                 </div>
             </div>
 
-            {/* Order Status Card */}
-            <div className="bg-linear-to-br from-gray-50 to-white border border-gray-200 rounded-xl p-6">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                    <div>
-                        <div className="flex items-center gap-2 mb-2">
-                            <Calendar className="w-4 h-4 text-gray-400" />
-                            <span className="text-small text-gray-600">Order Date</span>
+            <div className="space-y-6 lg:space-y-8">
+                {/* Status Bar */}
+                <div className="bg-white border border-gray-300 rounded-lg p-6 lg:p-8 shadow-none">
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div className="space-y-1">
+                            <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Order Status</p>
+                            <span className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border text-[10px] font-black uppercase tracking-widest ${getStatusColor(order.status)}`}>
+                                <Check className="w-3 h-3" />
+                                {order.status}
+                            </span>
                         </div>
-                        <p className="text-card-title text-gray-900">{order.orderDate}</p>
-                    </div>
-                    <div>
-                        <div className="flex items-center gap-2 mb-2">
-                            <Truck className="w-4 h-4 text-gray-400" />
-                            <span className="text-small text-gray-600">Estimated Delivery</span>
+                        <div className="space-y-1">
+                            <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Estimated Delivery</p>
+                            <p className="text-small font-black text-gray-900 uppercase">{order.deliveryDate}</p>
                         </div>
-                        <p className="text-card-title text-gray-900">{order.deliveryDate}</p>
-                    </div>
-                    <div>
-                        <div className="flex items-center gap-2 mb-2">
-                            <Package className="w-4 h-4 text-gray-400" />
-                            <span className="text-small text-gray-600">Order Status</span>
+                        <div className="space-y-1">
+                            <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Payment</p>
+                            <p className="text-small font-black text-gray-900 uppercase">{order.paymentStatus}</p>
                         </div>
-                        <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full border text-small font-semibold ${getStatusColor(order.status)}`}>
-                            <Check className="w-3 h-3" />
-                            {order.status}
-                        </span>
-                    </div>
-                    <div>
-                        <div className="flex items-center gap-2 mb-2">
-                            <CreditCard className="w-4 h-4 text-gray-400" />
-                            <span className="text-small text-gray-600">Payment</span>
+                        <div className="space-y-1">
+                            <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Tracking #</p>
+                            <p className="text-small font-black text-gray-900 uppercase truncate">{order.trackingNumber}</p>
                         </div>
-                        <p className="text-card-title text-gray-900">{order.paymentStatus}</p>
                     </div>
                 </div>
-            </div>
 
-            {/* Track Order Button */}
-            <Link href={`/account?section=track-order&orderId=${order.id}`}>
-                <Button variant="outline" size="sm" className="w-full flex items-center justify-center gap-2">
-                    <Truck className="w-4 h-4" />
-                    Track Your Order
-                </Button>
-            </Link>
-
-            {/* Order Items */}
-            <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
-                <div className="bg-gray-50 border-b border-gray-200 px-6 py-4">
-                    <h2 className="text-section-title text-gray-900">Order Items</h2>
-                </div>
-                <div className="divide-y divide-gray-200">
-                    {order.items.map((item) => (
-                        <div key={item.id} className="p-6 flex gap-4">
-                            <div className="relative w-20 h-20 md:w-24 md:h-24 shrink-0 bg-gray-100 rounded-lg overflow-hidden">
-                                <Image
-                                    src={item.image}
-                                    alt={item.name}
-                                    fill
-                                    className="object-cover"
-                                />
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+                    {/* Products List */}
+                    <div className="lg:col-span-2 space-y-6">
+                        <div className="bg-white border border-gray-300 rounded-lg overflow-hidden shadow-none">
+                            <div className="p-6 border-b border-gray-300 bg-gray-50/50">
+                                <h2 className="text-small font-black text-gray-900 uppercase tracking-widest border-l-4 border-black pl-3">Order Items ({order.items.length})</h2>
                             </div>
-                            <div className="flex-1 min-w-0">
-                                <h3 className="text-card-title text-gray-900 mb-1">{item.name}</h3>
-                                <div className="flex flex-wrap gap-x-4 gap-y-1 text-small text-gray-600 mb-2">
-                                    <span>Size: {item.size}</span>
-                                    <span>Color: {item.color}</span>
-                                    <span>Qty: {item.quantity}</span>
+                            <div className="divide-y divide-gray-300">
+                                {order.items.map((item) => (
+                                    <div key={item.id} className="p-6 flex gap-4 lg:gap-6 group">
+                                        <div className="relative w-24 h-28 lg:w-28 lg:h-32 bg-gray-50 rounded-md overflow-hidden border border-gray-300 shrink-0">
+                                            <Image src={item.image} alt={item.name} fill className="object-cover transition-transform duration-500 group-hover:scale-110" />
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                            <h3 className="text-body font-black text-gray-900 uppercase tracking-tight mb-2 truncate">{item.name}</h3>
+                                            <div className="flex flex-wrap gap-x-4 gap-y-2 mb-4">
+                                                <div className="bg-gray-50 px-3 py-1 rounded-full border border-gray-300 text-[10px] font-bold text-gray-500 uppercase tracking-widest">Size: {item.size}</div>
+                                                <div className="bg-gray-50 px-3 py-1 rounded-full border border-gray-300 text-[10px] font-bold text-gray-500 uppercase tracking-widest">Color: {item.color}</div>
+                                                <div className="bg-gray-50 px-3 py-1 rounded-full border border-gray-300 text-[10px] font-bold text-gray-500 uppercase tracking-widest">Qty: {item.quantity}</div>
+                                            </div>
+                                            <p className="text-body font-black text-black uppercase tracking-tight">₹{(item.price * item.quantity).toFixed(2)}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Order Summary - Combined on Mobile to be below products */}
+                        <div className="lg:hidden bg-white border border-gray-300 rounded-lg p-6 shadow-none">
+                            <h3 className="text-small font-black text-gray-900 uppercase tracking-widest mb-6 border-l-4 border-black pl-3">Order Summary</h3>
+                            <div className="space-y-4">
+                                <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest text-gray-500">
+                                    <span>Subtotal</span>
+                                    <span className="text-gray-900">₹{order.pricing.subtotal.toFixed(2)}</span>
                                 </div>
-                                <p className="text-price text-gray-900">₹{(item.price * item.quantity).toFixed(2)}</p>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </div>
-
-            {/* Addresses */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Shipping Address */}
-                <div className="bg-white border border-gray-200 rounded-xl p-6">
-                    <div className="flex items-center gap-2 mb-4">
-                        <MapPin className="w-5 h-5 text-gray-700" />
-                        <h3 className="text-card-title text-gray-900">Shipping Address</h3>
-                    </div>
-                    <div className="space-y-1 text-body text-gray-600">
-                        <p className="font-semibold text-gray-900">{order.shippingAddress.name}</p>
-                        <p>{order.shippingAddress.addressLine1}</p>
-                        {order.shippingAddress.addressLine2 && <p>{order.shippingAddress.addressLine2}</p>}
-                        <p>{order.shippingAddress.city}, {order.shippingAddress.state} {order.shippingAddress.zipCode}</p>
-                        <div className="pt-2 space-y-1 border-t border-gray-200 mt-3">
-                            <div className="flex items-center gap-2">
-                                <Phone className="w-4 h-4" />
-                                <span>{order.shippingAddress.phone}</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <Mail className="w-4 h-4" />
-                                <span>{order.shippingAddress.email}</span>
+                                <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest text-gray-500">
+                                    <span>Shipping</span>
+                                    <span className="text-gray-900">₹{order.pricing.shipping.toFixed(2)}</span>
+                                </div>
+                                <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest text-gray-500">
+                                    <span>Tax</span>
+                                    <span className="text-gray-900">₹{order.pricing.tax.toFixed(2)}</span>
+                                </div>
+                                <div className="pt-4 border-t border-gray-300 flex justify-between items-center">
+                                    <span className="text-body font-black text-gray-900 uppercase tracking-tight">Total Amount</span>
+                                    <span className="text-section-title font-black text-black uppercase tracking-tight">₹{order.pricing.total.toFixed(2)}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                {/* Billing Address */}
-                <div className="bg-white border border-gray-200 rounded-xl p-6">
-                    <div className="flex items-center gap-2 mb-4">
-                        <FileText className="w-5 h-5 text-gray-700" />
-                        <h3 className="text-card-title text-gray-900">Billing Address</h3>
-                    </div>
-                    <div className="space-y-1 text-body text-gray-600">
-                        <p className="font-semibold text-gray-900">{order.billingAddress.name}</p>
-                        <p>{order.billingAddress.addressLine1}</p>
-                        {order.billingAddress.addressLine2 && <p>{order.billingAddress.addressLine2}</p>}
-                        <p>{order.billingAddress.city}, {order.billingAddress.state} {order.billingAddress.zipCode}</p>
-                    </div>
-                </div>
-            </div>
-
-            {/* Order Summary */}
-            <div className="bg-white border border-gray-200 rounded-xl p-6">
-                <h3 className="text-section-title text-gray-900 mb-4">Order Summary</h3>
-                <div className="space-y-3">
-                    <div className="flex justify-between text-body">
-                        <span className="text-gray-600">Subtotal</span>
-                        <span className="text-gray-900">₹{order.pricing.subtotal.toFixed(2)}</span>
-                    </div>
-                    <div className="flex justify-between text-body">
-                        <span className="text-gray-600">Shipping</span>
-                        <span className="text-gray-900">₹{order.pricing.shipping.toFixed(2)}</span>
-                    </div>
-                    <div className="flex justify-between text-body">
-                        <span className="text-gray-600">Tax</span>
-                        <span className="text-gray-900">₹{order.pricing.tax.toFixed(2)}</span>
-                    </div>
-                    {order.pricing.discount > 0 && (
-                        <div className="flex justify-between text-body">
-                            <span className="text-green-600">Discount</span>
-                            <span className="text-green-600">-₹{order.pricing.discount.toFixed(2)}</span>
+                    {/* Sidebar: Addresses & Summary */}
+                    <div className="space-y-6 lg:space-y-8">
+                        {/* Shipping Address */}
+                        <div className="bg-white border border-gray-300 rounded-lg p-6 lg:p-8 shadow-none">
+                            <h3 className="text-[10px] font-black text-gray-900 uppercase tracking-widest mb-6 flex items-center gap-3">
+                                <div className="w-8 h-8 rounded-md bg-black flex items-center justify-center text-white shrink-0">
+                                    <MapPin className="w-4 h-4" />
+                                </div>
+                                Delivery Address
+                            </h3>
+                            <div className="space-y-1">
+                                <p className="text-body font-black text-gray-900 uppercase tracking-tight">{order.shippingAddress.name}</p>
+                                <p className="text-small font-bold text-gray-500 uppercase tracking-tight leading-relaxed">{order.shippingAddress.addressLine1}</p>
+                                {order.shippingAddress.addressLine2 && <p className="text-small font-bold text-gray-500 uppercase tracking-tight leading-relaxed">{order.shippingAddress.addressLine2}</p>}
+                                <p className="text-small font-bold text-gray-500 uppercase tracking-tight leading-relaxed">{order.shippingAddress.city}, {order.shippingAddress.state} {order.shippingAddress.zipCode}</p>
+                                <div className="pt-4 mt-4 border-t border-gray-300 space-y-2">
+                                    <div className="flex items-center gap-3 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                                        <Phone className="w-3.5 h-3.5" />
+                                        {order.shippingAddress.phone}
+                                    </div>
+                                    <div className="flex items-center gap-3 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                                        <Mail className="w-3.5 h-3.5" />
+                                        {order.shippingAddress.email}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    )}
-                    <div className="border-t border-gray-200 pt-3 flex justify-between">
-                        <span className="text-card-title text-gray-900 font-bold">Total</span>
-                        <span className="text-price text-gray-900">₹{order.pricing.total.toFixed(2)}</span>
-                    </div>
-                    <div className="bg-gray-50 rounded-lg p-3 mt-3">
-                        <div className="flex justify-between text-small">
-                            <span className="text-gray-600">Payment Method</span>
-                            <span className="text-gray-900 font-semibold">{order.paymentMethod}</span>
+
+                        {/* Order Summary - Desktop */}
+                        <div className="hidden lg:block bg-black text-white rounded-lg p-8 shadow-none">
+                            <h3 className="text-small font-black uppercase tracking-widest mb-8 border-l-4 border-white pl-3 text-white">Order Summary</h3>
+                            <div className="space-y-5">
+                                <div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-gray-400">
+                                    <span>Subtotal</span>
+                                    <span className="text-white">₹{order.pricing.subtotal.toFixed(2)}</span>
+                                </div>
+                                <div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-gray-400">
+                                    <span>Shipping</span>
+                                    <span className="text-white">₹{order.pricing.shipping.toFixed(2)}</span>
+                                </div>
+                                <div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-gray-400">
+                                    <span>Tax</span>
+                                    <span className="text-white">₹{order.pricing.tax.toFixed(2)}</span>
+                                </div>
+                                <div className="pt-6 border-t border-white/20 flex justify-between items-center">
+                                    <span className="text-small font-black uppercase tracking-widest text-white">Total</span>
+                                    <span className="text-2xl font-black uppercase tracking-tight">₹{order.pricing.total.toFixed(2)}</span>
+                                </div>
+                            </div>
+                            <Button
+                                onClick={handleDownloadInvoice}
+                                disabled={downloading}
+                                className="w-full h-11 bg-white text-black mt-10 rounded-md font-bold uppercase tracking-widest text-[10px] hover:bg-gray-100 transition-all shadow-none flex items-center justify-center gap-2"
+                            >
+                                <Download className="w-4 h-4 shrink-0" />
+                                <span className="truncate">{downloading ? '...' : 'Download'}</span>
+                            </Button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            {/* Fixed Bottom Button for Mobile */}
-            <div className="lg:hidden fixed bottom-16 left-0 right-0 bg-white border-t border-gray-200 p-3 shadow-lg z-50">
-                <Button
-                    size="sm"
-                    onClick={handleDownloadInvoice}
-                    disabled={downloading}
-                    className="w-full flex items-center justify-center gap-2"
-                >
-                    <Download className="w-4 h-4" />
-                    {downloading ? 'Generating Invoice...' : 'Download Invoice'}
+            {/* Mobile Actions Overlay - Positioned above MobileBottomNav (4rem = 64px) */}
+            <div className="lg:hidden fixed bottom-[calc(4rem+env(safe-area-inset-bottom,0px))] left-0 right-0 p-4 bg-white border-t border-gray-300 flex gap-3 z-40">
+                <Button variant="outline" onClick={handleDownloadInvoice} disabled={downloading} className="flex-1 h-11 border-gray-300 rounded-md font-bold uppercase tracking-widest text-[10px] shadow-none">
+                    Invoice
                 </Button>
+                <Link href={`/account?section=track-order&orderId=${order.id}`} className="flex-1">
+                    <Button className="w-full h-11 bg-black text-white rounded-md font-bold uppercase tracking-widest text-[10px] shadow-none">
+                        Track Order
+                    </Button>
+                </Link>
             </div>
         </div>
     );

@@ -23,6 +23,22 @@ export default function CheckoutPage() {
     const orderSummaryRef = useRef<HTMLDivElement>(null);
     const { addAddress } = useAddressStore();
 
+    const handleAddressSelect = (address: any) => {
+        setSelectedAddressId(address.id);
+        const [first, ...rest] = address.addressLine1.split(',');
+        setShippingInfo({
+            fullName: address.fullName,
+            email: address.email || user?.email || '',
+            phone: address.phone,
+            addressLine1: first || '',
+            addressLine2: address.addressLine2 || rest.join(',') || '',
+            city: address.city,
+            state: address.state,
+            zipCode: address.zipCode,
+            country: address.country,
+        });
+    };
+
     // Initial address selection
     useEffect(() => {
         if (addresses.length > 0 && !selectedAddressId) {
@@ -69,8 +85,13 @@ export default function CheckoutPage() {
     const tax = subtotal * 0.1;
     const total = subtotal + shipping + tax;
 
-    if (items.length === 0) {
-        router.push('/cart');
+    useEffect(() => {
+        if (!isProcessing && items.length === 0) {
+            router.push('/cart');
+        }
+    }, [items.length, isProcessing, router]);
+
+    if (items.length === 0 && !isProcessing) {
         return null;
     }
 
@@ -102,18 +123,19 @@ export default function CheckoutPage() {
         return Object.keys(newErrors).length === 0;
     };
 
+    const handlePlaceOrder = () => {
+        setIsProcessing(true);
+        // Simulate processing and redirect to success
+        setTimeout(() => {
+            router.push('/order-success');
+            // Clear cart after a short delay to ensure navigation starts
+            setTimeout(() => clearCart(), 100);
+        }, 800);
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
-        if (!validateForm()) return;
-
-        setIsProcessing(true);
-
-        // Simulate payment processing
-        setTimeout(() => {
-            clearCart();
-            router.push('/order-success');
-        }, 2000);
+        handlePlaceOrder();
     };
 
     const formatCardNumber = (value: string) => {
@@ -133,21 +155,6 @@ export default function CheckoutPage() {
         }
     };
 
-    const handleAddressSelect = (address: any) => {
-        setSelectedAddressId(address.id);
-        const [first, ...rest] = address.addressLine1.split(',');
-        setShippingInfo({
-            fullName: address.fullName,
-            email: address.email || user?.email || '',
-            phone: address.phone,
-            addressLine1: first || '',
-            addressLine2: address.addressLine2 || rest.join(',') || '',
-            city: address.city,
-            state: address.state,
-            zipCode: address.zipCode,
-            country: address.country,
-        });
-    };
 
     const handleAddAddress = () => {
         const id = Math.random().toString(36).substring(2, 9);
@@ -189,7 +196,7 @@ export default function CheckoutPage() {
             {/* Header / Stepper */}
             <div className="bg-white border-b border-gray-300 pt-5 pb-5">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <h1 className="text-sm font-bold text-gray-900 text-left mb-6 uppercase tracking-widest">Order Summary</h1>
+                    <h1 className="text-small font-bold text-gray-900 text-left mb-6 uppercase tracking-widest">Order Summary</h1>
 
                     <div className="relative w-full">
                         {/* Progressive Background Line */}
@@ -208,13 +215,13 @@ export default function CheckoutPage() {
                                             'items-center'
                                         }`}
                                 >
-                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 ${currentStep >= step.id
+                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-bold transition-all duration-300 ${currentStep >= step.id
                                         ? 'bg-black text-white'
                                         : 'bg-white border-2 border-gray-300 text-gray-400'
                                         }`}>
-                                        {currentStep > step.id ? <Check className="w-4 h-4" /> : step.id}
+                                        {currentStep > step.id ? <Check className="w-4 h-4" strokeWidth={3} /> : step.id}
                                     </div>
-                                    <span className={`text-[9px] mt-2 font-bold uppercase tracking-tight ${currentStep === step.id ? 'text-black' : 'text-gray-400'
+                                    <span className={`text-[10px] mt-2 font-bold uppercase tracking-tight ${currentStep === step.id ? 'text-black' : 'text-gray-400'
                                         }`}>
                                         {step.label}
                                     </span>
@@ -233,10 +240,10 @@ export default function CheckoutPage() {
                         {/* Selected Address Card */}
                         <div className="bg-white border border-gray-300 rounded-2xl p-5 overflow-hidden animate-fade-in">
                             <div className="flex items-center justify-between mb-4">
-                                <h2 className="text-base font-bold text-gray-900">Deliver to:</h2>
+                                <h2 className="text-body font-bold text-gray-900">Deliver to:</h2>
                                 <button
                                     onClick={() => setIsAddressModalOpen(true)}
-                                    className="px-3 py-1.5 text-xs font-bold text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors uppercase tracking-tight"
+                                    className="px-3 py-1.5 text-small font-bold text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors uppercase tracking-tight"
                                 >
                                     Change
                                 </button>
@@ -245,8 +252,8 @@ export default function CheckoutPage() {
                             {selectedAddress && (
                                 <div className="space-y-1">
                                     <div className="flex items-center gap-2">
-                                        <p className="font-bold text-gray-900 text-base uppercase tracking-tight">{selectedAddress.fullName}</p>
-                                        <span className="bg-gray-100 text-gray-500 text-[9px] font-bold px-1.5 py-0.5 rounded uppercase">{selectedAddress.type || 'HOME'}</span>
+                                        <p className="font-bold text-gray-900 text-body uppercase tracking-tight">{selectedAddress.fullName}</p>
+                                        <span className="bg-gray-100 text-gray-500 text-[10px] font-bold px-1.5 py-0.5 rounded uppercase">{selectedAddress.type || 'HOME'}</span>
                                     </div>
                                     <p className="text-small text-gray-600 leading-normal max-w-md">
                                         {selectedAddress.addressLine1}, {selectedAddress.addressLine2 ? `${selectedAddress.addressLine2}, ` : ''}{selectedAddress.city}, {selectedAddress.state} {selectedAddress.zipCode}
@@ -259,8 +266,8 @@ export default function CheckoutPage() {
                         {/* Order Items Review */}
                         <div ref={orderSummaryRef} className="bg-white border border-gray-300 rounded-2xl p-5 animate-fade-in">
                             <div className="flex items-center justify-between mb-4">
-                                <h2 className="text-base font-bold text-gray-900">Items in your order</h2>
-                                <span className="text-xs text-gray-500 font-medium">{items.length} Product(s)</span>
+                                <h2 className="text-body font-bold text-gray-900">Items in your order</h2>
+                                <span className="text-small text-gray-500 font-medium">{items.length} Product(s)</span>
                             </div>
 
                             <div className="divide-y divide-gray-100">
@@ -296,26 +303,26 @@ export default function CheckoutPage() {
 
                         {/* Price Summary Component (Visible on Mobile inside main flow) */}
                         <div className="lg:hidden bg-white border border-gray-300 rounded-2xl p-5 animate-fade-in">
-                            <h2 className="font-bold text-gray-900 mb-4 uppercase tracking-wider text-xs">Price Details</h2>
+                            <h2 className="font-bold text-gray-900 mb-4 uppercase tracking-wider text-small">Price Details</h2>
                             <div className="space-y-3">
-                                <div className="flex justify-between text-xs">
+                                <div className="flex justify-between text-small">
                                     <span className="text-gray-500 font-medium">Price ({items.length} items)</span>
                                     <span className="font-semibold text-gray-900">₹{subtotal.toLocaleString()}</span>
                                 </div>
-                                <div className="flex justify-between text-xs">
+                                <div className="flex justify-between text-small">
                                     <span className="text-gray-500 font-medium">Shipping Fee</span>
                                     <span className={`font-semibold ${shipping === 0 ? 'text-green-600' : 'text-gray-900'}`}>
                                         {shipping === 0 ? 'FREE' : `₹${shipping.toLocaleString()}`}
                                     </span>
                                 </div>
-                                <div className="flex justify-between text-xs">
+                                <div className="flex justify-between text-small">
                                     <span className="text-gray-500 font-medium">Tax</span>
                                     <span className="font-semibold text-gray-900">₹{tax.toLocaleString()}</span>
                                 </div>
                                 <div className="border-t border-gray-100 pt-3 mt-4">
                                     <div className="flex justify-between items-baseline">
-                                        <span className="text-body font-semibold text-gray-900 ">Total Amount</span>
-                                        <span className="text-lg font-semibold text-gray-900">₹{total.toLocaleString()}</span>
+                                        <span className="text-body font-bold text-gray-900">Total Amount</span>
+                                        <span className="text-price font-bold text-gray-900">₹{total.toLocaleString()}</span>
                                     </div>
                                 </div>
                             </div>
@@ -328,7 +335,7 @@ export default function CheckoutPage() {
                     {/* Right Column: Price Details (Bigger Device Review) */}
                     <div className="hidden lg:block lg:col-span-1">
                         <div className="bg-white border border-gray-300 rounded-2xl p-6 sticky top-8">
-                            <h2 className="text-lg font-bold text-gray-900 mb-6 uppercase tracking-wider text-small">Price Details</h2>
+                            <h2 className="text-small font-bold text-gray-900 mb-6 uppercase tracking-wider">Price Details</h2>
 
                             <div className="space-y-4">
                                 <div className="flex justify-between text-body">
@@ -348,16 +355,16 @@ export default function CheckoutPage() {
 
                                 <div className="border-t border-gray-100 pt-4 mt-6">
                                     <div className="flex justify-between items-baseline mb-8">
-                                        <span className="text-lg font-black text-gray-900 uppercase">Total Amount</span>
-                                        <span className="text-base lg:text-2xl font-black text-gray-900">₹{total.toLocaleString()}</span>
+                                        <span className="text-body font-black text-gray-900 uppercase">Total Amount</span>
+                                        <span className="text-price font-black text-gray-900">₹{total.toLocaleString()}</span>
                                     </div>
 
                                     <Button
                                         fullWidth
                                         size="lg"
-                                        onClick={() => setIsProcessing(true)}
+                                        onClick={handlePlaceOrder}
                                         isLoading={isProcessing}
-                                        className="rounded-xl h-14 text-lg font-black uppercase tracking-widest shadow-black/10 transition-transform active:scale-95"
+                                        className="rounded-xl h-14 text-body font-black uppercase tracking-widest shadow-black/10 transition-transform active:scale-95"
                                     >
                                         Place Order
                                     </Button>
@@ -376,9 +383,9 @@ export default function CheckoutPage() {
                 <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
                     <div className="flex items-center gap-2">
                         <div className="flex flex-col">
-                            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-tighter">Total Payable</span>
+                            <span className="text-small font-bold text-gray-400 uppercase tracking-tighter">Total Payable</span>
                             <div className="flex items-center gap-1.5">
-                                <span className="text-xl font-black text-gray-900">₹{total.toLocaleString()}</span>
+                                <span className="text-price font-black text-gray-900">₹{total.toLocaleString()}</span>
                                 <button
                                     onClick={scrollToSummary}
                                     className="p-1 hover:bg-gray-100 rounded-full transition-colors"
@@ -390,7 +397,7 @@ export default function CheckoutPage() {
                     </div>
                     <Button
                         size="md"
-                        onClick={() => setIsProcessing(true)}
+                        onClick={handlePlaceOrder}
                         isLoading={isProcessing}
                         className="flex-1 max-w-[200px] h-12 rounded-xl text-body font-black uppercase tracking-widest"
                     >
@@ -406,7 +413,7 @@ export default function CheckoutPage() {
                     <div className="relative w-full max-w-lg bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl animate-slide-up overflow-hidden">
                         <div className="p-6 border-b border-gray-100 flex items-center justify-between sticky top-0 bg-white z-10">
                             <div>
-                                <h3 className="text-lg font-bold text-gray-900">Select delivery address</h3>
+                                <h3 className="text-body font-bold text-gray-900">Select delivery address</h3>
                                 <div className="h-0.5 w-12 bg-black mt-1" />
                             </div>
                             <button onClick={() => setIsAddressModalOpen(false)} className="p-2 hover:bg-gray-100 rounded-full transition-colors">
@@ -483,7 +490,7 @@ export default function CheckoutPage() {
                     <div className="relative w-full max-w-lg bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl animate-fade-in overflow-hidden">
                         <div className="p-6 border-b border-gray-100 flex items-center justify-between sticky top-0 bg-white z-10">
                             <div>
-                                <h3 className="text-lg font-bold text-gray-900">Add new address</h3>
+                                <h3 className="text-body font-bold text-gray-900">Add new address</h3>
                                 <div className="h-0.5 w-12 bg-black mt-1" />
                             </div>
                             <button onClick={() => setIsAddAddressModalOpen(false)} className="p-2 hover:bg-gray-100 rounded-full transition-colors">
@@ -538,7 +545,7 @@ export default function CheckoutPage() {
                                     placeholder="State"
                                 />
                                 <div className="space-y-1.5">
-                                    <label className="text-xs font-bold text-gray-500 uppercase">Address Type</label>
+                                    <label className="text-small font-bold text-gray-500 uppercase">Address Type</label>
                                     <div className="flex gap-2">
                                         {['HOME', 'OFFICE', 'OTHER'].map((type) => (
                                             <button
