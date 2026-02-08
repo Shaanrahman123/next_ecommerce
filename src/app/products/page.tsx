@@ -285,7 +285,7 @@ function ProductsContent() {
             </div>
 
             {/* Mobile Bottom Bar */}
-            <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-30">
+            <div className="lg:hidden fixed bottom-0 pb-[calc(0.5rem+env(safe-area-inset-bottom,0px))] left-0 right-0 bg-white border-t border-gray-200 z-30">
                 <div className="grid grid-cols-2 divide-x divide-gray-200">
                     <button
                         onClick={() => setShowMobileSort(true)}
