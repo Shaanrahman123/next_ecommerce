@@ -122,7 +122,7 @@ export default function Search({ variant = 'desktop', isOpen, onClose }: SearchP
                             value={query}
                             onChange={(e) => setQuery(e.target.value)}
                             placeholder="Search for brands and products"
-                            className="w-full py-2 px-4 border border-black rounded-sm focus:outline-none text-sm placeholder-gray-400 font-medium"
+                            className="w-full py-2 px-4 border border-black rounded-sm focus:outline-none! focus:ring-0! text-sm placeholder-gray-400 font-medium"
                         />
                         <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 text-rose-500">
                             <SearchIcon className="w-5 h-5" />
