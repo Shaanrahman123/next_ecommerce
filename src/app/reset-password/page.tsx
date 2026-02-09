@@ -85,10 +85,10 @@ function ResetPasswordContent() {
                         <div className="w-16 h-16 bg-black rounded-md flex items-center justify-center mx-auto mb-6">
                             <CheckCircle2 className="w-8 h-8 text-white" />
                         </div>
-                        <h2 className="text-section-title font-black text-gray-900 uppercase tracking-tight mb-3">
+                        <h2 className="text-3xl font-bold text-gray-900 tracking-tight mb-3">
                             Success
                         </h2>
-                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-8">
+                        <p className="text-sm font-medium text-gray-500 mb-8">
                             Your password has been reset. Redirecting to login...
                         </p>
                         <div className="w-12 h-0.5 bg-black mx-auto rounded-full animate-pulse" />
@@ -106,16 +106,16 @@ function ResetPasswordContent() {
                 <div className="text-center space-y-2">
                     <div className="flex items-center justify-center gap-2 mb-2">
                         <div className="w-6 h-0.5 bg-black rounded-full" />
-                        <span className="text-[9px] font-black uppercase tracking-[0.2em] text-gray-400">Security Update</span>
+                        <span className="text-xs font-semibold uppercase tracking-wide text-gray-500">Security Update</span>
                     </div>
-                    <h1 className="text-section-title font-black text-gray-900 uppercase tracking-tight">
+                    <h1 className="text-3xl font-bold text-gray-900 tracking-tight">
                         Reset Password
                     </h1>
-                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest max-w-sm mx-auto">
+                    <p className="text-sm font-medium text-gray-500 max-w-sm mx-auto">
                         Create a strong password for your account
                     </p>
                     {email && (
-                        <p className="text-[10px] font-black text-black uppercase tracking-tight mt-2">
+                        <p className="text-sm font-semibold text-black mt-2">
                             for {email}
                         </p>
                     )}
@@ -148,8 +148,8 @@ function ResetPasswordContent() {
                         {formData.password && (
                             <div className="space-y-4 pt-2 animate-fade-in">
                                 <div className="flex items-center justify-between">
-                                    <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Strength:</span>
-                                    <span className={`text-[9px] font-black uppercase tracking-widest ${strength?.label === 'Weak' ? 'text-red-500' :
+                                    <span className="text-xs font-semibold text-gray-600">Strength:</span>
+                                    <span className={`text-xs font-semibold ${strength?.label === 'Weak' ? 'text-red-500' :
                                         strength?.label === 'Medium' ? 'text-yellow-600' :
                                             'text-green-600'
                                         }`}>
@@ -169,7 +169,7 @@ function ResetPasswordContent() {
                                         return (
                                             <div
                                                 key={index}
-                                                className={`flex items-center gap-2 text-[9px] font-bold uppercase tracking-widest transition-all duration-300 ${isPassed ? 'text-black' : 'text-gray-300'
+                                                className={`flex items-center gap-2 text-xs font-medium transition-all duration-300 ${isPassed ? 'text-black' : 'text-gray-400'
                                                     }`}
                                             >
                                                 {isPassed ? (
@@ -212,15 +212,15 @@ function ResetPasswordContent() {
                         type="submit"
                         fullWidth
                         isLoading={isLoading}
-                        className="h-14 bg-black text-white rounded-md font-black uppercase tracking-widest text-[10px] hover:bg-gray-900 transition-all shadow-none"
+                        className="h-14 bg-black text-white rounded-md font-semibold text-base hover:bg-gray-900 transition-all shadow-none"
                     >
                         Reset Password
                     </Button>
                 </form>
 
                 <div className="mt-12 p-6 bg-gray-50 border border-gray-200 rounded-lg">
-                    <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest text-center leading-relaxed">
-                        <span className="text-black font-black">Remember:</span> Use a unique password that you don't use for other accounts.
+                    <p className="text-xs font-medium text-gray-600 text-center leading-relaxed">
+                        <span className="text-black font-semibold">Remember:</span> Use a unique password that you don't use for other accounts.
                     </p>
                 </div>
             </div>

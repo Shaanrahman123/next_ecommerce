@@ -22,39 +22,53 @@ export const accessoriesCategories = [
 // Main Navigation Structure
 export const mainNavigation = [
     {
-        id: 'topwear',
-        label: 'Topwear',
-        items: topwearCategories,
-        basePath: '/products?category=topwear'
-    },
-    {
-        id: 'bottomwear',
-        label: 'Bottomwear',
-        items: bottomwearCategories,
-        basePath: '/products?category=bottomwear'
-    },
-    {
-        id: 'accessories',
-        label: 'Accessories',
-        items: accessoriesCategories,
-        basePath: '/products?category=accessories'
+        id: 'men',
+        label: 'Men',
+        basePath: '/products?gender=men',
+        sections: [
+            {
+                title: 'Topwear',
+                items: topwearCategories,
+                basePath: '/products?category=topwear'
+            },
+            {
+                title: 'Bottomwear',
+                items: bottomwearCategories,
+                basePath: '/products?category=bottomwear'
+            },
+            {
+                title: 'Accessories',
+                items: accessoriesCategories,
+                basePath: '/products?category=accessories'
+            }
+        ]
     },
     {
         id: 'sale',
         label: 'Mega Sale',
-        items: [
-            { name: 'Under ₹999', slug: 'under-999', image: 'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?q=80&w=800&auto=format&fit=crop' },
-            { name: 'Flat 50% Off', slug: 'flat-50', image: 'https://images.unsplash.com/photo-1620799140188-3b2a02fd9a77?q=80&w=800&auto=format&fit=crop' },
-            { name: 'New Arrivals', slug: 'new-arrivals', image: 'https://images.unsplash.com/photo-1617127365659-c47fa864d8bc?q=80&w=800&auto=format&fit=crop' },
-            { name: 'Best Sellers', slug: 'best-sellers', image: 'https://images.unsplash.com/photo-1620799139834-6b8f844fbe61?q=80&w=800&auto=format&fit=crop' },
-        ],
-        basePath: '/products?category=sale'
+        basePath: '/products?category=sale',
+        sections: [
+            {
+                title: 'Deals',
+                items: [
+                    { name: 'Under ₹999', slug: 'under-999', image: 'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?q=80&w=800&auto=format&fit=crop' },
+                    { name: 'Flat 50% Off', slug: 'flat-50', image: 'https://images.unsplash.com/photo-1620799140188-3b2a02fd9a77?q=80&w=800&auto=format&fit=crop' },
+                ],
+                basePath: '/products?category=sale'
+            },
+            {
+                title: 'Discover',
+                items: [
+                    { name: 'New Arrivals', slug: 'new-arrivals', image: 'https://images.unsplash.com/photo-1617127365659-c47fa864d8bc?q=80&w=800&auto=format&fit=crop' },
+                    { name: 'Best Sellers', slug: 'best-sellers', image: 'https://images.unsplash.com/photo-1620799139834-6b8f844fbe61?q=80&w=800&auto=format&fit=crop' },
+                ],
+                basePath: '/products?category=new'
+            }
+        ]
     }
 ];
 
 export const megaMenuImages = {
-    topwear: 'https://images.unsplash.com/photo-1617127365659-c47fa864d8bc?q=80&w=800&auto=format&fit=crop',
-    bottomwear: 'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?q=80&w=800&auto=format&fit=crop',
-    accessories: 'https://images.unsplash.com/photo-1523170335258-f5ed11844a49?q=80&w=800&auto=format&fit=crop',
+    men: 'https://images.unsplash.com/photo-1617127365659-c47fa864d8bc?q=80&w=800&auto=format&fit=crop',
     sale: 'https://images.unsplash.com/photo-1607082349566-187342175e2f?q=80&w=800&auto=format&fit=crop',
 };

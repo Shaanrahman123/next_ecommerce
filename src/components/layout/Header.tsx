@@ -75,7 +75,7 @@ export default function Header() {
 
                     {/* Desktop Navigation - Hidden on Desktop Header to make room for Search, as per modern design */}
                     <nav className="hidden xl:flex items-center space-x-8">
-                        {mainNavigation.slice(0, 3).map((category) => (
+                        {mainNavigation.map((category) => (
                             <div
                                 key={category.id}
                                 className="relative"
@@ -85,14 +85,14 @@ export default function Header() {
                                 <Link
                                     href={category.basePath}
                                     onClick={() => setActiveMegaMenu(null)}
-                                    className="text-xs font-bold text-gray-900 hover:text-black transition-colors duration-300 py-6 inline-block uppercase tracking-widest"
+                                    className="text-base font-semibold text-gray-900 hover:text-black transition-colors duration-300 py-6 inline-block capitalize"
                                 >
                                     {category.label}
                                 </Link>
                                 <MegaMenu
-                                    items={category.items}
-                                    image={megaMenuImages[category.id as keyof typeof megaMenuImages]}
-                                    type={category.label}
+                                    sections={category.sections}
+                                    featuredImage={megaMenuImages[category.id as keyof typeof megaMenuImages]}
+                                    label={category.label}
                                     isOpen={activeMegaMenu === category.id}
                                     onNavItemClick={() => setActiveMegaMenu(null)}
                                 />
@@ -114,7 +114,7 @@ export default function Header() {
                                     aria-label="User Account"
                                 >
                                     <User className="w-5 h-5" />
-                                    <span className="text-[12px] font-bold uppercase tracking-wider">Profile</span>
+                                    <span className="text-sm font-bold capitalize">Profile</span>
                                 </button>
                                 {/* Dropdown logic remains same */}
 
@@ -352,7 +352,7 @@ export default function Header() {
                                 aria-label="Login"
                             >
                                 <User className="w-5 h-5" />
-                                <span className="text-[10px] font-bold uppercase tracking-wider">Profile</span>
+                                <span className="text-sm font-bold capitalize">Account</span>
                             </Link>
                         )}
 
@@ -370,7 +370,7 @@ export default function Header() {
                                     </span>
                                 )}
                             </div>
-                            <span className="text-[12px] font-bold uppercase tracking-wider">Wishlist</span>
+                            <span className="text-sm font-bold capitalize">Wishlist</span>
                         </Link>
 
                         {/* Cart - Desktop with Label */}
@@ -387,7 +387,7 @@ export default function Header() {
                                     </span>
                                 )}
                             </div>
-                            <span className="text-[12px] font-bold uppercase tracking-wider">Bag</span>
+                            <span className="text-sm font-bold capitalize">Bag</span>
                         </Link>
 
                         {/* Mobile Actions */}

@@ -148,22 +148,22 @@ function VerifyOTPContent() {
                 <div className="text-center space-y-2">
                     <div className="flex items-center justify-center gap-2 mb-2">
                         <div className="w-6 h-0.5 bg-black rounded-full" />
-                        <span className="text-[9px] font-black uppercase tracking-[0.2em] text-gray-400">Identity Verification</span>
+                        <span className="text-xs font-semibold uppercase tracking-wide text-gray-500">Identity Verification</span>
                     </div>
-                    <h1 className="text-section-title font-black text-gray-900 uppercase tracking-tight">
+                    <h1 className="text-3xl font-bold text-gray-900 tracking-tight">
                         Verify Your Email
                     </h1>
-                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">
+                    <p className="text-sm font-medium text-gray-500 mb-1">
                         We've sent a 6-digit code to
                     </p>
-                    <p className="text-[12px] font-black text-black uppercase tracking-tight">
+                    <p className="text-base font-semibold text-black">
                         {email || 'your email'}
                     </p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="mt-12 space-y-8">
                     <div>
-                        <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-6 text-center">
+                        <label className="block text-sm font-semibold text-gray-600 uppercase tracking-wide mb-6 text-center">
                             Enter Verification Code
                         </label>
                         <div className="flex gap-2 sm:gap-3 justify-center">
@@ -198,7 +198,7 @@ function VerifyOTPContent() {
                             ))}
                         </div>
                         {error && (
-                            <p className="mt-4 text-[10px] font-bold text-red-500 text-center uppercase tracking-widest animate-fade-in">
+                            <p className="mt-4 text-sm font-medium text-red-500 text-center animate-fade-in">
                                 {error}
                             </p>
                         )}
@@ -209,13 +209,13 @@ function VerifyOTPContent() {
                         fullWidth
                         isLoading={isLoading}
                         disabled={!isComplete || isLoading}
-                        className="h-14 bg-black text-white rounded-md font-black uppercase tracking-widest text-[10px] hover:bg-gray-900 transition-all shadow-none"
+                        className="h-14 bg-black text-white rounded-md font-semibold text-base hover:bg-gray-900 transition-all shadow-none"
                     >
                         {isLoading ? 'Verifying...' : 'Verify Code'}
                     </Button>
 
                     <div className="text-center space-y-4">
-                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                        <p className="text-sm font-medium text-gray-600">
                             Didn't receive the code?
                         </p>
                         <button
@@ -223,11 +223,11 @@ function VerifyOTPContent() {
                             onClick={handleResend}
                             disabled={!canResend}
                             className={`
-                                inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest
+                                inline-flex items-center gap-2 text-sm font-semibold
                                 transition-all duration-300
                                 ${canResend
                                     ? 'text-black hover:underline cursor-pointer'
-                                    : 'text-gray-300 cursor-not-allowed'
+                                    : 'text-gray-400 cursor-not-allowed'
                                 }
                             `}
                         >
@@ -239,7 +239,7 @@ function VerifyOTPContent() {
                     <div className="text-center pt-4">
                         <Link
                             href="/forgot-password"
-                            className="inline-flex items-center gap-2 text-[10px] font-black text-black hover:underline uppercase tracking-widest"
+                            className="inline-flex items-center gap-2 text-sm font-semibold text-black hover:underline"
                         >
                             <ArrowLeft className="w-4 h-4" />
                             Back
@@ -248,8 +248,8 @@ function VerifyOTPContent() {
                 </form>
 
                 <div className="mt-12 p-6 bg-gray-50 border border-gray-200 rounded-lg">
-                    <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest text-center leading-relaxed">
-                        <span className="text-black font-black">Security:</span> Never share this code with anyone. Our team will never ask for it.
+                    <p className="text-xs font-medium text-gray-600 text-center leading-relaxed">
+                        <span className="text-black font-semibold">Security:</span> Never share this code with anyone. Our team will never ask for it.
                     </p>
                 </div>
             </div>

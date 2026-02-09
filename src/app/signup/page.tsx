@@ -86,12 +86,12 @@ export default function SignupPage() {
                 <div className="text-center space-y-2">
                     <div className="flex items-center justify-center gap-2 mb-2">
                         <div className="w-6 h-0.5 bg-black rounded-full" />
-                        <span className="text-[9px] font-black uppercase tracking-[0.2em] text-gray-400">Join the Vault</span>
+                        <span className="text-xs font-semibold uppercase tracking-wide text-gray-500">Join the Vault</span>
                     </div>
-                    <h1 className="text-section-title font-black text-gray-900 uppercase tracking-tight">
+                    <h1 className="text-3xl font-bold text-gray-900 tracking-tight">
                         Create Account
                     </h1>
-                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                    <p className="text-sm font-medium text-gray-500">
                         Join our premium community
                     </p>
                 </div>
@@ -150,18 +150,18 @@ export default function SignupPage() {
                             required
                             className="w-4 h-4 rounded border-gray-300 text-black focus:ring-black cursor-pointer"
                         />
-                        <label htmlFor="terms" className="text-[10px] font-black text-gray-400 uppercase tracking-widest cursor-pointer select-none">
+                        <label htmlFor="terms" className="text-sm font-medium text-gray-600 cursor-pointer select-none">
                             I agree to the{' '}
                             <Link
                                 href="/terms"
-                                className="text-black hover:underline font-black transition-colors duration-300"
+                                className="text-black hover:underline font-semibold transition-colors duration-300"
                             >
                                 Terms
                             </Link>{' '}
                             and{' '}
                             <Link
                                 href="/privacy"
-                                className="text-black hover:underline font-black transition-colors duration-300"
+                                className="text-black hover:underline font-semibold transition-colors duration-300"
                             >
                                 Privacy
                             </Link>
@@ -172,17 +172,17 @@ export default function SignupPage() {
                         type="submit"
                         fullWidth
                         isLoading={isLoading}
-                        className="h-14 bg-black text-white rounded-md font-black uppercase tracking-widest text-[10px] hover:bg-gray-900 transition-all shadow-none"
+                        className="h-14 bg-black text-white rounded-md font-semibold text-base hover:bg-gray-900 transition-all shadow-none"
                     >
                         Create Account
                     </Button>
 
                     <div className="text-center pt-4">
-                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                        <p className="text-sm font-medium text-gray-600">
                             Already have an account?{' '}
                             <Link
                                 href="/login"
-                                className="text-black hover:underline font-black transition-colors duration-300 ml-1"
+                                className="text-black hover:underline font-semibold transition-colors duration-300 ml-1"
                             >
                                 Sign in
                             </Link>

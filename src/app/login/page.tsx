@@ -64,12 +64,12 @@ export default function LoginPage() {
                 <div className="text-center space-y-2">
                     <div className="flex items-center justify-center gap-2 mb-2">
                         <div className="w-6 h-0.5 bg-black rounded-full" />
-                        <span className="text-[9px] font-black uppercase tracking-[0.2em] text-gray-400">Secure Access</span>
+                        <span className="text-xs font-semibold uppercase tracking-wide text-gray-500">Secure Access</span>
                     </div>
-                    <h1 className="text-section-title font-black text-gray-900 uppercase tracking-tight">
+                    <h1 className="text-3xl font-bold text-gray-900 tracking-tight">
                         Welcome Back
                     </h1>
-                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                    <p className="text-sm font-medium text-gray-500">
                         Sign in to your premium account
                     </p>
                 </div>
@@ -107,7 +107,7 @@ export default function LoginPage() {
                             />
                             <label
                                 htmlFor="remember-me"
-                                className="text-[10px] font-black text-gray-400 uppercase tracking-widest cursor-pointer select-none"
+                                className="text-sm font-medium text-gray-600 cursor-pointer select-none"
                             >
                                 Remember me
                             </label>
@@ -115,7 +115,7 @@ export default function LoginPage() {
 
                         <Link
                             href="/forgot-password"
-                            className="text-[10px] font-black text-black hover:underline uppercase tracking-widest"
+                            className="text-sm font-semibold text-black hover:underline"
                         >
                             Forgot password?
                         </Link>
@@ -125,17 +125,17 @@ export default function LoginPage() {
                         type="submit"
                         fullWidth
                         isLoading={isLoading}
-                        className="h-14 bg-black text-white rounded-md font-black uppercase tracking-widest text-[10px] hover:bg-gray-900 transition-all shadow-none"
+                        className="h-14 bg-black text-white rounded-md font-semibold text-base hover:bg-gray-900 transition-all shadow-none"
                     >
                         Sign In
                     </Button>
 
                     <div className="text-center pt-4">
-                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                        <p className="text-sm font-medium text-gray-600">
                             Don&apos;t have an account?{' '}
                             <Link
                                 href="/signup"
-                                className="text-black hover:underline font-black transition-colors duration-300 ml-1"
+                                className="text-black hover:underline font-semibold transition-colors duration-300 ml-1"
                             >
                                 Sign up
                             </Link>

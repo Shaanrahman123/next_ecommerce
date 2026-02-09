@@ -49,19 +49,19 @@ export default function AdminForgotPasswordPage() {
                         <div className="w-16 h-16 bg-black rounded-md flex items-center justify-center mx-auto mb-6">
                             <CheckCircle2 className="w-8 h-8 text-white" />
                         </div>
-                        <h2 className="text-section-title font-black text-gray-900 uppercase tracking-tight mb-3">
+                        <h2 className="text-3xl font-bold text-gray-900 tracking-tight mb-3">
                             Link Sent
                         </h2>
-                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">
+                        <p className="text-sm font-medium text-gray-500 mb-2">
                             Recovery instructions have been sent to
                         </p>
-                        <p className="text-[12px] font-black text-black uppercase tracking-tight mb-8">
+                        <p className="text-base font-semibold text-black mb-8">
                             {email}
                         </p>
                         <Button
                             onClick={() => router.push('/admin/login')}
                             fullWidth
-                            className="h-12 bg-black text-white rounded-md font-black uppercase tracking-widest text-[10px] hover:bg-gray-900 transition-all shadow-none"
+                            className="h-12 bg-black text-white rounded-md font-semibold text-base hover:bg-gray-900 transition-all shadow-none"
                         >
                             Return to Login
                         </Button>
@@ -77,12 +77,12 @@ export default function AdminForgotPasswordPage() {
                 <div className="text-center space-y-2">
                     <div className="flex items-center justify-center gap-2 mb-2">
                         <div className="w-6 h-0.5 bg-black rounded-full" />
-                        <span className="text-[9px] font-black uppercase tracking-[0.2em] text-gray-400">Recovery</span>
+                        <span className="text-xs font-semibold uppercase tracking-wide text-gray-500">Recovery</span>
                     </div>
-                    <h1 className="text-section-title font-black text-gray-900 uppercase tracking-tight">
+                    <h1 className="text-3xl font-bold text-gray-900 tracking-tight">
                         Reset Password
                     </h1>
-                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest max-w-sm mx-auto">
+                    <p className="text-sm font-medium text-gray-500 max-w-sm mx-auto">
                         Authorized email required for password recovery
                     </p>
                 </div>
@@ -107,7 +107,7 @@ export default function AdminForgotPasswordPage() {
                         type="submit"
                         fullWidth
                         isLoading={isLoading}
-                        className="h-14 bg-black text-white rounded-md font-black uppercase tracking-widest text-[10px] hover:bg-gray-900 transition-all shadow-none"
+                        className="h-14 bg-black text-white rounded-md font-semibold text-base hover:bg-gray-900 transition-all shadow-none"
                     >
                         Send Recovery Link
                     </Button>
@@ -115,7 +115,7 @@ export default function AdminForgotPasswordPage() {
                     <div className="text-center pt-4">
                         <Link
                             href="/admin/login"
-                            className="inline-flex items-center gap-2 text-[10px] font-black text-black hover:underline uppercase tracking-widest"
+                            className="inline-flex items-center gap-2 text-sm font-semibold text-black hover:underline"
                         >
                             <ArrowLeft className="w-4 h-4" />
                             Back to Login

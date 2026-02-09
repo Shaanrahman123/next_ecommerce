@@ -49,13 +49,13 @@ export default function MobileSidebar({ isOpen, onClose, isAuthenticated, user, 
                         <p className="text-gray-300 text-sm font-medium">Discover premium fashion</p>
 
                         {!isAuthenticated ? (
-                            <div className="mt-3 flex items-center gap-2 text-xs font-bold uppercase tracking-wider">
+                            <div className="mt-3 flex items-center gap-2 text-sm font-bold capitalize">
                                 <Link href="/login" className="hover:underline" onClick={onClose}>Sign Up</Link>
                                 <span>•</span>
                                 <Link href="/login" className="hover:underline" onClick={onClose}>Login</Link>
                             </div>
                         ) : (
-                            <div className="mt-3 text-xs font-bold uppercase tracking-wider">
+                            <div className="mt-3 text-sm font-bold capitalize">
                                 {user?.name || 'User'}
                             </div>
                         )}
@@ -92,39 +92,47 @@ export default function MobileSidebar({ isOpen, onClose, isAuthenticated, user, 
 
                             {/* Expanded Content */}
                             <div
-                                className={`overflow-hidden transition-all duration-300 bg-gray-50/50 ${expandedCategory === category.id ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'
+                                className={`overflow-hidden transition-all duration-300 bg-gray-50/50 ${expandedCategory === category.id ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'
                                     }`}
                             >
-                                <div className="px-6 py-2 space-y-1">
-                                    {category.items.map((item) => (
-                                        <div key={item.slug} className="py-1">
-                                            <Link
-                                                href={`${category.basePath}&item=${item.slug}`}
-                                                className="flex items-center gap-3 py-2 group"
-                                                onClick={onClose}
-                                            >
-                                                {/* Small thumbnail for mobile menu - premium feel */}
-                                                <div className="relative w-10 h-10 rounded-md overflow-hidden bg-gray-200 shrink-0">
-                                                    <Image
-                                                        src={item.image}
-                                                        alt={item.name}
-                                                        fill
-                                                        className="object-cover"
-                                                        sizes="40px"
-                                                    />
-                                                </div>
-                                                <span className="text-gray-600 text-sm font-medium group-hover:text-black transition-colors">
-                                                    {item.name}
-                                                </span>
-                                            </Link>
+                                <div className="px-6 py-4 space-y-6">
+                                    {category.sections.map((section, sidx) => (
+                                        <div key={sidx} className="space-y-3">
+                                            <h4 className="text-xs font-bold text-gray-400 capitalize">
+                                                {section.title}
+                                            </h4>
+                                            <div className="space-y-2">
+                                                {section.items.map((item) => (
+                                                    <Link
+                                                        key={item.slug}
+                                                        href={`${section.basePath}&item=${item.slug}`}
+                                                        className="flex items-center gap-3 py-1.5 group"
+                                                        onClick={onClose}
+                                                    >
+                                                        <div className="relative w-10 h-10 rounded-lg overflow-hidden bg-gray-200 shrink-0">
+                                                            <Image
+                                                                src={item.image}
+                                                                alt={item.name}
+                                                                fill
+                                                                className="object-cover"
+                                                                sizes="40px"
+                                                            />
+                                                        </div>
+                                                        <span className="text-gray-600 text-[14px] font-semibold group-hover:text-black transition-colors">
+                                                            {item.name}
+                                                        </span>
+                                                    </Link>
+                                                ))}
+                                            </div>
                                         </div>
                                     ))}
                                     <Link
                                         href={category.basePath}
-                                        className="block text-black text-sm font-bold py-3 mt-2 border-t border-gray-200 hover:underline"
+                                        className="text-black text-xs font-bold py-4 mt-6 border-t border-gray-200 hover:gap-2 flex items-center gap-1 transition-all"
                                         onClick={onClose}
                                     >
-                                        View All {category.label}
+                                        Explore All {category.label}
+                                        <ChevronRight size={14} />
                                     </Link>
                                 </div>
                             </div>
@@ -136,7 +144,7 @@ export default function MobileSidebar({ isOpen, onClose, isAuthenticated, user, 
                 <div className="border-t border-gray-100 bg-gray-50 pb-20 pt-4">
                     <div className="px-6 space-y-6">
                         <div>
-                            <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Support</h3>
+                            <h3 className="text-xs font-bold text-gray-400 capitalize mb-4">Support</h3>
                             <div className="space-y-4">
                                 <Link href="/contact" className="flex items-center gap-3 text-gray-600 hover:text-black" onClick={onClose}>
                                     <HelpCircle size={18} />
@@ -150,7 +158,7 @@ export default function MobileSidebar({ isOpen, onClose, isAuthenticated, user, 
                         </div>
 
                         <div>
-                            <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Legal</h3>
+                            <h3 className="text-xs font-bold text-gray-400 capitalize mb-4">Legal</h3>
                             <div className="space-y-4">
                                 <Link href="/terms" className="block text-sm text-gray-600 hover:text-black" onClick={onClose}>Terms of Use</Link>
                                 <Link href="/privacy" className="block text-sm text-gray-600 hover:text-black" onClick={onClose}>Privacy Policy</Link>

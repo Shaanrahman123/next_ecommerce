@@ -12,16 +12,30 @@ import {
     MoreVertical,
     Clock,
     ArrowRight,
-    ChevronDown
+    ChevronDown,
+    Calendar,
+    IndianRupee
 } from 'lucide-react';
+import {
+    BarChart,
+    Bar,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    ResponsiveContainer,
+    Cell,
+    AreaChart,
+    Area
+} from 'recharts';
 
 const stats = [
     {
         label: 'Total Revenue',
-        value: '$128,430',
+        value: '₹1,28,430',
         trend: '+12.5%',
         isUp: true,
-        icon: DollarSign,
+        icon: IndianRupee,
         chart: [30, 45, 35, 50, 40, 60, 55]
     },
     {
@@ -51,11 +65,11 @@ const stats = [
 ];
 
 const recentOrders = [
-    { id: '#ORD-7234', customer: 'Alexander Wright', product: 'Premium Sneakers', amount: '$189.00', status: 'Delivered', date: '2 mins ago' },
-    { id: '#ORD-7233', customer: 'Sophia Chen', product: 'Leather Handbag', amount: '$450.00', status: 'Processing', date: '15 mins ago' },
-    { id: '#ORD-7232', customer: 'Marcus Miller', product: 'Classic White Tee', amount: '$45.00', status: 'Shipped', date: '1 hour ago' },
-    { id: '#ORD-7231', customer: 'Elena Rodriguez', product: 'Canvas Tote Bag', amount: '$35.00', status: 'Delivered', date: '3 hours ago' },
-    { id: '#ORD-7230', customer: 'James Wilson', product: 'Minimal Watch', amount: '$299.00', status: 'Processing', date: '5 hours ago' },
+    { id: '#ORD-7234', customer: 'Alexander Wright', product: 'Premium Sneakers', amount: '₹12,189.00', status: 'Delivered', date: 'Feb 09, 2026' },
+    { id: '#ORD-7233', customer: 'Sophia Chen', product: 'Leather Handbag', amount: '₹34,450.00', status: 'Processing', date: 'Feb 09, 2026' },
+    { id: '#ORD-7232', customer: 'Marcus Miller', product: 'Classic White Tee', amount: '₹2,445.00', status: 'Shipped', date: 'Feb 08, 2026' },
+    { id: '#ORD-7231', customer: 'Elena Rodriguez', product: 'Canvas Tote Bag', amount: '₹1,835.00', status: 'Delivered', date: 'Feb 08, 2026' },
+    { id: '#ORD-7230', customer: 'James Wilson', product: 'Minimal Watch', amount: '₹24,299.00', status: 'Processing', date: 'Feb 07, 2026' },
 ];
 
 const revenueData = [
@@ -232,18 +246,31 @@ export default function Dashboard() {
                             </div>
                         </div>
                         <div>
-                            <p className="text-xs font-semibold text-gray-500 capitalize tracking-tight">{stat.label}</p>
+                            <p className="text-sm font-medium text-gray-500">{stat.label}</p>
                             <h3 className="text-2xl font-bold text-black mt-1 tracking-tight">{stat.value}</h3>
                         </div>
-                        {/* Sparkline Mock */}
-                        <div className="mt-4 h-10 flex items-end space-x-1">
-                            {stat.chart.map((point, i) => (
-                                <div
-                                    key={i}
-                                    className={`w-full rounded-t-sm transition-all duration-500 ${stat.isUp ? 'bg-gray-200 group-hover:bg-black/20' : 'bg-gray-100'}`}
-                                    style={{ height: `${point}%` }}
-                                />
-                            ))}
+                        {/* Sparkline Recharts */}
+                        <div className="mt-4 h-12 w-full">
+                            <ResponsiveContainer width="100%" height="100%">
+                                <AreaChart data={stat.chart.map(v => ({ value: v }))}>
+                                    <defs>
+                                        <linearGradient id={`gradient-${index}`} x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="5%" stopColor={stat.isUp ? '#22c55e' : '#ef4444'} stopOpacity={0.3} />
+                                            <stop offset="95%" stopColor={stat.isUp ? '#22c55e' : '#ef4444'} stopOpacity={0} />
+                                        </linearGradient>
+                                    </defs>
+                                    <Area
+                                        type="monotone"
+                                        dataKey="value"
+                                        stroke={stat.isUp ? '#22c55e' : '#ef4444'}
+                                        strokeWidth={2}
+                                        fillOpacity={1}
+                                        fill={`url(#gradient-${index})`}
+                                        isAnimationActive={true}
+                                        animationDuration={2000}
+                                    />
+                                </AreaChart>
+                            </ResponsiveContainer>
                         </div>
                     </motion.div>
                 ))}
@@ -265,42 +292,69 @@ export default function Dashboard() {
                                 </span>
                             )}
                         </h3>
-                        <p className="text-[10px] font-semibold text-gray-400 capitalize tracking-widest">Global sales performance analytics</p>
+                        <p className="text-sm font-medium text-gray-500">Global sales performance analytics</p>
                     </div>
                     <div className="flex items-center gap-4">
                         <div className="flex items-center gap-2">
                             <div className="w-3 h-3 bg-black rounded-full" />
-                            <span className="text-xs font-bold capitalize text-black">Revenue</span>
+                            <span className="text-sm font-semibold text-black">Revenue</span>
                         </div>
-                        <select className="bg-gray-50 border border-gray-300 rounded-xl px-4 py-2 text-xs font-semibold outline-none">
-                            <option>This Week</option>
-                            <option>Last Week</option>
-                        </select>
                     </div>
                 </div>
 
-                <div className="h-80 flex items-end justify-between w-full relative px-2">
-                    {/* Grid Lines */}
-                    <div className="absolute inset-0 flex flex-col justify-between pointer-events-none px-2 py-1">
-                        {[1, 2, 3, 4, 5].map(i => <div key={i} className="w-full border-t border-gray-100 h-0" />)}
-                    </div>
-
-                    {/* Bar Chart Mock with guaranteed visibility */}
-                    {revenueData.map((data, i) => (
-                        <div key={i} className="relative group w-full max-w-[56px] flex flex-col items-center z-10">
-                            <motion.div
-                                initial={{ height: 0 }}
-                                animate={{ height: `${(data.value / 45000) * 100}%` }}
-                                transition={{ duration: 1, delay: i * 0.05, ease: "easeOut" }}
-                                className="w-full bg-gray-300 group-hover:bg-black rounded-t-lg transition-all duration-300 relative min-h-[4px]"
+                <div className="h-80 w-full mt-4">
+                    <ResponsiveContainer width="100%" height="100%">
+                        <BarChart
+                            data={revenueData}
+                            margin={{ top: 20, right: 0, left: -20, bottom: 0 }}
+                            barSize={40}
+                        >
+                            <XAxis
+                                dataKey="label"
+                                axisLine={false}
+                                tickLine={false}
+                                tick={{ fontSize: 10, fontWeight: 700, fill: '#9ca3af' }}
+                                dy={10}
+                            />
+                            <YAxis
+                                axisLine={false}
+                                tickLine={false}
+                                tick={{ fontSize: 10, fontWeight: 700, fill: '#9ca3af' }}
+                                tickFormatter={(value) => `₹${value / 1000}k`}
+                            />
+                            <Tooltip
+                                cursor={{ fill: '#f9fafb' }}
+                                content={({ active, payload }) => {
+                                    if (active && payload && payload.length) {
+                                        return (
+                                            <div className="bg-black text-white p-3 rounded-xl shadow-2xl border border-gray-800">
+                                                <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">
+                                                    {payload[0].payload.label}
+                                                </p>
+                                                <p className="text-sm font-bold">
+                                                    ₹{payload[0].value?.toLocaleString()}
+                                                </p>
+                                            </div>
+                                        );
+                                    }
+                                    return null;
+                                }}
+                            />
+                            <Bar
+                                dataKey="value"
+                                radius={[6, 6, 0, 0]}
+                                animationDuration={1500}
                             >
-                                <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-black text-white text-[10px] font-bold px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-20">
-                                    ${data.value.toLocaleString()}
-                                </div>
-                            </motion.div>
-                            <span className="text-[10px] font-bold text-gray-400 mt-4 capitalize">{data.label}</span>
-                        </div>
-                    ))}
+                                {revenueData.map((entry, index) => (
+                                    <Cell
+                                        key={`cell-${index}`}
+                                        fill={index === revenueData.length - 1 ? '#000000' : '#e5e7eb'}
+                                        className="hover:fill-black transition-colors duration-300"
+                                    />
+                                ))}
+                            </Bar>
+                        </BarChart>
+                    </ResponsiveContainer>
                 </div>
             </motion.div>
 
@@ -313,7 +367,7 @@ export default function Dashboard() {
                 <div className="px-8 py-6 border-b border-gray-100 flex items-center justify-between">
                     <div>
                         <h3 className="text-xl font-bold text-black capitalize tracking-tight">Recent Orders</h3>
-                        <p className="text-[10px] font-semibold text-gray-400 capitalize tracking-widest">Real-time transaction log</p>
+                        <p className="text-sm font-medium text-gray-500">Real-time transaction log</p>
                     </div>
                     <button className="text-xs font-bold text-black flex items-center space-x-1 hover:underline capitalize">
                         <span>View All Orders</span>
@@ -325,24 +379,24 @@ export default function Dashboard() {
                     <table className="w-full text-left">
                         <thead>
                             <tr className="bg-gray-50/50">
-                                <th className="px-8 py-5 text-[10px] font-bold text-gray-400 capitalize tracking-widest">Order ID</th>
-                                <th className="px-8 py-5 text-[10px] font-bold text-gray-400 capitalize tracking-widest">Customer</th>
-                                <th className="px-8 py-5 text-[10px] font-bold text-gray-400 capitalize tracking-widest">Product</th>
-                                <th className="px-8 py-5 text-[10px] font-bold text-gray-400 capitalize tracking-widest">Amount</th>
-                                <th className="px-8 py-5 text-[10px] font-bold text-gray-400 capitalize tracking-widest">Status</th>
-                                <th className="px-8 py-5 text-[10px] font-bold text-gray-400 capitalize tracking-widest">Date</th>
+                                <th className="px-8 py-5 text-sm font-semibold text-gray-500 uppercase tracking-wide">Order ID</th>
+                                <th className="px-8 py-5 text-sm font-semibold text-gray-500 uppercase tracking-wide">Customer</th>
+                                <th className="px-8 py-5 text-sm font-semibold text-gray-500 uppercase tracking-wide">Product</th>
+                                <th className="px-8 py-5 text-sm font-semibold text-gray-500 uppercase tracking-wide">Amount</th>
+                                <th className="px-8 py-5 text-sm font-semibold text-gray-500 uppercase tracking-wide">Status</th>
+                                <th className="px-8 py-5 text-sm font-semibold text-gray-500 uppercase tracking-wide">Date</th>
                                 <th className="px-8 py-5"></th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100">
                             {recentOrders.map((order) => (
                                 <tr key={order.id} className="hover:bg-gray-50/50 transition-colors group">
-                                    <td className="px-8 py-6 font-bold text-xs text-black tracking-tight">{order.id}</td>
-                                    <td className="px-8 py-6 text-xs text-black font-bold tracking-tight">{order.customer}</td>
-                                    <td className="px-8 py-6 text-xs text-gray-500 font-semibold capitalize">{order.product}</td>
-                                    <td className="px-8 py-6 text-xs font-bold text-black">{order.amount}</td>
+                                    <td className="px-8 py-6 font-bold text-sm text-black tracking-tight">{order.id}</td>
+                                    <td className="px-8 py-6 text-sm text-black font-bold tracking-tight">{order.customer}</td>
+                                    <td className="px-8 py-6 text-sm text-gray-500 font-semibold capitalize">{order.product}</td>
+                                    <td className="px-8 py-6 text-sm font-bold text-black">{order.amount}</td>
                                     <td className="px-8 py-6">
-                                        <span className={`px-3 py-1 rounded-sm text-[9px] font-bold capitalize tracking-tight
+                                        <span className={`px-3 py-1 rounded-sm text-xs font-bold capitalize tracking-tight
                       ${order.status === 'Delivered' ? 'bg-black text-white' :
                                                 order.status === 'Processing' ? 'bg-gray-100 text-gray-500' :
                                                     'bg-gray-200 text-black'}
@@ -350,8 +404,8 @@ export default function Dashboard() {
                                             {order.status}
                                         </span>
                                     </td>
-                                    <td className="px-8 py-6 text-[10px] text-gray-400 flex items-center space-x-1 font-semibold capitalize">
-                                        <Clock className="w-3 h-3" />
+                                    <td className="px-8 py-6 text-xs text-gray-400 flex items-center space-x-2 font-semibold capitalize">
+                                        <Calendar className="w-3.5 h-3.5" />
                                         <span>{order.date}</span>
                                     </td>
                                     <td className="px-8 py-6 text-right">
