@@ -14,6 +14,7 @@ import {
     LogOut,
     ChevronLeft,
     ChevronRight,
+    ChevronDown,
     Search,
     Bell
 } from 'lucide-react';
@@ -22,7 +23,17 @@ import { usePathname } from 'next/navigation';
 
 const sidebarItems = [
     { icon: LayoutDashboard, label: 'Dashboard', href: '/admin/dashboard' },
-    { icon: Package, label: 'Products', href: '/admin/dashboard/products' },
+    {
+        icon: Package,
+        label: 'Products',
+        href: '/admin/dashboard/products',
+        subItems: [
+            { label: 'All Products', href: '/admin/dashboard/products' },
+            { label: 'Add Product', href: '/admin/dashboard/products/add' },
+            { label: 'Categories', href: '/admin/dashboard/products/categories' },
+            { label: 'Inventory', href: '/admin/dashboard/products/inventory' },
+        ]
+    },
     { icon: ShoppingBag, label: 'Orders', href: '/admin/dashboard/orders' },
     { icon: Users, label: 'Customers', href: '/admin/dashboard/customers' },
     { icon: BarChart3, label: 'Analytics', href: '/admin/dashboard/analytics' },
@@ -32,10 +43,19 @@ const sidebarItems = [
 export default function Sidebar() {
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [isMobileOpen, setIsMobileOpen] = useState(false);
+    const [openMenus, setOpenMenus] = useState<string[]>([]);
     const pathname = usePathname();
 
     const toggleSidebar = () => setIsCollapsed(!isCollapsed);
     const toggleMobileSidebar = () => setIsMobileOpen(!isMobileOpen);
+
+    const toggleMenu = (label: string) => {
+        setOpenMenus(prev =>
+            prev.includes(label)
+                ? prev.filter(m => m !== label)
+                : [...prev, label]
+        );
+    };
 
     return (
         <>
@@ -101,35 +121,94 @@ export default function Sidebar() {
                     {/* Navigation Items */}
                     <nav className="flex-1 space-y-1.5">
                         {sidebarItems.map((item) => {
-                            const isActive = pathname === item.href;
+                            // @ts-ignore
+                            const hasSubItems = item.subItems && item.subItems.length > 0;
+                            // @ts-ignore
+                            const isSubActive = hasSubItems && item.subItems.some(sub => pathname === sub.href);
+                            const isActive = pathname === item.href || isSubActive;
+                            const isOpen = openMenus.includes(item.label);
+
                             return (
-                                <Link
-                                    key={item.href}
-                                    href={item.href}
-                                    onClick={() => setIsMobileOpen(false)}
-                                    className={`flex items-center p-3 rounded-xl transition-all group relative
-                    ${isActive
-                                            ? 'bg-black text-white shadow-lg shadow-black/5'
-                                            : 'text-gray-500 hover:bg-gray-50 hover:text-black'
-                                        }
-                  `}
-                                >
-                                    <item.icon className={`w-5 h-5 min-w-[20px] ${isActive ? 'text-white' : 'group-hover:text-black'}`} />
-                                    {!isCollapsed && (
-                                        <motion.span
-                                            initial={{ opacity: 0, x: -10 }}
-                                            animate={{ opacity: 1, x: 0 }}
-                                            className="ml-3 font-medium whitespace-nowrap"
+                                <div key={item.label}>
+                                    {hasSubItems ? (
+                                        <button
+                                            onClick={() => toggleMenu(item.label)}
+                                            className={`flex items-center w-full p-3 rounded-xl transition-all group relative
+                                                ${isActive && !isOpen
+                                                    ? 'bg-black text-white shadow-lg shadow-black/5'
+                                                    : 'text-gray-500 hover:bg-gray-50 hover:text-black'
+                                                }
+                                            `}
                                         >
-                                            {item.label}
-                                        </motion.span>
+                                            <item.icon className={`w-5 h-5 min-w-[20px] ${isActive && !isOpen ? 'text-white' : 'group-hover:text-black'}`} />
+                                            {!isCollapsed && (
+                                                <>
+                                                    <span className="ml-3 font-medium whitespace-nowrap flex-1 text-left">
+                                                        {item.label}
+                                                    </span>
+                                                    <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+                                                </>
+                                            )}
+                                        </button>
+                                    ) : (
+                                        <Link
+                                            href={item.href}
+                                            onClick={() => setIsMobileOpen(false)}
+                                            className={`flex items-center p-3 rounded-xl transition-all group relative
+                                                ${isActive
+                                                    ? 'bg-black text-white shadow-lg shadow-black/5'
+                                                    : 'text-gray-500 hover:bg-gray-50 hover:text-black'
+                                                }
+                                            `}
+                                        >
+                                            <item.icon className={`w-5 h-5 min-w-[20px] ${isActive ? 'text-white' : 'group-hover:text-black'}`} />
+                                            {!isCollapsed && (
+                                                <span className="ml-3 font-medium whitespace-nowrap">
+                                                    {item.label}
+                                                </span>
+                                            )}
+                                            {isCollapsed && (
+                                                <div className="absolute left-16 px-2 py-1 bg-black text-white text-xs rounded opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap z-50">
+                                                    {item.label}
+                                                </div>
+                                            )}
+                                        </Link>
                                     )}
-                                    {isCollapsed && (
-                                        <div className="absolute left-16 px-2 py-1 bg-black text-white text-xs rounded opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap z-50">
-                                            {item.label}
-                                        </div>
-                                    )}
-                                </Link>
+
+                                    {/* Sub Items */}
+                                    <AnimatePresence>
+                                        {hasSubItems && isOpen && !isCollapsed && (
+                                            <motion.div
+                                                initial={{ opacity: 0, height: 0 }}
+                                                animate={{ opacity: 1, height: 'auto' }}
+                                                exit={{ opacity: 0, height: 0 }}
+                                                className="overflow-hidden"
+                                            >
+                                                <div className="mt-1 ml-4 pl-4 border-l border-gray-100 space-y-1">
+                                                    {/* @ts-ignore */}
+                                                    {item.subItems.map((subItem) => {
+                                                        const isActiveSub = pathname === subItem.href;
+                                                        return (
+                                                            <Link
+                                                                key={subItem.href}
+                                                                href={subItem.href}
+                                                                onClick={() => setIsMobileOpen(false)}
+                                                                className={`flex items-center p-2.5 rounded-lg text-sm transition-all
+                                                                    ${isActiveSub
+                                                                        ? 'text-black font-semibold bg-gray-50'
+                                                                        : 'text-gray-500 hover:text-black hover:bg-gray-50'
+                                                                    }
+                                                                `}
+                                                            >
+                                                                {subItem.label}
+                                                            </Link>
+                                                        );
+                                                    })}
+                                                </div>
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
+                                </div>
                             );
                         })}
                     </nav>
