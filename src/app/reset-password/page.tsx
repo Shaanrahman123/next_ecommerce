@@ -10,12 +10,14 @@ function ResetPasswordContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const email = searchParams.get('email') || '';
+    const token = searchParams.get('token') || '';
 
     const [formData, setFormData] = useState({
         password: '',
         confirmPassword: '',
     });
     const [errors, setErrors] = useState<{ password?: string; confirmPassword?: string }>({});
+    const [apiError, setApiError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -60,13 +62,32 @@ function ResetPasswordContent() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
         if (!validateForm()) return;
 
         setIsLoading(true);
+        setApiError('');
 
-        // Simulate API call
-        setTimeout(() => {
+        try {
+            const response = await fetch('/api/auth/reset-password', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email,
+                    token,
+                    password: formData.password,
+                }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok || !data.status) {
+                setApiError(data.message || 'Failed to reset password. The code may be invalid or expired.');
+                setIsLoading(false);
+                return;
+            }
+
             setIsLoading(false);
             setIsSuccess(true);
 
@@ -74,7 +95,10 @@ function ResetPasswordContent() {
             setTimeout(() => {
                 router.push('/login');
             }, 3000);
-        }, 1500);
+        } catch (err: any) {
+            setApiError(err.message || 'Something went wrong. Please try again.');
+            setIsLoading(false);
+        }
     };
 
     if (isSuccess) {
@@ -122,6 +146,11 @@ function ResetPasswordContent() {
                 </div>
 
                 <form onSubmit={handleSubmit} className="mt-12 space-y-8">
+                    {apiError && (
+                        <div className="p-4 text-sm text-red-700 bg-red-50 border border-red-200 rounded-md animate-fade-in">
+                            {apiError}
+                        </div>
+                    )}
                     <div className="space-y-6">
                         <div className="relative">
                             <Input

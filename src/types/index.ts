@@ -1,9 +1,17 @@
+export const LOGIN_TYPES = {
+  DIRECT: 'direct',
+  SOCIAL: 'social'
+} as const;
+
+export type LoginType = typeof LOGIN_TYPES[keyof typeof LOGIN_TYPES];
+
 export interface User {
     id: string;
     email: string;
     name: string;
     password?: string;
     createdAt: Date;
+    loginType?: LoginType;
 }
 
 export interface Product {

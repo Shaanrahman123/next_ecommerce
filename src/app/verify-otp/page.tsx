@@ -98,18 +98,31 @@ function VerifyOTPContent() {
         setIsLoading(true);
         setError('');
 
-        // Simulate API call
-        setTimeout(() => {
-            // Mock validation - in production, verify with backend
-            if (otpCode === '123456') {
-                router.push(`/reset-password?email=${encodeURIComponent(email)}&token=${otpCode}`);
-            } else {
-                setError('Invalid verification code. Please try again.');
+        try {
+            const response = await fetch('/api/auth/verify-otp', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, otp: otpCode }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok || !data.status) {
+                setError(data.message || 'Invalid verification code. Please try again.');
                 setOtp(['', '', '', '', '', '']);
                 inputRefs.current[0]?.focus();
+                setIsLoading(false);
+                return;
             }
+
             setIsLoading(false);
-        }, 1500);
+            router.push(`/reset-password?email=${encodeURIComponent(email)}&token=${otpCode}`);
+        } catch (err: any) {
+            setError(err.message || 'Something went wrong. Please try again.');
+            setIsLoading(false);
+        }
     };
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -124,7 +137,7 @@ function VerifyOTPContent() {
         handleVerify(otpCode);
     };
 
-    const handleResend = () => {
+    const handleResend = async () => {
         if (!canResend) return;
 
         setCanResend(false);
@@ -133,11 +146,18 @@ function VerifyOTPContent() {
         setError('');
         inputRefs.current[0]?.focus();
 
-        // Simulate resend API call
-        setTimeout(() => {
-            // Show success message or toast
+        try {
+            await fetch('/api/auth/forgot-password', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email }),
+            });
             console.log('OTP resent successfully');
-        }, 500);
+        } catch (err) {
+            console.error('Failed to resend OTP:', err);
+        }
     };
 
     const isComplete = otp.every(digit => digit !== '');

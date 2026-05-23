@@ -29,13 +29,28 @@ export default function ForgotPasswordPage() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
         if (!validateEmail()) return;
 
         setIsLoading(true);
+        setError('');
 
-        // Simulate API call
-        setTimeout(() => {
+        try {
+            const response = await fetch('/api/auth/forgot-password', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok || !data.status) {
+                setError(data.message || 'Failed to send recovery code. Please try again.');
+                setIsLoading(false);
+                return;
+            }
+
             setIsLoading(false);
             setIsSuccess(true);
 
@@ -43,7 +58,10 @@ export default function ForgotPasswordPage() {
             setTimeout(() => {
                 router.push(`/verify-otp?email=${encodeURIComponent(email)}`);
             }, 2000);
-        }, 1500);
+        } catch (err: any) {
+            setError(err.message || 'Something went wrong. Please try again.');
+            setIsLoading(false);
+        }
     };
 
     if (isSuccess) {
