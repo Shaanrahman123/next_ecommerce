@@ -15,9 +15,11 @@ export interface IProduct extends Document {
   stockQuantity: number;
   isActive: boolean;
   featured: boolean;
+  homeSections?: string[];
   gender: 'men' | 'women' | 'kids' | 'unisex';
   sizes?: string[];
   colors?: string[];
+  colorVariants?: { name: string; hex: string }[];
   brand?: string;
   material?: string;
   season?: string;
@@ -107,6 +109,19 @@ const ProductSchema: Schema = new Schema(
       type: Boolean,
       default: false,
     },
+    homeSections: {
+      type: [String],
+      default: [],
+      enum: {
+        values: [
+          'trending-accessories',
+          'trending-indian-wear',
+          'trending-sports-wear',
+          'trending-footwear',
+        ],
+        message: 'Invalid home page section',
+      },
+    },
     gender: {
       type: String,
       enum: ['men', 'women', 'kids', 'unisex'],
@@ -120,6 +135,12 @@ const ProductSchema: Schema = new Schema(
       type: [String],
       default: [],
     },
+    colorVariants: [
+      {
+        name: { type: String, required: true, trim: true },
+        hex: { type: String, default: '#000000', trim: true },
+      },
+    ],
     brand: {
       type: String,
       trim: true,

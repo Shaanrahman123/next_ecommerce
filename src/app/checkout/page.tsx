@@ -39,10 +39,11 @@ export default function CheckoutPage() {
         });
     };
 
-    // Initial address selection
+    // Initial address selection — prefer default address
     useEffect(() => {
         if (addresses.length > 0 && !selectedAddressId) {
-            handleAddressSelect(addresses[0]);
+            const defaultAddr = addresses.find((a) => a.isDefault) ?? addresses[0];
+            handleAddressSelect(defaultAddr);
         }
     }, [addresses, selectedAddressId]);
 
@@ -196,13 +197,13 @@ export default function CheckoutPage() {
             {/* Header / Stepper */}
             <div className="bg-white border-b border-gray-300 pt-5 pb-5">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <h1 className="text-small font-bold text-gray-900 text-left mb-6 uppercase tracking-widest">Order Summary</h1>
+                    <h1 className="text-small font-bold text-heading text-left mb-6 uppercase tracking-widest">Order Summary</h1>
 
                     <div className="relative w-full">
                         {/* Progressive Background Line */}
                         <div className="absolute top-4 left-0 w-full h-px bg-gray-200 z-0" />
                         <div
-                            className="absolute top-4 left-0 h-px bg-black z-0 transition-all duration-500"
+                            className="absolute top-4 left-0 h-px bg-primary z-0 transition-all duration-500"
                             style={{ width: currentStep === 1 ? '0%' : currentStep === 2 ? '50%' : '100%' }}
                         />
 
@@ -216,12 +217,12 @@ export default function CheckoutPage() {
                                         }`}
                                 >
                                     <div className={`w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-bold transition-all duration-300 ${currentStep >= step.id
-                                        ? 'bg-black text-white'
+                                        ? 'bg-primary text-on-primary'
                                         : 'bg-white border-2 border-gray-300 text-gray-400'
                                         }`}>
                                         {currentStep > step.id ? <Check className="w-4 h-4" strokeWidth={3} /> : step.id}
                                     </div>
-                                    <span className={`text-[10px] mt-2 font-bold uppercase tracking-tight ${currentStep === step.id ? 'text-black' : 'text-gray-400'
+                                    <span className={`text-[10px] mt-2 font-bold uppercase tracking-tight ${currentStep === step.id ? 'text-heading' : 'text-gray-400'
                                         }`}>
                                         {step.label}
                                     </span>
@@ -240,10 +241,10 @@ export default function CheckoutPage() {
                         {/* Selected Address Card */}
                         <div className="bg-white border border-gray-300 rounded-2xl p-5 overflow-hidden animate-fade-in">
                             <div className="flex items-center justify-between mb-4">
-                                <h2 className="text-body font-bold text-gray-900">Deliver to:</h2>
+                                <h2 className="text-body font-bold text-heading">Deliver to:</h2>
                                 <button
                                     onClick={() => setIsAddressModalOpen(true)}
-                                    className="px-3 py-1.5 text-small font-bold text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors uppercase tracking-tight"
+                                    className="px-3 py-1.5 text-small font-bold text-heading border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors uppercase tracking-tight"
                                 >
                                     Change
                                 </button>
@@ -252,13 +253,13 @@ export default function CheckoutPage() {
                             {selectedAddress && (
                                 <div className="space-y-1">
                                     <div className="flex items-center gap-2">
-                                        <p className="font-bold text-gray-900 text-body uppercase tracking-tight">{selectedAddress.fullName}</p>
+                                        <p className="font-bold text-heading text-body uppercase tracking-tight">{selectedAddress.fullName}</p>
                                         <span className="bg-gray-100 text-gray-500 text-[10px] font-bold px-1.5 py-0.5 rounded uppercase">{selectedAddress.type || 'HOME'}</span>
                                     </div>
                                     <p className="text-small text-gray-600 leading-normal max-w-md">
                                         {selectedAddress.addressLine1}, {selectedAddress.addressLine2 ? `${selectedAddress.addressLine2}, ` : ''}{selectedAddress.city}, {selectedAddress.state} {selectedAddress.zipCode}
                                     </p>
-                                    <p className="text-small font-bold text-gray-900 mt-1 tracking-tight">{selectedAddress.phone}</p>
+                                    <p className="text-small font-bold text-heading mt-1 tracking-tight">{selectedAddress.phone}</p>
                                 </div>
                             )}
                         </div>
@@ -266,7 +267,7 @@ export default function CheckoutPage() {
                         {/* Order Items Review */}
                         <div ref={orderSummaryRef} className="bg-white border border-gray-300 rounded-2xl p-5 animate-fade-in">
                             <div className="flex items-center justify-between mb-4">
-                                <h2 className="text-body font-bold text-gray-900">Items in your order</h2>
+                                <h2 className="text-body font-bold text-heading">Items in your order</h2>
                                 <span className="text-small text-gray-500 font-medium">{items.length} Product(s)</span>
                             </div>
 
@@ -282,7 +283,7 @@ export default function CheckoutPage() {
                                             />
                                         </div>
                                         <div className="flex-1 min-w-0 py-1">
-                                            <p className="text-small font-bold text-gray-900 truncate">
+                                            <p className="text-small font-bold text-heading truncate">
                                                 {item.product.name}
                                             </p>
                                             <div className="flex items-center gap-2 mt-1">
@@ -291,7 +292,7 @@ export default function CheckoutPage() {
                                             </div>
                                             <p className="text-[10px] font-medium text-gray-400 mt-2 uppercase tracking-tighter">Qty: {item.quantity}</p>
                                             <div className="mt-2 flex items-center justify-between">
-                                                <p className="text-small font-bold text-gray-900">
+                                                <p className="text-small font-bold text-heading">
                                                     ₹{item.product.price.toLocaleString()}
                                                 </p>
                                             </div>
@@ -303,11 +304,11 @@ export default function CheckoutPage() {
 
                         {/* Price Summary Component (Visible on Mobile inside main flow) */}
                         <div className="lg:hidden bg-white border border-gray-300 rounded-2xl p-5 animate-fade-in">
-                            <h2 className="font-bold text-gray-900 mb-4 uppercase tracking-wider text-small">Price Details</h2>
+                            <h2 className="font-bold text-heading mb-4 uppercase tracking-wider text-small">Price Details</h2>
                             <div className="space-y-3">
                                 <div className="flex justify-between text-small">
                                     <span className="text-gray-500 font-medium">Price ({items.length} items)</span>
-                                    <span className="font-semibold text-gray-900">₹{subtotal.toLocaleString()}</span>
+                                    <span className="font-semibold text-heading">₹{subtotal.toLocaleString()}</span>
                                 </div>
                                 <div className="flex justify-between text-small">
                                     <span className="text-gray-500 font-medium">Shipping Fee</span>
@@ -317,12 +318,12 @@ export default function CheckoutPage() {
                                 </div>
                                 <div className="flex justify-between text-small">
                                     <span className="text-gray-500 font-medium">Tax</span>
-                                    <span className="font-semibold text-gray-900">₹{tax.toLocaleString()}</span>
+                                    <span className="font-semibold text-heading">₹{tax.toLocaleString()}</span>
                                 </div>
                                 <div className="border-t border-gray-100 pt-3 mt-4">
                                     <div className="flex justify-between items-baseline">
-                                        <span className="text-body font-bold text-gray-900">Total Amount</span>
-                                        <span className="text-price font-bold text-gray-900">₹{total.toLocaleString()}</span>
+                                        <span className="text-body font-bold text-heading">Total Amount</span>
+                                        <span className="text-price font-bold text-heading">₹{total.toLocaleString()}</span>
                                     </div>
                                 </div>
                             </div>
@@ -335,12 +336,12 @@ export default function CheckoutPage() {
                     {/* Right Column: Price Details (Bigger Device Review) */}
                     <div className="hidden lg:block lg:col-span-1">
                         <div className="bg-white border border-gray-300 rounded-2xl p-6 sticky top-8">
-                            <h2 className="text-small font-bold text-gray-900 mb-6 uppercase tracking-wider">Price Details</h2>
+                            <h2 className="text-small font-bold text-heading mb-6 uppercase tracking-wider">Price Details</h2>
 
                             <div className="space-y-4">
                                 <div className="flex justify-between text-body">
                                     <span className="text-gray-500">Price ({items.length} items)</span>
-                                    <span className="font-bold text-gray-900">₹{subtotal.toLocaleString()}</span>
+                                    <span className="font-bold text-heading">₹{subtotal.toLocaleString()}</span>
                                 </div>
                                 <div className="flex justify-between text-body">
                                     <span className="text-gray-500">Shipping Fee</span>
@@ -350,13 +351,13 @@ export default function CheckoutPage() {
                                 </div>
                                 <div className="flex justify-between text-body">
                                     <span className="text-gray-500">Tax</span>
-                                    <span className="font-bold text-gray-900">₹{tax.toLocaleString()}</span>
+                                    <span className="font-bold text-heading">₹{tax.toLocaleString()}</span>
                                 </div>
 
                                 <div className="border-t border-gray-100 pt-4 mt-6">
                                     <div className="flex justify-between items-baseline mb-8">
-                                        <span className="text-body font-black text-gray-900 uppercase">Total Amount</span>
-                                        <span className="text-price font-black text-gray-900">₹{total.toLocaleString()}</span>
+                                        <span className="text-body font-black text-heading uppercase">Total Amount</span>
+                                        <span className="text-price font-black text-heading">₹{total.toLocaleString()}</span>
                                     </div>
 
                                     <Button
@@ -385,7 +386,7 @@ export default function CheckoutPage() {
                         <div className="flex flex-col">
                             <span className="text-small font-bold text-gray-400 uppercase tracking-tighter">Total Payable</span>
                             <div className="flex items-center gap-1.5">
-                                <span className="text-price font-black text-gray-900">₹{total.toLocaleString()}</span>
+                                <span className="text-price font-black text-heading">₹{total.toLocaleString()}</span>
                                 <button
                                     onClick={scrollToSummary}
                                     className="p-1 hover:bg-gray-100 rounded-full transition-colors"
@@ -413,8 +414,8 @@ export default function CheckoutPage() {
                     <div className="relative w-full max-w-lg bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl animate-slide-up overflow-hidden">
                         <div className="p-6 border-b border-gray-100 flex items-center justify-between sticky top-0 bg-white z-10">
                             <div>
-                                <h3 className="text-body font-bold text-gray-900">Select delivery address</h3>
-                                <div className="h-0.5 w-12 bg-black mt-1" />
+                                <h3 className="text-body font-bold text-heading">Select delivery address</h3>
+                                <div className="h-0.5 w-12 bg-primary mt-1" />
                             </div>
                             <button onClick={() => setIsAddressModalOpen(false)} className="p-2 hover:bg-gray-100 rounded-full transition-colors">
                                 <X className="w-5 h-5" />
@@ -423,7 +424,7 @@ export default function CheckoutPage() {
 
                         <div className="p-6 max-h-[70vh] overflow-y-auto space-y-6 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
                             <div className="flex items-center justify-between mb-4">
-                                <p className="text-body font-bold text-gray-900">Saved addresses</p>
+                                <p className="text-body font-bold text-heading">Saved addresses</p>
                                 <button
                                     onClick={() => setIsAddAddressModalOpen(true)}
                                     className="text-small font-bold text-blue-600 flex items-center gap-1 hover:underline"
@@ -441,17 +442,17 @@ export default function CheckoutPage() {
                                             setIsAddressModalOpen(false);
                                         }}
                                         className={`group relative flex flex-col gap-2 p-4 rounded-xl border-2 transition-all duration-300 cursor-pointer ${selectedAddressId === address.id
-                                            ? 'border-black bg-gray-50'
+                                            ? 'border-primary bg-gray-50'
                                             : 'border-gray-100 hover:border-gray-200 bg-white'
                                             }`}
                                     >
                                         {/* Row 1: Radio and Name */}
                                         <div className="flex items-center gap-3">
-                                            <div className={`h-5 w-5 shrink-0 rounded-full border-2 flex items-center justify-center transition-all ${selectedAddressId === address.id ? 'border-black bg-black' : 'border-gray-200'}`}>
+                                            <div className={`h-5 w-5 shrink-0 rounded-full border-2 flex items-center justify-center transition-all ${selectedAddressId === address.id ? 'border-primary bg-primary' : 'border-gray-200'}`}>
                                                 {selectedAddressId === address.id && <Check className="w-3 h-3 text-white" />}
                                             </div>
                                             <div className="flex-1 flex items-center gap-2">
-                                                <p className="font-bold text-gray-900">{address.fullName}</p>
+                                                <p className="font-bold text-heading">{address.fullName}</p>
                                                 {selectedAddressId === address.id && (
                                                     <span className="bg-blue-100 text-blue-600 text-[9px] font-bold px-1.5 py-0.5 rounded tracking-tighter">Currently selected</span>
                                                 )}
@@ -473,7 +474,7 @@ export default function CheckoutPage() {
                                             {address.email && (
                                                 <p className="text-[11px] text-gray-400 truncate">{address.email}</p>
                                             )}
-                                            <p className="text-[11px] font-bold text-gray-900 tracking-tighter">{address.phone}</p>
+                                            <p className="text-[11px] font-bold text-heading tracking-tighter">{address.phone}</p>
                                         </div>
                                     </div>
                                 ))}
@@ -490,8 +491,8 @@ export default function CheckoutPage() {
                     <div className="relative w-full max-w-lg bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl animate-fade-in overflow-hidden">
                         <div className="p-6 border-b border-gray-100 flex items-center justify-between sticky top-0 bg-white z-10">
                             <div>
-                                <h3 className="text-body font-bold text-gray-900">Add new address</h3>
-                                <div className="h-0.5 w-12 bg-black mt-1" />
+                                <h3 className="text-body font-bold text-heading">Add new address</h3>
+                                <div className="h-0.5 w-12 bg-primary mt-1" />
                             </div>
                             <button onClick={() => setIsAddAddressModalOpen(false)} className="p-2 hover:bg-gray-100 rounded-full transition-colors">
                                 <X className="w-5 h-5" />
@@ -552,7 +553,7 @@ export default function CheckoutPage() {
                                                 key={type}
                                                 onClick={() => setNewAddress({ ...newAddress, type: type as any })}
                                                 className={`flex-1 py-2 text-[10px] font-bold rounded-lg border-2 transition-all ${newAddress.type === type
-                                                    ? 'border-black bg-black text-white'
+                                                    ? 'border-primary bg-primary text-on-primary'
                                                     : 'border-gray-100 text-gray-500 hover:border-gray-200'
                                                     }`}
                                             >

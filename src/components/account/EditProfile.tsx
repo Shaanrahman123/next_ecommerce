@@ -35,7 +35,7 @@ export default function EditProfile() {
     return (
         <div className="animate-fade-in">
             <div className="hidden lg:block mb-8">
-                <h1 className="text-section-title font-black text-gray-900 mb-2 uppercase tracking-tight">Edit Profile</h1>
+                <h1 className="text-section-title font-black text-heading mb-2 uppercase tracking-tight">Edit Profile</h1>
                 <p className="text-body text-gray-600">Update your personal information</p>
             </div>
 
@@ -75,7 +75,7 @@ export default function EditProfile() {
                     </div>
 
                     <div className="mt-12 pt-10 border-t border-gray-300">
-                        <h3 className="text-small font-black text-gray-900 mb-8 uppercase tracking-widest border-l-4 border-black pl-3">Address Information</h3>
+                        <h3 className="text-small font-black text-heading mb-8 uppercase tracking-widest border-l-4 border-primary pl-3">Address Information</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
                             <div className="md:col-span-2">
                                 <Input
@@ -118,11 +118,11 @@ export default function EditProfile() {
                     </div>
 
                     <div className="flex flex-col lg:flex-row gap-4 pt-12">
-                        <Button type="submit" isLoading={isLoading} className="h-14 lg:px-12 rounded-md bg-black text-white font-black uppercase tracking-widest text-[10px] hover:bg-gray-900 transition-all flex items-center justify-center gap-3">
+                        <Button type="submit" isLoading={isLoading} className="h-14 lg:px-12 rounded-md bg-primary text-on-primary font-black uppercase tracking-widest text-[10px] hover:bg-primary-hover transition-all flex items-center justify-center gap-3">
                             <Save className="w-4 h-4" />
                             Save Changes
                         </Button>
-                        <Button type="button" variant="outline" onClick={() => window.history.back()} className="h-14 lg:px-12 rounded-md font-black uppercase tracking-widest text-[10px] border-gray-300 text-gray-500 hover:bg-black hover:text-white transition-all shadow-none">
+                        <Button type="button" variant="outline" onClick={() => window.history.back()} className="h-14 lg:px-12 rounded-md font-black uppercase tracking-widest text-[10px] border-gray-300 text-gray-500 hover:bg-primary hover:text-on-primary transition-all shadow-none">
                             Cancel
                         </Button>
                     </div>

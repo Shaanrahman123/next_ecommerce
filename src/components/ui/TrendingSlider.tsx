@@ -61,7 +61,7 @@ export default function TrendingSlider({ items, title, bgColor = 'bg-gray-50' }:
             <div className="container mx-auto px-4 lg:px-4 xl:px-4">
                 {/* Section Header */}
                 <div className="mb-4 lg:mb-12">
-                    <h2 className="text-section-title font-black text-gray-900 uppercase tracking-tight">
+                    <h2 className="text-section-title font-black text-heading uppercase tracking-tight">
                         {title}
                     </h2>
                 </div>
@@ -75,7 +75,7 @@ export default function TrendingSlider({ items, title, bgColor = 'bg-gray-50' }:
                             className="hidden lg:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 items-center justify-center bg-white/95 backdrop-blur-sm rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 border border-gray-200 group/btn -translate-x-6 opacity-0 group-hover:opacity-100 group-hover:translate-x-0"
                             aria-label="Previous items"
                         >
-                            <ChevronLeft className="w-6 h-6 text-gray-800 group-hover/btn:text-black transition-colors" />
+                            <ChevronLeft className="w-6 h-6 text-gray-800 group-hover/btn:text-heading transition-colors" />
                         </button>
                     )}
 
@@ -86,7 +86,7 @@ export default function TrendingSlider({ items, title, bgColor = 'bg-gray-50' }:
                             className="hidden lg:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 items-center justify-center bg-white/95 backdrop-blur-sm rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 border border-gray-200 group/btn translate-x-6 opacity-0 group-hover:opacity-100 group-hover:translate-x-0"
                             aria-label="Next items"
                         >
-                            <ChevronRight className="w-6 h-6 text-gray-800 group-hover/btn:text-black transition-colors" />
+                            <ChevronRight className="w-6 h-6 text-gray-800 group-hover/btn:text-heading transition-colors" />
                         </button>
                     )}
 
@@ -117,8 +117,8 @@ export default function TrendingSlider({ items, title, bgColor = 'bg-gray-50' }:
                                         fill
                                         className="object-cover group-hover/card:scale-110 transition-transform duration-500"
                                     />
-                                    {/* Gradient Overlay */}
-                                    <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/60 to-transparent" />
+                                    {/* Gradient Overlay — black only */}
+                                    <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/50 to-transparent" />
                                 </div>
 
                                 {/* Content */}

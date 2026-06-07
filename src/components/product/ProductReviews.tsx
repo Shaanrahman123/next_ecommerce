@@ -62,7 +62,7 @@ export default function ProductReviews({ productId, averageRating, totalReviews 
                 {/* Rating Summary */}
                 <div className="lg:col-span-1">
                     <div className="bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-xl p-6 text-center">
-                        <div className="text-6xl font-bold text-gray-900 mb-2">{averageRating}</div>
+                        <div className="text-6xl font-bold text-heading mb-2">{averageRating}</div>
                         <div className="flex items-center justify-center gap-1 mb-2">
                             {[...Array(5)].map((_, i) => (
                                 <Star
@@ -137,7 +137,7 @@ export default function ProductReviews({ productId, averageRating, totalReviews 
 
             {/* Write Review Button */}
             <div className="mt-8 text-center">
-                <button className="px-8 py-3 bg-black text-white rounded-lg font-semibold hover:bg-gray-800 transition-colors duration-300">
+                <button className="px-8 py-3 bg-primary text-on-primary rounded-lg font-semibold hover:bg-primary-hover transition-colors duration-300">
                     Write a Review
                 </button>
             </div>

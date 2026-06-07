@@ -12,11 +12,12 @@ interface MegaMenuProps {
     }>;
     featuredImage: string;
     label: string;
+    basePath?: string;
     isOpen: boolean;
     onNavItemClick: () => void;
 }
 
-export default function MegaMenu({ sections, featuredImage, label, isOpen, onNavItemClick }: MegaMenuProps) {
+export default function MegaMenu({ sections, featuredImage, label, basePath, isOpen, onNavItemClick }: MegaMenuProps) {
     return (
         <div
             className={`
@@ -36,10 +37,10 @@ export default function MegaMenu({ sections, featuredImage, label, isOpen, onNav
                                     onClick={onNavItemClick}
                                     className="block group/title"
                                 >
-                                    <h3 className="text-lg font-bold text-gray-900 tracking-tight group-hover/title:text-black transition-colors">
+                                    <h3 className="text-lg font-bold text-heading tracking-tight group-hover/title:text-heading transition-colors">
                                         {section.title}
                                     </h3>
-                                    <div className="w-8 h-0.5 bg-black mt-2 transform scale-x-0 group-hover/title:scale-x-100 transition-transform origin-left duration-300" />
+                                    <div className="w-8 h-0.5 bg-primary mt-2 transform scale-x-0 group-hover/title:scale-x-100 transition-transform origin-left duration-300" />
                                 </Link>
 
                                 <div className="space-y-4">
@@ -59,7 +60,7 @@ export default function MegaMenu({ sections, featuredImage, label, isOpen, onNav
                                                 />
                                             </div>
                                             <div className="flex-1 flex items-center justify-between">
-                                                <span className="text-sm font-semibold text-gray-600 group-hover/item:text-black transition-colors">
+                                                <span className="text-sm font-semibold text-gray-600 group-hover/item:text-heading transition-colors">
                                                     {item.name}
                                                 </span>
                                                 <ChevronRight className="w-4 h-4 text-gray-300 opacity-0 -translate-x-2 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all duration-300" />
@@ -80,14 +81,14 @@ export default function MegaMenu({ sections, featuredImage, label, isOpen, onNav
                                 fill
                                 className="object-cover group-hover/featured:scale-105 transition-transform duration-700"
                             />
-                            <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent" />
+                            <div className="absolute inset-0 bg-linear-to-t from-primary/80 via-black/20 to-transparent" />
                             <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
                                 <span className="text-sm font-bold capitalize text-gray-300 mb-2 block">Premium Collection</span>
                                 <h3 className="text-3xl font-bold mb-4 tracking-tight">
                                     {label}
                                 </h3>
                                 <Link
-                                    href={`/products?category=${label.toLowerCase()}`}
+                                    href={basePath || `/products?department=${label.toLowerCase()}`}
                                     onClick={onNavItemClick}
                                     className="inline-flex items-center gap-2 text-sm font-bold capitalize hover:gap-3 transition-all duration-300 border-b-2 border-white pb-2"
                                 >

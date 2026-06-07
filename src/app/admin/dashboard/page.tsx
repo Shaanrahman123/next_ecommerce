@@ -129,7 +129,7 @@ export default function Dashboard() {
             {/* Header Section */}
             <div className="flex flex-col space-y-2">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <h1 className="text-3xl font-bold text-black tracking-tight">Overview</h1>
+                    <h1 className="text-3xl font-bold text-heading tracking-tight">Overview</h1>
 
                     {/* Tab Filter Center */}
                     <div className="flex-1 flex justify-center order-3 md:order-2 h-10">
@@ -143,7 +143,7 @@ export default function Dashboard() {
                                         setSelectedYear('Year');
                                     }}
                                     className={`px-6 py-2 rounded-xl text-xs font-semibold capitalize transition-all whitespace-nowrap ${activeTab === tab
-                                        ? 'bg-white text-black shadow-sm'
+                                        ? 'bg-white text-heading shadow-sm'
                                         : 'text-gray-500 hover:text-gray-700'
                                         }`}
                                 >
@@ -155,7 +155,7 @@ export default function Dashboard() {
                             <div className="relative">
                                 <button
                                     onClick={() => toggleDropdown('month')}
-                                    className={`px-6 py-2 rounded-xl text-xs font-semibold capitalize flex items-center gap-1 transition-all ${selectedMonth !== 'Month' ? 'bg-white text-black shadow-sm' : 'text-gray-500 hover:text-gray-700'
+                                    className={`px-6 py-2 rounded-xl text-xs font-semibold capitalize flex items-center gap-1 transition-all ${selectedMonth !== 'Month' ? 'bg-white text-heading shadow-sm' : 'text-gray-500 hover:text-gray-700'
                                         }`}
                                 >
                                     {selectedMonth} <ChevronDown className={`w-3 h-3 transition-transform ${openDropdown === 'month' ? 'rotate-180' : ''}`} />
@@ -186,7 +186,7 @@ export default function Dashboard() {
                             <div className="relative">
                                 <button
                                     onClick={() => toggleDropdown('year')}
-                                    className={`px-6 py-2 rounded-xl text-xs font-semibold capitalize flex items-center gap-1 transition-all ${selectedYear !== 'Year' ? 'bg-white text-black shadow-sm' : 'text-gray-500 hover:text-gray-700'
+                                    className={`px-6 py-2 rounded-xl text-xs font-semibold capitalize flex items-center gap-1 transition-all ${selectedYear !== 'Year' ? 'bg-white text-heading shadow-sm' : 'text-gray-500 hover:text-gray-700'
                                         }`}
                                 >
                                     {selectedYear} <ChevronDown className={`w-3 h-3 transition-transform ${openDropdown === 'year' ? 'rotate-180' : ''}`} />
@@ -219,7 +219,7 @@ export default function Dashboard() {
                         <button className="px-4 py-2 bg-white border border-gray-300 rounded-xl text-sm font-semibold hover:bg-gray-50 transition-all">
                             Export Data
                         </button>
-                        <button className="px-4 py-2 bg-black text-white rounded-xl text-sm font-semibold hover:bg-black/90 transition-all">
+                        <button className="px-4 py-2 bg-primary text-on-primary rounded-xl text-sm font-semibold hover:bg-black/90 transition-all">
                             View Analytics
                         </button>
                     </div>
@@ -237,7 +237,7 @@ export default function Dashboard() {
                         className="bg-white p-6 rounded-3xl border border-gray-300 transition-all group"
                     >
                         <div className="flex justify-between items-start mb-4">
-                            <div className="p-3 bg-gray-50 rounded-2xl group-hover:bg-black group-hover:text-white transition-all duration-300">
+                            <div className="p-3 bg-gray-50 rounded-2xl group-hover:bg-primary group-hover:text-white transition-all duration-300">
                                 <stat.icon className="w-5 h-5" />
                             </div>
                             <div className={`flex items-center space-x-1 text-xs font-bold ${stat.isUp ? 'text-green-500' : 'text-red-500'}`}>
@@ -247,7 +247,7 @@ export default function Dashboard() {
                         </div>
                         <div>
                             <p className="text-sm font-medium text-gray-500">{stat.label}</p>
-                            <h3 className="text-2xl font-bold text-black mt-1 tracking-tight">{stat.value}</h3>
+                            <h3 className="text-2xl font-bold text-heading mt-1 tracking-tight">{stat.value}</h3>
                         </div>
                         {/* Sparkline Recharts */}
                         <div className="mt-4 h-12 w-full">
@@ -284,7 +284,7 @@ export default function Dashboard() {
             >
                 <div className="flex items-center justify-between mb-8">
                     <div>
-                        <h3 className="text-xl font-bold text-black capitalize tracking-tight">
+                        <h3 className="text-xl font-bold text-heading capitalize tracking-tight">
                             Revenue Growth
                             {(selectedMonth !== 'Month' || selectedYear !== 'Year') && (
                                 <span className="text-gray-400 font-medium ml-2 text-sm">
@@ -296,8 +296,8 @@ export default function Dashboard() {
                     </div>
                     <div className="flex items-center gap-4">
                         <div className="flex items-center gap-2">
-                            <div className="w-3 h-3 bg-black rounded-full" />
-                            <span className="text-sm font-semibold text-black">Revenue</span>
+                            <div className="w-3 h-3 bg-primary rounded-full" />
+                            <span className="text-sm font-semibold text-heading">Revenue</span>
                         </div>
                     </div>
                 </div>
@@ -327,7 +327,7 @@ export default function Dashboard() {
                                 content={({ active, payload }) => {
                                     if (active && payload && payload.length) {
                                         return (
-                                            <div className="bg-black text-white p-3 rounded-xl shadow-2xl border border-gray-800">
+                                            <div className="bg-primary text-on-primary p-3 rounded-xl shadow-2xl border border-gray-800">
                                                 <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">
                                                     {payload[0].payload.label}
                                                 </p>
@@ -349,7 +349,7 @@ export default function Dashboard() {
                                     <Cell
                                         key={`cell-${index}`}
                                         fill={index === revenueData.length - 1 ? '#000000' : '#e5e7eb'}
-                                        className="hover:fill-black transition-colors duration-300"
+                                        className="hover:fill-primary transition-colors duration-300"
                                     />
                                 ))}
                             </Bar>
@@ -366,10 +366,10 @@ export default function Dashboard() {
             >
                 <div className="px-8 py-6 border-b border-gray-100 flex items-center justify-between">
                     <div>
-                        <h3 className="text-xl font-bold text-black capitalize tracking-tight">Recent Orders</h3>
+                        <h3 className="text-xl font-bold text-heading capitalize tracking-tight">Recent Orders</h3>
                         <p className="text-sm font-medium text-gray-500">Real-time transaction log</p>
                     </div>
-                    <button className="text-xs font-bold text-black flex items-center space-x-1 hover:underline capitalize">
+                    <button className="text-xs font-bold text-heading flex items-center space-x-1 hover:underline capitalize">
                         <span>View All Orders</span>
                         <ArrowRight className="w-4 h-4" />
                     </button>
@@ -391,15 +391,15 @@ export default function Dashboard() {
                         <tbody className="divide-y divide-gray-100">
                             {recentOrders.map((order) => (
                                 <tr key={order.id} className="hover:bg-gray-50/50 transition-colors group">
-                                    <td className="px-8 py-6 font-bold text-sm text-black tracking-tight">{order.id}</td>
-                                    <td className="px-8 py-6 text-sm text-black font-bold tracking-tight">{order.customer}</td>
+                                    <td className="px-8 py-6 font-bold text-sm text-heading tracking-tight">{order.id}</td>
+                                    <td className="px-8 py-6 text-sm text-heading font-bold tracking-tight">{order.customer}</td>
                                     <td className="px-8 py-6 text-sm text-gray-500 font-semibold capitalize">{order.product}</td>
-                                    <td className="px-8 py-6 text-sm font-bold text-black">{order.amount}</td>
+                                    <td className="px-8 py-6 text-sm font-bold text-heading">{order.amount}</td>
                                     <td className="px-8 py-6">
                                         <span className={`px-3 py-1 rounded-sm text-xs font-bold capitalize tracking-tight
-                      ${order.status === 'Delivered' ? 'bg-black text-white' :
+                      ${order.status === 'Delivered' ? 'bg-primary text-on-primary' :
                                                 order.status === 'Processing' ? 'bg-gray-100 text-gray-500' :
-                                                    'bg-gray-200 text-black'}
+                                                    'bg-gray-200 text-heading'}
                     `}>
                                             {order.status}
                                         </span>
@@ -409,7 +409,7 @@ export default function Dashboard() {
                                         <span>{order.date}</span>
                                     </td>
                                     <td className="px-8 py-6 text-right">
-                                        <button className="p-2 hover:bg-black hover:text-white rounded-lg transition-all group">
+                                        <button className="p-2 hover:bg-primary hover:text-on-primary rounded-lg transition-all group">
                                             <MoreVertical className="w-4 h-4" />
                                         </button>
                                     </td>

@@ -56,14 +56,14 @@ export default function TrendingSection() {
             <div className="text-center mb-8">
                 <div className="flex items-center justify-center gap-3 mb-4">
                     <TrendingUp className="w-6 h-6 text-gray-900" />
-                    <h2 className="text-3xl md:text-4xl font-black text-gray-900 uppercase tracking-tight">
+                    <h2 className="text-3xl md:text-4xl font-black text-heading uppercase tracking-tight">
                         TRENDING NOW
                     </h2>
                 </div>
                 <p className="text-sm text-gray-600">
                     Most popular in Men's Fashion
                 </p>
-                <div className="h-0.5 w-24 bg-gray-900 mx-auto mt-4" />
+                <div className="h-0.5 w-24 bg-primary mx-auto mt-4" />
             </div>
 
             {/* Trending Grid - Scrollable on mobile, Grid on Desktop */}
@@ -76,7 +76,7 @@ export default function TrendingSection() {
                     >
                         <div className="relative">
                             {/* Rank Badge */}
-                            <div className="absolute top-2 left-2 bg-gray-900 text-white w-7 h-7 rounded-full flex items-center justify-center font-bold text-xs z-10">
+                            <div className="absolute top-2 left-2 bg-primary text-white w-7 h-7 rounded-full flex items-center justify-center font-bold text-xs z-10">
                                 {index + 1}
                             </div>
 
@@ -98,7 +98,7 @@ export default function TrendingSection() {
 
                             {/* Category Name */}
                             <div className="p-4 text-center">
-                                <h3 className="text-sm font-black text-gray-900 group-hover:text-gray-700 transition-colors duration-300">
+                                <h3 className="text-sm font-black text-heading group-hover:text-gray-700 transition-colors duration-300">
                                     {category.name}
                                 </h3>
                             </div>

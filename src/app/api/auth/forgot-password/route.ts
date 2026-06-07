@@ -25,12 +25,11 @@ export async function POST(request: NextRequest) {
         const user = await User.findOne({ email: normalizedEmail });
 
         if (!user) {
-            // For security reasons, do not explicitly reveal that the user does not exist
             return NextResponse.json({
-                status: true,
-                message: AUTH_MESSAGES.FORGOT_PASSWORD_CONFIRM,
-                statusCode: 200
-            }, { status: 200 });
+                status: false,
+                message: AUTH_MESSAGES.EMAIL_NOT_FOUND,
+                statusCode: 404
+            }, { status: 404 });
         }
 
         // Only allow forgot password for direct accounts

@@ -68,7 +68,7 @@ export default function CategoryGrid() {
             <div className="container mx-auto px-4 lg:px-4 xl:px-4">
                 {/* Section Header */}
                 <div className="mb-4 lg:mb-12">
-                    <h2 className="text-section-title font-black text-gray-900 uppercase tracking-tight">
+                    <h2 className="text-section-title font-black text-heading uppercase tracking-tight">
                         Categories To Bag
                     </h2>
                 </div>
@@ -92,7 +92,7 @@ export default function CategoryGrid() {
                                         />
                                     </div>
                                 </div>
-                                <span className="text-[10px] font-semibold text-gray-900 text-center leading-tight">
+                                <span className="text-[10px] font-semibold text-heading text-center leading-tight">
                                     {category.title}
                                 </span>
                             </Link>
@@ -119,7 +119,7 @@ export default function CategoryGrid() {
                                         />
                                     </div>
                                 </div>
-                                <span className="text-base font-semibold text-gray-900 text-center group-hover:text-black transition-colors">
+                                <span className="text-base font-semibold text-heading text-center group-hover:text-heading transition-colors">
                                     {category.title}
                                 </span>
                             </div>

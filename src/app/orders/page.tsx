@@ -82,7 +82,7 @@ export default function OrdersPage() {
                         <div className="w-24 h-24 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-8 text-gray-200">
                             <Package className="w-12 h-12" />
                         </div>
-                        <h2 className="text-section-title font-bold text-gray-900 mb-4">No orders placed yet</h2>
+                        <h2 className="text-section-title font-bold text-heading mb-4">No orders placed yet</h2>
                         <p className="text-body text-gray-500 mb-10 max-w-sm mx-auto">
                             It looks like you haven't made any purchases. Explore our latest arrivals to find something you'll love.
                         </p>
@@ -109,7 +109,7 @@ export default function OrdersPage() {
                                                 <div className="flex items-center gap-6">
                                                     <div>
                                                         <p className="text-small font-bold text-gray-400 uppercase tracking-widest mb-1">Order Date</p>
-                                                        <div className="flex items-center gap-2 text-body font-bold text-gray-900">
+                                                        <div className="flex items-center gap-2 text-body font-bold text-heading">
                                                             <Calendar className="w-4 h-4 text-gray-400" />
                                                             {new Date(order.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
                                                         </div>
@@ -117,7 +117,7 @@ export default function OrdersPage() {
                                                     <div className="w-px h-10 bg-gray-100" />
                                                     <div>
                                                         <p className="text-small font-bold text-gray-400 uppercase tracking-widest mb-1">Order ID</p>
-                                                        <div className="text-body font-black text-gray-900">#{order.id.split('-')[1]}</div>
+                                                        <div className="text-body font-black text-heading">#{order.id.split('-')[1]}</div>
                                                     </div>
                                                 </div>
                                                 <span className={`px-4 py-2 rounded-xl text-small font-bold border flex items-center gap-2 uppercase tracking-widest ${status.color}`}>
@@ -136,7 +136,7 @@ export default function OrdersPage() {
                                                     />
                                                 </div>
                                                 <div className="flex-1">
-                                                    <h4 className="text-card-title font-bold text-gray-900 mb-2 leading-tight">
+                                                    <h4 className="text-card-title font-bold text-heading mb-2 leading-tight">
                                                         {order.products[0].name}
                                                     </h4>
                                                     <div className="flex items-center gap-3 mb-4">
@@ -165,7 +165,7 @@ export default function OrdersPage() {
                                                 <div className="flex justify-between items-end">
                                                     <div>
                                                         <p className="text-small font-bold text-gray-400 uppercase tracking-widest mb-1">Total Amount</p>
-                                                        <p className="text-price font-black text-gray-900">₹{order.total.toLocaleString()}</p>
+                                                        <p className="text-price font-black text-heading">₹{order.total.toLocaleString()}</p>
                                                     </div>
                                                     <div className="text-right">
                                                         <p className="text-small font-bold text-gray-400 uppercase tracking-widest mb-1">Payment</p>
@@ -197,7 +197,7 @@ export default function OrdersPage() {
                                                 <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center border border-gray-100">
                                                     <Package className="w-4 h-4 text-gray-900" />
                                                 </div>
-                                                <h3 className="text-body font-black text-gray-900">#{order.id.split('-')[1]}</h3>
+                                                <h3 className="text-body font-black text-heading">#{order.id.split('-')[1]}</h3>
                                             </div>
                                             <span className={`px-3 py-1.5 rounded-xl text-[10px] font-bold border flex items-center gap-1.5 uppercase tracking-widest ${status.color}`}>
                                                 {status.icon}
@@ -212,12 +212,12 @@ export default function OrdersPage() {
                                                     <Image src={order.products[0].image} alt="" fill className="object-cover" />
                                                 </div>
                                                 <div className="flex-1 py-1">
-                                                    <h4 className="text-body font-bold text-gray-900 mb-1 leading-tight">{order.products[0].name}</h4>
+                                                    <h4 className="text-body font-bold text-heading mb-1 leading-tight">{order.products[0].name}</h4>
                                                     <div className="flex items-center gap-2 mb-2">
                                                         <span className="text-[10px] font-black text-gray-400 bg-gray-50 px-2 py-0.5 rounded border border-gray-100 uppercase">Size: {order.products[0].size}</span>
                                                         <span className="text-[10px] font-black text-gray-400 bg-gray-50 px-2 py-0.5 rounded border border-gray-100 uppercase">Qty: {order.products[0].quantity}</span>
                                                     </div>
-                                                    <p className="text-body font-black text-gray-900">₹{order.products[0].price.toLocaleString()}</p>
+                                                    <p className="text-body font-black text-heading">₹{order.products[0].price.toLocaleString()}</p>
                                                 </div>
                                             </div>
 
@@ -239,7 +239,7 @@ export default function OrdersPage() {
                                         <div className="p-4 bg-gray-50/50 border-t border-gray-50 flex items-center justify-between">
                                             <div>
                                                 <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">Total Amount</p>
-                                                <p className="text-price font-black text-gray-900">₹{order.total.toLocaleString()}</p>
+                                                <p className="text-price font-black text-heading">₹{order.total.toLocaleString()}</p>
                                             </div>
                                             <Link href={`/account?section=order-details&orderId=${order.id}`}>
                                                 <Button size="md" className="rounded-xl h-12 px-6 font-bold uppercase tracking-widest text-small flex items-center justify-center">

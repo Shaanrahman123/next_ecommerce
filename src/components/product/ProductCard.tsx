@@ -76,7 +76,7 @@ export default function ProductCard({ product, compact = false }: ProductCardPro
                     {/* Image Container - Compact */}
                     <div className="relative aspect-square overflow-hidden bg-gray-100">
                         {hasDiscount && (
-                            <div className="absolute top-2 left-2 z-10 bg-black text-white px-2 py-0.5 rounded text-xs font-bold">
+                            <div className="absolute top-2 left-2 z-10 bg-primary text-on-primary px-2 py-0.5 rounded text-xs font-bold">
                                 -{discountPercentage}%
                             </div>
                         )}
@@ -85,8 +85,8 @@ export default function ProductCard({ product, compact = false }: ProductCardPro
                         <button
                             onClick={handleWishlistToggle}
                             className={`absolute top-2 right-2 z-10 p-1.5 rounded-full transition-all duration-300 ${inWishlist
-                                ? 'bg-black text-white'
-                                : 'bg-white/90 text-black hover:bg-black hover:text-white'
+                                ? 'bg-primary text-on-primary'
+                                : 'bg-white/90 text-heading hover:bg-primary hover:text-on-primary'
                                 }`}
                             aria-label="Add to wishlist"
                         >
@@ -104,10 +104,10 @@ export default function ProductCard({ product, compact = false }: ProductCardPro
 
                         {/* Quick Add Button */}
                         {showQuickAdd && (
-                            <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/60 to-transparent">
+                            <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-primary/60 to-transparent">
                                 <button
                                     onClick={handleQuickAdd}
-                                    className="w-full bg-white text-black py-1.5 rounded text-xs font-semibold hover:bg-black hover:text-white transition-all duration-300 flex items-center justify-center gap-1"
+                                    className="w-full bg-white text-heading py-1.5 rounded text-xs font-semibold hover:bg-primary hover:text-on-primary transition-all duration-300 flex items-center justify-center gap-1"
                                 >
                                     <ShoppingCart className="w-3 h-3" />
                                     Add
@@ -132,7 +132,7 @@ export default function ProductCard({ product, compact = false }: ProductCardPro
 
                         {/* Price */}
                         <div className="flex items-center gap-1.5">
-                            <span className="text-sm font-bold text-gray-900">
+                            <span className="text-sm font-bold text-heading">
                                 ₹{product.price.toFixed(2)}
                             </span>
                             {hasDiscount && (
@@ -200,7 +200,7 @@ export default function ProductCard({ product, compact = false }: ProductCardPro
 
                     {/* Quick Add Button */}
                     {showQuickAdd && (
-                        <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 to-transparent animate-slide-in">
+                        <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-primary/60 to-transparent animate-slide-in">
                             <button
                                 onClick={handleQuickAdd}
                                 className="w-full bg-[var(--theme-secondary)] text-[var(--theme-primary)] py-3 rounded-lg font-semibold hover:bg-[var(--theme-primary)] hover:text-[var(--theme-secondary)] transition-all duration-300 flex items-center justify-center gap-2"

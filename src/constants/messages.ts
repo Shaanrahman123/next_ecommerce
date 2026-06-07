@@ -13,6 +13,7 @@ export const AUTH_MESSAGES = {
   LOGIN_SUCCESS: 'Login successful',
   FORGOT_PASSWORD_CONFIRM: 'If the email is registered, a verification code has been sent',
   OTP_SENT: 'Verification code sent to your email',
+  RESEND_OTP_SUCCESS: 'A new verification code has been sent to your email',
   INVALID_OTP: 'Invalid or expired verification code',
   EXPIRED_OTP: 'Verification code has expired. Please request a new one.',
   OTP_VERIFIED: 'Verification code verified successfully',
@@ -23,6 +24,25 @@ export const AUTH_MESSAGES = {
   USER_NOT_FOUND: 'User not found',
   LOGOUT_SUCCESS: 'Logged out successfully',
   ACCESS_DENIED: 'Access denied. Administrator privileges required.',
+  EMAIL_NOT_FOUND: 'No account found with this email address',
+  PROFILE_UPDATE_SUCCESS: 'Profile updated successfully',
+  CURRENT_PASSWORD_INCORRECT: 'Current password is incorrect',
+  PASSWORD_CHANGE_SUCCESS: 'Password changed successfully',
+  ADDRESS_ADDED: 'Address added successfully',
+  ADDRESS_UPDATED: 'Address updated successfully',
+  ADDRESS_DELETED: 'Address deleted successfully',
+  ADDRESS_NOT_FOUND: 'Address not found',
+  UNAUTHORIZED: 'Unauthorized. Please log in.',
+};
+
+export const ADMIN_AUTH_MESSAGES = {
+  ...AUTH_MESSAGES,
+  LOGIN_SUCCESS: 'Admin login successful',
+  LOGOUT_SUCCESS: 'Admin logged out successfully',
+  ACCESS_DENIED: 'Access denied. Admin account required.',
+  EMAIL_NOT_FOUND: 'No admin account found with this email address',
+  INVALID_CREDENTIALS: 'Invalid admin credentials',
+  NOT_ADMIN: 'This account does not have admin privileges',
 };
 
 export const SUPERCATEGORY_MESSAGES = {
@@ -64,7 +84,7 @@ export const GLOBAL_MESSAGES = {
 export const SUBCATEGORY_MESSAGES = {
   NAME_REQUIRED: 'Name is required',
   NAME_EXISTS: 'Sub Category with this name already exists',
-  SLUG_EXISTS: 'Sub Category with this slug already exists',
+  SLUG_EXISTS: 'Sub Category with this slug already exists in this category',
   CREATE_SUCCESS: 'Sub Category created successfully',
   NOT_FOUND: 'Sub Category not found',
   FETCH_SUCCESS: 'Sub Category fetched successfully',
@@ -72,8 +92,8 @@ export const SUBCATEGORY_MESSAGES = {
   DELETE_SUCCESS: 'Sub Category deleted successfully',
   DUPLICATE_NAME: 'Another Sub Category with this name already exists',
   DUPLICATE_SLUG: 'Another Sub Category with this slug already exists',
-  SUPER_CATEGORY_REQUIRED: 'At least one Super Category is required in the superCategories array',
-  SUPER_CATEGORY_NOT_FOUND: 'One or more referenced Super Categories do not exist or are inactive',
+  CATEGORY_REQUIRED: 'Parent category is required',
+  CATEGORY_NOT_FOUND: 'Referenced category does not exist',
 };
 
 export const PRODUCT_MESSAGES = {

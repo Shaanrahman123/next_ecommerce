@@ -5,7 +5,6 @@ import { useSearchParams } from 'next/navigation';
 import AccountLayout from '@/components/account/AccountLayout';
 import Dashboard from '@/components/account/Dashboard';
 import MyProfile from '@/components/account/MyProfile';
-import EditProfile from '@/components/account/EditProfile';
 import ChangePassword from '@/components/account/ChangePassword';
 import MyOrders from '@/components/account/MyOrders';
 import OrderDetails from '@/components/account/OrderDetails';
@@ -26,9 +25,8 @@ function AccountContent() {
     const renderSection = () => {
         switch (section) {
             case 'profile':
-                return <MyProfile />;
             case 'edit-profile':
-                return <EditProfile />;
+                return <MyProfile />;
             case 'password':
                 return <ChangePassword />;
             case 'orders':
@@ -67,7 +65,7 @@ export default function AccountPage() {
     return (
         <Suspense fallback={
             <div className="min-h-screen flex items-center justify-center">
-                <div className="w-8 h-8 border-4 border-black border-t-transparent rounded-full animate-spin" />
+                <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
             </div>
         }>
             <AccountContent />

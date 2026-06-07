@@ -2,19 +2,17 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuthStore } from '@/store';
+import { useAuthStore, useAddressStore } from '@/store';
+import { performLogout } from '@/utils/logout';
+import { useAuthContext } from '@/providers/AuthProvider';
 import Link from 'next/link';
 import {
     LayoutDashboard,
     UserCircle,
-    Edit3,
     Lock,
     Package,
     MapPin,
-    Star,
-    Wallet,
     Headphones,
-    Bell,
     LogOut,
     Menu,
     X,
@@ -28,20 +26,18 @@ interface AccountLayoutProps {
 
 const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, href: '/account' },
-    { id: 'profile', label: 'My Profile', icon: UserCircle, href: '/account?section=profile' },
-    { id: 'edit-profile', label: 'Edit Profile', icon: Edit3, href: '/account?section=edit-profile' },
+    { id: 'profile', label: 'Update Profile', icon: UserCircle, href: '/account?section=profile' },
     { id: 'password', label: 'Change Password', icon: Lock, href: '/account?section=password' },
     { id: 'orders', label: 'My Orders', icon: Package, href: '/account?section=orders' },
     { id: 'addresses', label: 'My Addresses', icon: MapPin, href: '/account?section=addresses' },
-    { id: 'reviews', label: 'My Reviews', icon: Star, href: '/account?section=reviews' },
-    // { id: 'wallet', label: 'My Wallet', icon: Wallet, href: '/account?section=wallet' }, // Commented out - not needed for now
     { id: 'support', label: 'Support', icon: Headphones, href: '/account?section=support' },
-    { id: 'notifications', label: 'Notifications', icon: Bell, href: '/account?section=notifications' },
 ];
 
 export default function AccountLayout({ children, currentSection }: AccountLayoutProps) {
     const router = useRouter();
+    const { isInitializing } = useAuthContext();
     const { isAuthenticated, user, logout } = useAuthStore();
+    const clearAddresses = useAddressStore((s) => s.clearAddresses);
     const [mounted, setMounted] = useState(false);
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -50,22 +46,21 @@ export default function AccountLayout({ children, currentSection }: AccountLayou
     }, []);
 
     useEffect(() => {
-        if (mounted && !isAuthenticated) {
+        if (mounted && !isInitializing && !isAuthenticated) {
             router.replace('/login');
         }
-    }, [isAuthenticated, router, mounted]);
+    }, [isAuthenticated, isInitializing, router, mounted]);
 
-    if (!mounted || !isAuthenticated) {
+    if (!mounted || isInitializing || !isAuthenticated) {
         return (
             <div className="min-h-screen flex items-center justify-center">
-                <div className="w-8 h-8 border-4 border-black border-t-transparent rounded-full animate-spin" />
+                <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
             </div>
         );
     }
 
-    const handleLogout = () => {
-        logout();
-        router.push('/');
+    const handleLogout = async () => {
+        await performLogout(logout, () => router.push('/'), clearAddresses);
     };
 
     return (
@@ -77,16 +72,16 @@ export default function AccountLayout({ children, currentSection }: AccountLayou
                         <div className="flex items-center gap-4">
                             <button
                                 onClick={() => setSidebarOpen(!sidebarOpen)}
-                                className="lg:hidden text-gray-700 hover:text-black transition-colors"
+                                className="lg:hidden text-gray-700 hover:text-heading transition-colors"
                             >
                                 {sidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
                             </button>
                             <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 rounded-full bg-linear-to-br from-black to-gray-700 flex items-center justify-center text-white font-semibold text-small">
+                                <div className="w-10 h-10 rounded-full bg-linear-to-br from-primary to-gray-700 flex items-center justify-center text-white font-semibold text-small">
                                     {user?.name?.charAt(0).toUpperCase() || 'U'}
                                 </div>
                                 <div>
-                                    <h2 className="text-body font-semibold text-gray-900">
+                                    <h2 className="text-body font-semibold text-heading">
                                         {user?.name || 'User'}
                                     </h2>
                                     <p className="text-small text-gray-500">{user?.email}</p>
@@ -120,7 +115,7 @@ export default function AccountLayout({ children, currentSection }: AccountLayou
                                         className={`
                                             flex items-center gap-3 px-4 py-3 rounded-md transition-all duration-200
                                             ${isActive
-                                                ? 'bg-black text-white'
+                                                ? 'bg-primary text-on-primary'
                                                 : 'text-gray-700 hover:bg-gray-100'
                                             }
                                         `}
@@ -149,7 +144,7 @@ export default function AccountLayout({ children, currentSection }: AccountLayou
                                     >
                                         <ArrowLeft className="w-5 h-5 text-gray-900" />
                                     </Link>
-                                    <h1 className="text-body font-black text-gray-900 uppercase tracking-widest">
+                                    <h1 className="text-body font-black text-heading uppercase tracking-widest">
                                         {menuItems.find(i => i.id === currentSection)?.label ||
                                             currentSection.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
                                     </h1>

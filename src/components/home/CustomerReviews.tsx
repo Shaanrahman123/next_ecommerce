@@ -66,13 +66,13 @@ export default function CustomerReviews() {
         <section className="py-6 px-4 lg:px-4 xl:px-4 container mx-auto">
             {/* Header */}
             <div className="text-center mb-4 lg:mb-8">
-                <h2 className="text-section-title font-black text-gray-900 uppercase tracking-tight">
+                <h2 className="text-section-title font-black text-heading uppercase tracking-tight">
                     CUSTOMER REVIEWS
                 </h2>
                 <p className="text-body text-gray-600 mt-1.5">
                     What our customers say about us
                 </p>
-                <div className="h-0.5 w-12 md:w-24 bg-gray-900 mx-auto mt-2 md:mt-4" />
+                <div className="h-0.5 w-12 md:w-24 bg-primary mx-auto mt-2 md:mt-4" />
             </div>
 
             {/* Reviews Carousel */}

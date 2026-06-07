@@ -8,6 +8,7 @@ interface AuthState {
     login: (user: User) => void;
     logout: () => void;
     signup: (user: User) => void;
+    setUser: (user: User) => void;
 }
 
 interface CartState {
@@ -34,6 +35,8 @@ interface AddressState {
     updateAddress: (id: string, address: Partial<Address>) => void;
     deleteAddress: (id: string) => void;
     setDefaultAddress: (id: string) => void;
+    setAddresses: (addresses: Address[]) => void;
+    clearAddresses: () => void;
 }
 
 
@@ -45,6 +48,7 @@ export const useAuthStore = create<AuthState>()(
             login: (user) => set({ user, isAuthenticated: true }),
             logout: () => set({ user: null, isAuthenticated: false }),
             signup: (user) => set({ user, isAuthenticated: true }),
+            setUser: (user) => set({ user, isAuthenticated: true }),
         }),
         {
             name: 'auth-storage',
@@ -145,32 +149,7 @@ export const useWishlistStore = create<WishlistState>()(
 export const useAddressStore = create<AddressState>()(
     persist(
         (set) => ({
-            addresses: [
-                {
-                    id: '1',
-                    type: 'Home',
-                    fullName: 'John Doe',
-                    addressLine1: '123 Main Street, Apt 4B',
-                    city: 'New York',
-                    state: 'NY',
-                    zipCode: '10001',
-                    country: 'USA',
-                    phone: '+1 (555) 123-4567',
-                    isDefault: true,
-                },
-                {
-                    id: '2',
-                    type: 'Work',
-                    fullName: 'John Doe',
-                    addressLine1: '456 Office Plaza, Suite 200',
-                    city: 'New York',
-                    state: 'NY',
-                    zipCode: '10002',
-                    country: 'USA',
-                    phone: '+1 (555) 987-6543',
-                    isDefault: false,
-                },
-            ],
+            addresses: [],
             addAddress: (address) =>
                 set((state) => ({ addresses: [...state.addresses, address] })),
             updateAddress: (id, updatedAddress) =>
@@ -190,6 +169,8 @@ export const useAddressStore = create<AddressState>()(
                         isDefault: a.id === id,
                     })),
                 })),
+            setAddresses: (addresses) => set({ addresses }),
+            clearAddresses: () => set({ addresses: [] }),
         }),
         {
             name: 'address-storage',

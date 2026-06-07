@@ -54,7 +54,7 @@ export default function OrderSuccessPage() {
                                     </div>
                                     <span className="text-small font-bold text-gray-400 uppercase tracking-wider">Order Number</span>
                                 </div>
-                                <span className="text-body font-black text-gray-900">
+                                <span className="text-body font-black text-heading">
                                     {orderNumber}
                                 </span>
                             </div>
@@ -69,13 +69,13 @@ export default function OrderSuccessPage() {
                                 <div className="flex gap-4">
                                     <div className="w-2 h-2 rounded-full bg-blue-500 mt-1.5 shrink-0" />
                                     <p className="text-small text-gray-600 leading-relaxed">
-                                        Estimated delivery within <span className="font-bold text-gray-900">3-5 business days</span>.
+                                        Estimated delivery within <span className="font-bold text-heading">3-5 business days</span>.
                                     </p>
                                 </div>
                                 <div className="flex gap-4">
                                     <div className="w-2 h-2 rounded-full bg-purple-500 mt-1.5 shrink-0" />
                                     <p className="text-small text-gray-600 leading-relaxed">
-                                        You can track your order status in the <Link href="/account" className="font-bold text-gray-900 underline underline-offset-4 decoration-gray-200 hover:decoration-gray-900 transition-colors">My Account</Link> section.
+                                        You can track your order status in the <Link href="/account" className="font-bold text-heading underline underline-offset-4 decoration-gray-200 hover:decoration-gray-900 transition-colors">My Account</Link> section.
                                     </p>
                                 </div>
                             </div>

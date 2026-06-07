@@ -1,105 +1,149 @@
 import { v2 as cloudinary } from 'cloudinary';
 
-// Configure Cloudinary only if credentials are provided
-const isConfigured = !!(
-  process.env.CLOUDINARY_CLOUD_NAME && 
-  process.env.CLOUDINARY_API_KEY && 
-  process.env.CLOUDINARY_API_SECRET
-);
+const PLACEHOLDER_IMAGE =
+  'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=400&auto=format&fit=crop';
 
-if (isConfigured) {
+function envValue(key: string): string {
+  return (process.env[key] || '').trim();
+}
+
+function isPlaceholder(value: string): boolean {
+  return !value || value.includes('your_') || value.includes('<') || value === 'undefined';
+}
+
+export function isCloudinaryConfigured(): boolean {
+  const cloudName = envValue('CLOUDINARY_CLOUD_NAME');
+  const apiKey = envValue('CLOUDINARY_API_KEY');
+  const apiSecret = envValue('CLOUDINARY_API_SECRET');
+  return !isPlaceholder(cloudName) && !isPlaceholder(apiKey) && !isPlaceholder(apiSecret);
+}
+
+if (isCloudinaryConfigured()) {
   cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
+    cloud_name: envValue('CLOUDINARY_CLOUD_NAME'),
+    api_key: envValue('CLOUDINARY_API_KEY'),
+    api_secret: envValue('CLOUDINARY_API_SECRET'),
+    secure: true,
   });
+}
+
+export class CloudinaryUploadError extends Error {
+  constructor(message: string, public readonly httpCode?: number) {
+    super(message);
+    this.name = 'CloudinaryUploadError';
+  }
 }
 
 /**
  * Uploads a single file to Cloudinary.
- * If credentials are missing, it returns a fallback mock URL.
- * Supports File object, Buffer, Base64 string, or ArrayBuffer.
- * Returns the public_id (folder + filename) on success.
+ * Returns the public_id (folder/filename) on success.
  */
 export async function uploadSingleImage(
   fileInput: File | Buffer | string | ArrayBuffer,
   folder = 'next_ecommerce'
 ): Promise<string> {
-  if (!isConfigured) {
-    console.warn('[CLOUDINARY] Credentials not configured. Returning fallback mock URL.');
-    
-    // Fallback logic: if input is already a URL string, return it. Otherwise return placeholder mock URL.
-    if (typeof fileInput === 'string' && fileInput.startsWith('http')) {
-      return fileInput;
-    }
-    return `https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=800&auto=format&fit=crop`;
+  if (!isCloudinaryConfigured()) {
+    throw new CloudinaryUploadError(
+      'Cloudinary is not configured. Set CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET in your .env file.'
+    );
   }
 
-  return new Promise((resolve, reject) => {
-    const uploadStream = cloudinary.uploader.upload_stream(
-      { folder },
-      (error, result) => {
-        if (error) {
-          console.error('[CLOUDINARY] Upload stream error:', error);
-          return reject(error);
-        }
-        if (!result) {
-          return reject(new Error('Cloudinary upload returned empty result'));
-        }
-        // Return public_id (e.g. next_ecommerce/xyz_123456)
-        resolve(result.public_id);
-      }
-    );
+  const options = {
+    folder,
+    resource_type: 'image' as const,
+    timeout: 120000,
+  };
 
-    // Write file content based on input type
-    if (fileInput instanceof File) {
-      fileInput.arrayBuffer().then((ab) => {
-        uploadStream.end(Buffer.from(ab));
-      }).catch(reject);
-    } else if (fileInput instanceof ArrayBuffer) {
-      uploadStream.end(Buffer.from(fileInput));
-    } else if (Buffer.isBuffer(fileInput)) {
-      uploadStream.end(fileInput);
-    } else if (typeof fileInput === 'string') {
-      // If it's base64 data URL or external URL, upload directly
-      cloudinary.uploader.upload(fileInput, { folder })
-        .then((res) => resolve(res.public_id))
-        .catch(reject);
-    } else {
-      reject(new Error('Unsupported file input type for Cloudinary upload'));
+  try {
+    // Base64 data URI or remote URL — use direct upload (NOT upload_stream)
+    if (typeof fileInput === 'string') {
+      if (!fileInput.startsWith('data:') && !fileInput.startsWith('http://') && !fileInput.startsWith('https://')) {
+        return fileInput; // already a public_id
+      }
+      const result = await cloudinary.uploader.upload(fileInput, options);
+      return result.public_id;
     }
-  });
+
+    // Buffer / ArrayBuffer — use upload_stream
+    const buffer = Buffer.isBuffer(fileInput)
+      ? fileInput
+      : Buffer.from(fileInput instanceof ArrayBuffer ? fileInput : new ArrayBuffer(0));
+
+    if (fileInput instanceof File) {
+      const ab = await fileInput.arrayBuffer();
+      return uploadSingleImage(Buffer.from(ab), folder);
+    }
+
+    return await new Promise<string>((resolve, reject) => {
+      const stream = cloudinary.uploader.upload_stream(options, (error, result) => {
+        if (error) {
+          reject(
+            new CloudinaryUploadError(
+              error.message || 'Cloudinary upload failed',
+              (error as { http_code?: number }).http_code
+            )
+          );
+          return;
+        }
+        if (!result?.public_id) {
+          reject(new CloudinaryUploadError('Cloudinary returned an empty result'));
+          return;
+        }
+        resolve(result.public_id);
+      });
+      stream.end(buffer);
+    });
+  } catch (error: unknown) {
+    if (error instanceof CloudinaryUploadError) throw error;
+
+    const cloudErr = error as { message?: string; http_code?: number };
+    throw new CloudinaryUploadError(
+      cloudErr.message || 'Cloudinary upload failed',
+      cloudErr.http_code
+    );
+  }
 }
 
-/**
- * Uploads multiple files to Cloudinary concurrently.
- * Returns public_ids.
- */
 export async function uploadMultipleImages(
   files: (File | Buffer | string | ArrayBuffer)[],
   folder = 'next_ecommerce'
 ): Promise<string[]> {
-  const uploadPromises = files.map((file) => uploadSingleImage(file, folder));
-  return Promise.all(uploadPromises);
+  return Promise.all(files.map((file) => uploadSingleImage(file, folder)));
 }
 
-/**
- * Helper to upload image only if it's a new file (e.g., base64 string or file buffer).
- * If it's already a relative path/public_id, returns it as is.
- */
 export async function uploadImageIfNeeded(
-  fileInput: any,
+  fileInput: unknown,
   folder = 'next_ecommerce'
 ): Promise<string | undefined> {
   if (!fileInput) return undefined;
-  
+
   if (typeof fileInput === 'string') {
-    // If it's a base64 data URI or an external HTTP URL, upload it.
-    // Otherwise, if it's already a path/public_id (e.g. next_ecommerce/abc), return it directly.
     if (!fileInput.startsWith('data:') && !fileInput.startsWith('http://') && !fileInput.startsWith('https://')) {
       return fileInput;
     }
   }
 
-  return uploadSingleImage(fileInput, folder);
+  return uploadSingleImage(fileInput as File | Buffer | string | ArrayBuffer, folder);
+}
+
+export function getCloudinaryUrl(
+  publicId?: string | null,
+  options: { width?: number; height?: number; crop?: string } = {}
+): string {
+  if (!publicId) return PLACEHOLDER_IMAGE;
+  if (publicId.startsWith('http://') || publicId.startsWith('https://')) return publicId;
+
+  if (!isCloudinaryConfigured()) return PLACEHOLDER_IMAGE;
+
+  const { width = 400, height = 400, crop = 'fill' } = options;
+  const id = publicId.replace(/^\//, '');
+
+  return cloudinary.url(id, {
+    secure: true,
+    width,
+    height,
+    crop,
+    fetch_format: 'auto',
+    quality: 'auto',
+  });
 }

@@ -86,7 +86,7 @@ export default function ProductInfoSection({
 
                 {/* Size Selection */}
                 <div>
-                    <label className="block text-small font-semibold text-gray-900 mb-2">
+                    <label className="block text-small font-semibold text-heading mb-2">
                         Select Size {selectedSize && <span className="text-gray-500 font-normal">- {selectedSize}</span>}
                     </label>
                     <div className="flex flex-wrap gap-2">
@@ -95,8 +95,8 @@ export default function ProductInfoSection({
                                 key={size}
                                 onClick={() => onSizeSelect(size)}
                                 className={`px-3 py-1.5 md:px-6 md:py-3 border-2 rounded-lg text-xs md:text-base font-medium transition-all duration-300 ${selectedSize === size
-                                    ? 'border-black bg-black text-white shadow-lg'
-                                    : 'border-gray-300 hover:border-black'
+                                    ? 'border-primary bg-primary text-on-primary shadow-lg'
+                                    : 'border-gray-300 hover:border-primary'
                                     }`}
                             >
                                 {size}
@@ -106,7 +106,7 @@ export default function ProductInfoSection({
                     {onSizeChartClick && (
                         <button
                             onClick={onSizeChartClick}
-                            className="mt-2 text-xs md:text-sm text-black underline hover:no-underline transition-all duration-200 font-medium"
+                            className="mt-2 text-xs md:text-sm text-heading underline hover:no-underline transition-all duration-200 font-medium"
                         >
                             SIZE CHART
                         </button>
@@ -115,7 +115,7 @@ export default function ProductInfoSection({
 
                 {/* Color Selection */}
                 <div>
-                    <label className="block text-small font-semibold text-gray-900 mb-2">
+                    <label className="block text-small font-semibold text-heading mb-2">
                         Select Color {selectedColor && <span className="text-gray-500 font-normal">- {selectedColor}</span>}
                     </label>
                     <div className="flex flex-wrap gap-2">
@@ -124,8 +124,8 @@ export default function ProductInfoSection({
                                 key={color}
                                 onClick={() => onColorSelect(color)}
                                 className={`relative px-3 py-1.5 md:px-6 md:py-3 border-2 rounded-lg text-xs md:text-base font-medium transition-all duration-300 ${selectedColor === color
-                                    ? 'border-black shadow-lg'
-                                    : 'border-gray-300 hover:border-black'
+                                    ? 'border-primary shadow-lg'
+                                    : 'border-gray-300 hover:border-primary'
                                     }`}
                             >
                                 <div className="flex items-center gap-2">
@@ -166,8 +166,8 @@ export default function ProductInfoSection({
                         <button
                             onClick={onWishlistToggle}
                             className={`p-4 border-2 rounded-lg transition-all duration-300 shrink-0 ${inWishlist
-                                ? 'border-black bg-black text-white'
-                                : 'border-gray-300 hover:border-black'
+                                ? 'border-primary bg-primary text-on-primary'
+                                : 'border-gray-300 hover:border-primary'
                                 }`}
                         >
                             <Heart className={`w-6 h-6 ${inWishlist ? 'fill-current' : ''}`} />
@@ -177,7 +177,7 @@ export default function ProductInfoSection({
                     <Button
                         onClick={onBuyNow}
                         fullWidth
-                        className="flex items-center justify-center gap-2 py-4 text-base bg-linear-to-r from-black to-gray-800 hover:from-gray-800 hover:to-black"
+                        className="flex items-center justify-center gap-2 py-4 text-base bg-linear-to-r from-primary to-gray-800 hover:from-gray-800 hover:to-black"
                     >
                         <Zap className="w-5 h-5" />
                         Buy Now
@@ -247,7 +247,7 @@ export default function ProductInfoSection({
                     {/* Buy Now Button - 80% */}
                     <Button
                         onClick={onBuyNow}
-                        className="flex-[0.8] flex items-center justify-center gap-1.5 py-3 text-sm font-semibold bg-black hover:bg-gray-800"
+                        className="flex-[0.8] flex items-center justify-center gap-1.5 py-3 text-sm font-semibold bg-primary hover:bg-primary-hover"
                     >
                         <Zap className="w-4 h-4" />
                         Buy Now

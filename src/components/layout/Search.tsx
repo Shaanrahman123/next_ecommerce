@@ -10,9 +10,10 @@ interface SearchProps {
     variant?: 'desktop' | 'overlay';
     isOpen?: boolean;
     onClose?: () => void;
+    dark?: boolean;
 }
 
-export default function Search({ variant = 'desktop', isOpen, onClose }: SearchProps) {
+export default function Search({ variant = 'desktop', isOpen, onClose, dark = false }: SearchProps) {
     const [query, setQuery] = useState('');
     const [suggestions, setSuggestions] = useState<any[]>([]);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -70,14 +71,18 @@ export default function Search({ variant = 'desktop', isOpen, onClose }: SearchP
             <div className="hidden lg:relative lg:block flex-1 max-w-xl mx-8 group" ref={dropdownRef}>
                 <form onSubmit={handleSearch} className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <SearchIcon className="h-4 w-4 text-gray-400 group-focus-within:text-black transition-colors" />
+                        <SearchIcon className={`h-4 w-4 transition-colors ${dark ? 'text-white/60 group-focus-within:text-white' : 'text-gray-400 group-focus-within:text-heading'}`} />
                     </div>
                     <input
                         type="text"
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
                         placeholder="Search for products, brands and more"
-                        className="block w-full pl-10 pr-3 py-2 border border-gray-100 rounded-md leading-5 bg-gray-50 placeholder-gray-400 focus:outline-none! focus:ring-0! focus:bg-white focus:border-gray-300 transition-all text-xs"
+                        className={`block w-full pl-10 pr-3 py-2 border rounded-md leading-5 focus:outline-none! focus:ring-0! transition-all text-xs ${
+                            dark
+                                ? 'border-white/20 bg-white/10 text-white placeholder-white/50 focus:bg-white/15 focus:border-white/40'
+                                : 'border-gray-100 bg-gray-50 placeholder-gray-400 focus:bg-white focus:border-gray-300'
+                        }`}
                         onFocus={() => query && setIsDropdownOpen(true)}
                     />
                 </form>
@@ -96,7 +101,7 @@ export default function Search({ variant = 'desktop', isOpen, onClose }: SearchP
                                         <img src={item.images[0]} alt={item.name} className="w-full h-full object-cover" />
                                     </div>
                                     <div className="min-w-0">
-                                        <div className="text-[13px] font-semibold text-gray-900 truncate">{item.name}</div>
+                                        <div className="text-[13px] font-semibold text-heading truncate">{item.name}</div>
                                         <div className="text-[12px] text-gray-500">{item.category}</div>
                                     </div>
                                 </Link>
@@ -122,7 +127,7 @@ export default function Search({ variant = 'desktop', isOpen, onClose }: SearchP
                             value={query}
                             onChange={(e) => setQuery(e.target.value)}
                             placeholder="Search for brands and products"
-                            className="w-full py-2 px-4 border border-black rounded-sm focus:outline-none! focus:ring-0! text-sm placeholder-gray-400 font-medium"
+                            className="w-full py-2 px-4 border border-primary rounded-sm focus:outline-none! focus:ring-0! text-sm placeholder-gray-400 font-medium"
                         />
                         <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 text-rose-500">
                             <SearchIcon className="w-5 h-5" />
@@ -169,7 +174,7 @@ export default function Search({ variant = 'desktop', isOpen, onClose }: SearchP
                                     <button
                                         key={cat}
                                         onClick={() => setQuery(cat)}
-                                        className="flex items-center py-3 border-b border-gray-50 text-xs text-gray-700 hover:text-black text-left"
+                                        className="flex items-center py-3 border-b border-gray-50 text-xs text-gray-700 hover:text-heading text-left"
                                     >
                                         <SearchIcon className="w-3.5 h-3.5 mr-3 text-gray-400" />
                                         {cat}

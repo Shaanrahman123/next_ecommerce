@@ -1,19 +1,32 @@
 @import "tailwindcss";
 
+@theme inline {
+  --font-sans: var(--font-roboto), ui-sans-serif, system-ui, sans-serif;
+  --color-primary: var(--theme-primary);
+  --color-primary-hover: var(--theme-accent);
+  --color-on-primary: var(--theme-on-primary);
+  --color-heading: var(--theme-heading);
+}
+
 :root {
-  /* Theme Colors - Easily customizable */
-  --theme-primary: #000000;
+  /* Brand Colors */
+  --theme-primary: #1B1B1B;
+  --theme-accent: #1B1B1B;
+  --theme-primary-light: #1B1B1B;
   --theme-secondary: #ffffff;
-  --theme-accent: #1a1a1a;
+  --theme-on-primary: #ffffff;
+  --theme-heading: #1B1B1B;
+  --theme-navbar-bg: #1B1B1B;
+  --theme-navbar-text: #ffffff;
   --theme-border: #e5e5e5;
   --theme-hover: #f5f5f5;
-  --theme-text-primary: #000000;
+  --theme-text-primary: #1B1B1B;
   --theme-text-secondary: #666666;
   --theme-text-muted: #999999;
 
   /* Background Colors */
   --background: #ffffff;
-  --foreground: #000000;
+  --foreground: #1B1B1B;
 
   /* Spacing */
   --container-padding: 1rem;
@@ -62,6 +75,12 @@
   font-size: var(--text-page-title-mobile);
   font-weight: 600;
   line-height: 1.2;
+  color: var(--theme-heading);
+}
+
+.text-page-title.text-white,
+.text-section-title.text-white {
+  color: #ffffff;
 }
 
 @media (min-width: 768px) {
@@ -75,6 +94,11 @@
   font-size: var(--text-section-title-mobile);
   font-weight: 600;
   line-height: 1.3;
+  color: var(--theme-heading);
+}
+
+.text-section-title.text-white {
+  color: #ffffff;
 }
 
 @media (min-width: 768px) {
@@ -266,6 +290,39 @@ textarea:focus-visible {
 
 button:hover {
   cursor: pointer;
+}
+
+/* Theme utility classes */
+.bg-theme {
+  background-color: var(--theme-primary);
+}
+
+.text-theme {
+  color: var(--theme-primary);
+}
+
+.text-on-primary {
+  color: var(--theme-on-primary);
+}
+
+.text-heading {
+  color: var(--theme-heading);
+}
+
+.border-theme {
+  border-color: var(--theme-primary);
+}
+
+.bg-navbar {
+  background-color: var(--theme-navbar-bg);
+}
+
+.text-navbar {
+  color: var(--theme-navbar-text);
+}
+
+.hover\:bg-primary-hover:hover {
+  background-color: var(--theme-accent);
 }
 
 .has-bottom-nav {

@@ -1,18 +1,26 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Input from '@/components/ui/Input';
 import Button from '@/components/ui/Button';
 import { Save, MapPin } from 'lucide-react';
+import { AuthErrorAlert } from '@/components/auth';
+import { useAddressStore } from '@/store';
+import { userService, getAuthErrorMessage } from '@/services/user.service';
+import { mapProfileAddresses } from '@/utils/user';
 
 interface AddEditAddressProps {
     addressId: string | null;
 }
 
 export default function AddEditAddress({ addressId }: AddEditAddressProps) {
+    const router = useRouter();
+    const { addresses, setAddresses } = useAddressStore();
     const [isLoading, setIsLoading] = useState(false);
+    const [apiError, setApiError] = useState('');
     const [formData, setFormData] = useState({
-        type: addressId ? 'Home' : '',
+        type: '',
         fullName: '',
         phone: '',
         addressLine1: '',
@@ -20,50 +28,88 @@ export default function AddEditAddress({ addressId }: AddEditAddressProps) {
         city: '',
         state: '',
         zipCode: '',
-        country: 'USA',
+        country: 'India',
         isDefault: false,
     });
     const [errors, setErrors] = useState<Record<string, string>>({});
 
+    useEffect(() => {
+        if (addressId) {
+            const existing = addresses.find((a) => a.id === addressId);
+            if (existing) {
+                setFormData({
+                    type: existing.type || 'Home',
+                    fullName: existing.fullName,
+                    phone: existing.phone || '',
+                    addressLine1: existing.addressLine1,
+                    addressLine2: existing.addressLine2 || '',
+                    city: existing.city,
+                    state: existing.state,
+                    zipCode: existing.zipCode,
+                    country: existing.country,
+                    isDefault: existing.isDefault ?? false,
+                });
+            }
+        }
+    }, [addressId, addresses]);
+
     const validateForm = () => {
         const newErrors: Record<string, string> = {};
-
         if (!formData.type) newErrors.type = 'Address type is required';
-        if (!formData.fullName) newErrors.fullName = 'Full name is required';
-        if (!formData.phone) newErrors.phone = 'Phone number is required';
-        if (!formData.addressLine1) newErrors.addressLine1 = 'Address is required';
-        if (!formData.city) newErrors.city = 'City is required';
-        if (!formData.state) newErrors.state = 'State is required';
-        if (!formData.zipCode) newErrors.zipCode = 'ZIP code is required';
-        if (!formData.country) newErrors.country = 'Country is required';
-
+        if (!formData.fullName.trim()) newErrors.fullName = 'Full name is required';
+        if (!formData.addressLine1.trim()) newErrors.addressLine1 = 'Address is required';
+        if (!formData.city.trim()) newErrors.city = 'City is required';
+        if (!formData.state.trim()) newErrors.state = 'State is required';
+        if (!formData.zipCode.trim()) newErrors.zipCode = 'ZIP code is required';
+        if (!formData.country.trim()) newErrors.country = 'Country is required';
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
         if (!validateForm()) return;
 
         setIsLoading(true);
+        setApiError('');
 
-        // Simulate API call
-        setTimeout(() => {
+        const payload = {
+            type: formData.type,
+            fullName: formData.fullName.trim(),
+            phone: formData.phone.trim(),
+            addressLine1: formData.addressLine1.trim(),
+            addressLine2: formData.addressLine2.trim(),
+            city: formData.city.trim(),
+            state: formData.state.trim(),
+            zipCode: formData.zipCode.trim(),
+            country: formData.country.trim(),
+            isDefault: formData.isDefault,
+        };
+
+        try {
+            const data = addressId
+                ? await userService.updateAddress(addressId, payload)
+                : await userService.addAddress(payload);
+
+            if (data.user) {
+                setAddresses(mapProfileAddresses(data.user));
+            }
+            router.push('/account?section=addresses');
+        } catch (err) {
+            setApiError(getAuthErrorMessage(err, `Failed to ${addressId ? 'update' : 'add'} address`));
+        } finally {
             setIsLoading(false);
-            alert(`Address ${addressId ? 'updated' : 'added'} successfully!`);
-            window.history.back();
-        }, 1500);
+        }
     };
 
     return (
         <div className="animate-fade-in">
             <div className="hidden lg:flex items-center gap-5 mb-10">
-                <div className="w-16 h-16 bg-black rounded-md flex items-center justify-center text-white">
+                <div className="w-16 h-16 bg-primary rounded-md flex items-center justify-center text-white">
                     <MapPin className="w-8 h-8" />
                 </div>
                 <div>
-                    <h1 className="text-section-title font-black text-gray-900 uppercase tracking-tight">
+                    <h1 className="text-section-title font-black text-heading uppercase tracking-tight">
                         {addressId ? 'Edit Address' : 'Add New Address'}
                     </h1>
                     <p className="text-body text-gray-600">Enter your delivery address details</p>
@@ -71,8 +117,9 @@ export default function AddEditAddress({ addressId }: AddEditAddressProps) {
             </div>
 
             <form onSubmit={handleSubmit} className="lg:bg-white lg:border lg:border-gray-300 lg:rounded-md lg:p-8">
-                <div className="space-y-10">
-                    {/* Address Type */}
+                <AuthErrorAlert message={apiError} />
+
+                <div className="space-y-10 mt-6">
                     <div>
                         <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-5">
                             Address Type <span className="text-red-500 font-bold">*</span>
@@ -86,10 +133,11 @@ export default function AddEditAddress({ addressId }: AddEditAddressProps) {
                                         setFormData({ ...formData, type });
                                         setErrors({ ...errors, type: '' });
                                     }}
-                                    className={`flex-1 px-4 py-4 rounded-md font-black uppercase tracking-widest text-[10px] border transition-all duration-300 ${formData.type === type
-                                        ? 'bg-black text-white border-black'
-                                        : 'bg-gray-50 text-gray-500 border-gray-300 hover:bg-gray-100'
-                                        }`}
+                                    className={`flex-1 px-4 py-4 rounded-md font-black uppercase tracking-widest text-[10px] border transition-all duration-300 ${
+                                        formData.type === type
+                                            ? 'bg-primary text-on-primary border-primary'
+                                            : 'bg-gray-50 text-gray-500 border-gray-300 hover:bg-gray-100'
+                                    }`}
                                 >
                                     {type}
                                 </button>
@@ -98,9 +146,8 @@ export default function AddEditAddress({ addressId }: AddEditAddressProps) {
                         {errors.type && <p className="mt-2 text-[10px] font-bold text-red-500 uppercase tracking-widest">{errors.type}</p>}
                     </div>
 
-                    {/* Contact Information */}
                     <div className="pt-4 border-t border-gray-300">
-                        <h3 className="text-small font-black text-gray-900 mb-8 uppercase tracking-widest border-l-4 border-black pl-3">Contact Information</h3>
+                        <h3 className="text-small font-black text-heading mb-8 uppercase tracking-widest border-l-4 border-primary pl-3">Contact Information</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
                             <Input
                                 label="Full Name"
@@ -116,24 +163,18 @@ export default function AddEditAddress({ addressId }: AddEditAddressProps) {
                                 className="bg-gray-50 border-none rounded-md h-14"
                             />
                             <Input
-                                label="Phone Number"
+                                label="Phone Number (Optional)"
                                 type="tel"
                                 value={formData.phone}
-                                onChange={(e) => {
-                                    setFormData({ ...formData, phone: e.target.value });
-                                    setErrors({ ...errors, phone: '' });
-                                }}
-                                error={errors.phone}
-                                placeholder="e.g. +1 (555) 123-4567"
-                                required
+                                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                                placeholder="e.g. +91 98765 43210"
                                 className="bg-gray-50 border-none rounded-md h-14"
                             />
                         </div>
                     </div>
 
-                    {/* Address Details */}
                     <div className="pt-4 border-t border-gray-300">
-                        <h3 className="text-small font-black text-gray-900 mb-8 uppercase tracking-widest border-l-4 border-black pl-3">Address Details</h3>
+                        <h3 className="text-small font-black text-heading mb-8 uppercase tracking-widest border-l-4 border-primary pl-3">Address Details</h3>
                         <div className="space-y-6">
                             <Input
                                 label="Address Line 1"
@@ -166,7 +207,6 @@ export default function AddEditAddress({ addressId }: AddEditAddressProps) {
                                         setErrors({ ...errors, city: '' });
                                     }}
                                     error={errors.city}
-                                    placeholder="New York"
                                     required
                                     className="bg-gray-50 border-none rounded-md h-14"
                                 />
@@ -179,7 +219,6 @@ export default function AddEditAddress({ addressId }: AddEditAddressProps) {
                                         setErrors({ ...errors, state: '' });
                                     }}
                                     error={errors.state}
-                                    placeholder="NY"
                                     required
                                     className="bg-gray-50 border-none rounded-md h-14"
                                 />
@@ -194,7 +233,6 @@ export default function AddEditAddress({ addressId }: AddEditAddressProps) {
                                         setErrors({ ...errors, zipCode: '' });
                                     }}
                                     error={errors.zipCode}
-                                    placeholder="10001"
                                     required
                                     className="bg-gray-50 border-none rounded-md h-14"
                                 />
@@ -207,7 +245,6 @@ export default function AddEditAddress({ addressId }: AddEditAddressProps) {
                                         setErrors({ ...errors, country: '' });
                                     }}
                                     error={errors.country}
-                                    placeholder="USA"
                                     required
                                     className="bg-gray-50 border-none rounded-md h-14"
                                 />
@@ -215,31 +252,27 @@ export default function AddEditAddress({ addressId }: AddEditAddressProps) {
                         </div>
                     </div>
 
-                    {/* Default Address */}
                     <div className="pt-8 border-t border-gray-300">
                         <label className="flex items-center gap-5 cursor-pointer group">
-                            <div className="relative flex items-center">
-                                <input
-                                    type="checkbox"
-                                    checked={formData.isDefault}
-                                    onChange={(e) => setFormData({ ...formData, isDefault: e.target.checked })}
-                                    className="w-7 h-7 rounded-md border-gray-300 text-black cursor-pointer bg-gray-50 transition-all focus:ring-0 focus:ring-offset-0 checked:bg-black"
-                                />
-                            </div>
+                            <input
+                                type="checkbox"
+                                checked={formData.isDefault}
+                                onChange={(e) => setFormData({ ...formData, isDefault: e.target.checked })}
+                                className="w-7 h-7 rounded-md border-gray-300 text-heading cursor-pointer bg-gray-50 transition-all focus:ring-0 focus:ring-offset-0 checked:bg-primary"
+                            />
                             <div>
-                                <span className="text-small font-black text-gray-900 uppercase tracking-tight">Set as default address</span>
+                                <span className="text-small font-black text-heading uppercase tracking-tight">Set as default address</span>
                                 <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-relaxed mt-0.5">Primary address for future orders</p>
                             </div>
                         </label>
                     </div>
 
-                    {/* Action Buttons */}
                     <div className="flex flex-col lg:flex-row gap-4 pt-4">
-                        <Button type="submit" isLoading={isLoading} className="h-14 lg:px-12 rounded-md bg-black text-white font-black uppercase tracking-widest text-[10px] hover:bg-gray-900 transition-all flex items-center justify-center gap-3">
+                        <Button type="submit" isLoading={isLoading} className="h-14 lg:px-12 rounded-md bg-primary text-on-primary font-black uppercase tracking-widest text-[10px] hover:bg-primary-hover transition-all flex items-center justify-center gap-3">
                             <Save className="w-4 h-4" />
                             {addressId ? 'Update Address' : 'Save Address'}
                         </Button>
-                        <Button type="button" variant="secondary" onClick={() => window.history.back()} className="h-14 lg:px-12 rounded-md font-black uppercase tracking-widest text-[10px] bg-gray-50 border-none text-gray-500 hover:bg-gray-100">
+                        <Button type="button" variant="secondary" onClick={() => router.push('/account?section=addresses')} className="h-14 lg:px-12 rounded-md font-black uppercase tracking-widest text-[10px] bg-gray-50 border-none text-gray-500 hover:bg-gray-100">
                             Cancel
                         </Button>
                     </div>

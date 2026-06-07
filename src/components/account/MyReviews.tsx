@@ -23,7 +23,7 @@ export default function MyReviews() {
     return (
         <div className="animate-fade-in text-full">
             <div className="hidden lg:block mb-10">
-                <h1 className="text-section-title font-black text-gray-900 mb-2 uppercase tracking-tight">My Reviews</h1>
+                <h1 className="text-section-title font-black text-heading mb-2 uppercase tracking-tight">My Reviews</h1>
                 <p className="text-body text-gray-600">Your product reviews and ratings</p>
             </div>
 
@@ -35,13 +35,13 @@ export default function MyReviews() {
                     >
                         <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-6">
                             <div>
-                                <h3 className="text-body font-black text-gray-900 uppercase tracking-tight mb-3 group-hover:text-black transition-colors">{review.product}</h3>
+                                <h3 className="text-body font-black text-heading uppercase tracking-tight mb-3 group-hover:text-heading transition-colors">{review.product}</h3>
                                 <div className="flex items-center gap-1.5 mb-2">
                                     {[...Array(5)].map((_, i) => (
                                         <Star
                                             key={i}
                                             className={`w-4 h-4 ${i < review.rating
-                                                ? 'fill-black text-black'
+                                                ? 'fill-primary text-heading'
                                                 : 'text-gray-200'
                                                 }`}
                                         />
@@ -64,7 +64,7 @@ export default function MyReviews() {
                     <div className="w-20 h-20 bg-white rounded-md flex items-center justify-center mx-auto mb-6">
                         <Star className="w-10 h-10 text-gray-200" />
                     </div>
-                    <h3 className="text-body font-black text-gray-900 mb-2 uppercase tracking-tight">No reviews yet</h3>
+                    <h3 className="text-body font-black text-heading mb-2 uppercase tracking-tight">No reviews yet</h3>
                     <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Share your thoughts on products you've purchased.</p>
                 </div>
             )}

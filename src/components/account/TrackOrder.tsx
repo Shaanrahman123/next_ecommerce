@@ -46,17 +46,17 @@ export default function TrackOrder({ orderId: initialOrderId }: TrackOrderProps)
             <div className="animate-fade-in">
                 <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-10">
                     <div className="flex items-center gap-5">
-                        <div className="w-16 h-16 bg-black rounded-md flex items-center justify-center text-white shrink-0">
+                        <div className="w-16 h-16 bg-primary rounded-md flex items-center justify-center text-white shrink-0">
                             <Truck className="w-8 h-8" />
                         </div>
                         <div>
-                            <h1 className="text-section-title font-black text-gray-900 uppercase tracking-tight">Track Package</h1>
+                            <h1 className="text-section-title font-black text-heading uppercase tracking-tight">Track Package</h1>
                             <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">ID: {orderId}</p>
                         </div>
                     </div>
                     <button
                         onClick={() => setSearching(false)}
-                        className="flex items-center justify-center gap-2 h-11 px-6 border border-gray-300 rounded-md text-[10px] font-black text-gray-900 hover:bg-black hover:text-white transition-all uppercase tracking-widest"
+                        className="flex items-center justify-center gap-2 h-11 px-6 border border-gray-300 rounded-md text-[10px] font-black text-heading hover:bg-primary hover:text-on-primary transition-all uppercase tracking-widest"
                     >
                         <Search className="w-3.5 h-3.5" />
                         New Search
@@ -79,8 +79,8 @@ export default function TrackOrder({ orderId: initialOrderId }: TrackOrderProps)
                                     return (
                                         <div key={index} className="relative flex gap-8 group">
                                             {/* Step Marker */}
-                                            <div className={`relative z-10 w-10 h-10 rounded-full border-2 flex items-center justify-center transition-all duration-500 shrink-0 ${isCompleted ? 'bg-black border-black text-white' :
-                                                isCurrent ? 'bg-white border-black text-black scale-110 shadow-lg' :
+                                            <div className={`relative z-10 w-10 h-10 rounded-full border-2 flex items-center justify-center transition-all duration-500 shrink-0 ${isCompleted ? 'bg-primary border-primary text-white' :
+                                                isCurrent ? 'bg-white border-primary text-heading scale-110 shadow-lg' :
                                                     'bg-white border-gray-200 text-gray-300'
                                                 }`}>
                                                 {isCompleted ? <Check className="w-5 h-5" /> : <Icon className="w-5 h-5" />}
@@ -92,7 +92,7 @@ export default function TrackOrder({ orderId: initialOrderId }: TrackOrderProps)
                                                     <h3 className={`text-body font-black uppercase tracking-tight ${isCompleted || isCurrent ? 'text-gray-900' : 'text-gray-300'}`}>
                                                         {step.title}
                                                     </h3>
-                                                    <span className={`text-[9px] font-black uppercase tracking-[0.15em] ${isCurrent ? 'text-black' : 'text-gray-400'}`}>
+                                                    <span className={`text-[9px] font-black uppercase tracking-[0.15em] ${isCurrent ? 'text-heading' : 'text-gray-400'}`}>
                                                         {step.date}
                                                     </span>
                                                 </div>
@@ -110,14 +110,14 @@ export default function TrackOrder({ orderId: initialOrderId }: TrackOrderProps)
                     {/* Sidebar Info */}
                     <div className="space-y-6">
                         <div className="bg-white border border-gray-300 rounded-lg p-6 lg:p-8 shadow-none">
-                            <h3 className="text-[10px] font-black text-gray-900 uppercase tracking-widest mb-6 flex items-center gap-3">
-                                <div className="w-8 h-8 rounded-md bg-black flex items-center justify-center text-white shrink-0">
+                            <h3 className="text-[10px] font-black text-heading uppercase tracking-widest mb-6 flex items-center gap-3">
+                                <div className="w-8 h-8 rounded-md bg-primary flex items-center justify-center text-white shrink-0">
                                     <MapPin className="w-4 h-4" />
                                 </div>
                                 Delivery Address
                             </h3>
                             <div className="space-y-1">
-                                <p className="text-body font-black text-gray-900 uppercase tracking-tight">John Doe</p>
+                                <p className="text-body font-black text-heading uppercase tracking-tight">John Doe</p>
                                 <p className="text-small font-bold text-gray-500 uppercase tracking-tight leading-relaxed">123 Main Street</p>
                                 <p className="text-small font-bold text-gray-500 uppercase tracking-tight leading-relaxed">Apartment 4B</p>
                                 <p className="text-small font-bold text-gray-500 uppercase tracking-tight leading-relaxed">New York, NY 10001</p>
@@ -150,11 +150,11 @@ export default function TrackOrder({ orderId: initialOrderId }: TrackOrderProps)
         <div className="animate-fade-in lg:bg-white lg:border lg:border-gray-300 lg:rounded-lg lg:p-12">
             <div className="max-w-2xl mx-auto text-center py-10 lg:py-0">
                 <div className="relative inline-block mb-10 group">
-                    <div className="w-24 h-24 bg-black rounded-md flex items-center justify-center mx-auto text-white transition-transform duration-500 group-hover:rotate-6">
+                    <div className="w-24 h-24 bg-primary rounded-md flex items-center justify-center mx-auto text-white transition-transform duration-500 group-hover:rotate-6">
                         <Package className="w-10 h-10" />
                     </div>
                 </div>
-                <h1 className="text-section-title font-black text-gray-900 mb-4 uppercase tracking-tight">Track Your Order</h1>
+                <h1 className="text-section-title font-black text-heading mb-4 uppercase tracking-tight">Track Your Order</h1>
                 <p className="text-body text-gray-500 mb-12 max-w-md mx-auto leading-relaxed">
                     Enter your order ID below to see exactly where your premium items are in real-time.
                 </p>
@@ -165,11 +165,11 @@ export default function TrackOrder({ orderId: initialOrderId }: TrackOrderProps)
                         placeholder="Order ID (e.g. 12345678)"
                         value={orderId}
                         onChange={(e) => setOrderId(e.target.value)}
-                        className="w-full h-16 bg-gray-50 border border-gray-100 rounded-md px-8 text-body font-black focus:ring-2 focus:ring-black focus:bg-white transition-all outline-hidden"
+                        className="w-full h-16 bg-gray-50 border border-gray-100 rounded-md px-8 text-body font-black focus:ring-2 focus:ring-primary focus:bg-white transition-all outline-hidden"
                     />
                     <Button
                         fullWidth
-                        className="rounded-md h-16 font-black uppercase tracking-widest bg-black text-white hover:bg-gray-900 transition-all flex items-center justify-center gap-3 shadow-none border-none"
+                        className="rounded-md h-16 font-black uppercase tracking-widest bg-primary text-on-primary hover:bg-primary-hover transition-all flex items-center justify-center gap-3 shadow-none border-none"
                         onClick={() => setSearching(true)}
                     >
                         Locate Package

@@ -42,7 +42,7 @@ export default function SizeChartModal({ isOpen, onClose }: SizeChartModalProps)
             <div className="bg-white rounded-xl shadow-2xl w-full max-w-5xl max-h-[90vh] overflow-hidden animate-scale-in">
                 {/* Header */}
                 <div className="flex items-center justify-between p-4 md:p-6 border-b border-gray-200">
-                    <h2 className="text-lg md:text-2xl font-bold text-gray-900">Size Chart</h2>
+                    <h2 className="text-lg md:text-2xl font-bold text-heading">Size Chart</h2>
                     <button
                         onClick={onClose}
                         className="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200"
@@ -59,7 +59,7 @@ export default function SizeChartModal({ isOpen, onClose }: SizeChartModalProps)
                             <button
                                 onClick={() => setActiveTab('inches')}
                                 className={`pb-3 px-4 text-xs md:text-sm font-semibold transition-colors duration-200 ${activeTab === 'inches'
-                                    ? 'text-black border-b-2 border-black'
+                                    ? 'text-heading border-b-2 border-primary'
                                     : 'text-gray-500 hover:text-gray-700'
                                     }`}
                             >
@@ -68,7 +68,7 @@ export default function SizeChartModal({ isOpen, onClose }: SizeChartModalProps)
                             <button
                                 onClick={() => setActiveTab('cm')}
                                 className={`pb-3 px-4 text-xs md:text-sm font-semibold transition-colors duration-200 ${activeTab === 'cm'
-                                    ? 'text-black border-b-2 border-black'
+                                    ? 'text-heading border-b-2 border-primary'
                                     : 'text-gray-500 hover:text-gray-700'
                                     }`}
                             >
@@ -83,16 +83,16 @@ export default function SizeChartModal({ isOpen, onClose }: SizeChartModalProps)
                                     <table className="w-full border-collapse">
                                         <thead>
                                             <tr className="bg-gray-100">
-                                                <th className="px-3 md:px-4 py-2 md:py-3 text-left text-xs md:text-sm font-semibold text-gray-900 border border-gray-200">
+                                                <th className="px-3 md:px-4 py-2 md:py-3 text-left text-xs md:text-sm font-semibold text-heading border border-gray-200">
                                                     Size
                                                 </th>
-                                                <th className="px-3 md:px-4 py-2 md:py-3 text-left text-xs md:text-sm font-semibold text-gray-900 border border-gray-200">
+                                                <th className="px-3 md:px-4 py-2 md:py-3 text-left text-xs md:text-sm font-semibold text-heading border border-gray-200">
                                                     Chest
                                                 </th>
-                                                <th className="px-3 md:px-4 py-2 md:py-3 text-left text-xs md:text-sm font-semibold text-gray-900 border border-gray-200">
+                                                <th className="px-3 md:px-4 py-2 md:py-3 text-left text-xs md:text-sm font-semibold text-heading border border-gray-200">
                                                     Shoulder
                                                 </th>
-                                                <th className="px-3 md:px-4 py-2 md:py-3 text-left text-xs md:text-sm font-semibold text-gray-900 border border-gray-200">
+                                                <th className="px-3 md:px-4 py-2 md:py-3 text-left text-xs md:text-sm font-semibold text-heading border border-gray-200">
                                                     Length
                                                 </th>
                                             </tr>
@@ -120,7 +120,7 @@ export default function SizeChartModal({ isOpen, onClose }: SizeChartModalProps)
 
                                 {/* How to Measure - Mobile/Tablet */}
                                 <div className="mt-6 lg:hidden bg-gray-50 p-4 rounded-lg">
-                                    <h3 className="text-sm font-semibold text-gray-900 mb-3">How To Measure</h3>
+                                    <h3 className="text-sm font-semibold text-heading mb-3">How To Measure</h3>
                                     <div className="space-y-2 text-xs text-gray-600">
                                         <p><strong>Chest:</strong> Measure around the fullest part of your chest</p>
                                         <p><strong>Shoulder:</strong> Measure from shoulder seam to shoulder seam</p>
@@ -132,7 +132,7 @@ export default function SizeChartModal({ isOpen, onClose }: SizeChartModalProps)
                             {/* Model Info - Desktop Only */}
                             <div className="hidden lg:block">
                                 <div className="bg-gray-50 p-4 rounded-lg">
-                                    <h3 className="text-sm font-semibold text-gray-900 mb-4">Model Measurements</h3>
+                                    <h3 className="text-sm font-semibold text-heading mb-4">Model Measurements</h3>
 
                                     {/* Model Image */}
                                     <div className="relative w-full aspect-[3/4] mb-4 rounded-lg overflow-hidden bg-gray-200">
@@ -147,16 +147,16 @@ export default function SizeChartModal({ isOpen, onClose }: SizeChartModalProps)
                                     <div className="space-y-2 text-xs md:text-sm">
                                         <div className="flex justify-between">
                                             <span className="text-gray-600">Size:</span>
-                                            <span className="font-semibold text-gray-900">L</span>
+                                            <span className="font-semibold text-heading">L</span>
                                         </div>
                                         <div className="flex justify-between">
                                             <span className="text-gray-600">Height:</span>
-                                            <span className="font-semibold text-gray-900">6ft</span>
+                                            <span className="font-semibold text-heading">6ft</span>
                                         </div>
                                     </div>
 
                                     <div className="mt-4 pt-4 border-t border-gray-200">
-                                        <h4 className="text-xs font-semibold text-gray-900 mb-2">How To Measure</h4>
+                                        <h4 className="text-xs font-semibold text-heading mb-2">How To Measure</h4>
                                         <div className="space-y-1.5 text-xs text-gray-600">
                                             <p><strong>Chest:</strong> Around fullest part</p>
                                             <p><strong>Shoulder:</strong> Seam to seam</p>

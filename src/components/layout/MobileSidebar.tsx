@@ -4,18 +4,30 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { X, ChevronRight, ChevronDown, HelpCircle } from 'lucide-react';
+import BrandLogo from './BrandLogo';
 import { mainNavigation } from '@/data/categories';
 
 interface MobileSidebarProps {
     isOpen: boolean;
     onClose: () => void;
     isAuthenticated: boolean;
-    user: any;
+    user: { name?: string; email?: string } | null;
     onLogout: () => void;
+    navigation?: Array<{
+        id: string;
+        label: string;
+        basePath: string;
+        sections: Array<{
+            title: string;
+            basePath: string;
+            items: Array<{ name: string; slug: string; image: string }>;
+        }>;
+    }>;
 }
 
-export default function MobileSidebar({ isOpen, onClose, isAuthenticated, user, onLogout }: MobileSidebarProps) {
+export default function MobileSidebar({ isOpen, onClose, isAuthenticated, user, onLogout, navigation: navProp }: MobileSidebarProps) {
     const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
+    const navigation = navProp || mainNavigation.filter((n) => n.id !== 'sale');
 
     const toggleCategory = (category: string) => {
         setExpandedCategory(expandedCategory === category ? null : category);
@@ -36,16 +48,14 @@ export default function MobileSidebar({ isOpen, onClose, isAuthenticated, user, 
                     }`}
             >
                 {/* Header / Banner Area matching Minimal theme */}
-                <div className="relative h-40 bg-black overflow-hidden">
+                <div className="relative h-40 bg-primary overflow-hidden">
                     {/* Decorative abstract shapes */}
                     <div className="absolute top-[-20%] right-[-10%] w-32 h-32 rounded-full bg-gray-800/50 blur-xl"></div>
-                    <div className="absolute bottom-[-10%] left-[-10%] w-24 h-24 rounded-full bg-gray-900/50 blur-lg"></div>
+                    <div className="absolute bottom-[-10%] left-[-10%] w-24 h-24 rounded-full bg-primary/50 blur-lg"></div>
 
                     <div className="absolute inset-0 flex flex-col justify-center px-6 text-white">
-                        <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center mb-3 shadow-lg">
-                            <span className="text-black font-bold text-xl">M</span>
-                        </div>
-                        <h2 className="text-2xl font-bold tracking-tight mb-1">Welcome</h2>
+                        <BrandLogo className="mb-3" />
+                        <h2 className="text-2xl font-bold tracking-tight mb-1 text-white">Welcome</h2>
                         <p className="text-gray-300 text-sm font-medium">Discover premium fashion</p>
 
                         {!isAuthenticated ? (
@@ -72,19 +82,19 @@ export default function MobileSidebar({ isOpen, onClose, isAuthenticated, user, 
 
                 {/* Categories Section */}
                 <div className="py-4">
-                    {mainNavigation.map((category) => (
+                    {navigation.map((category) => (
                         <div key={category.id} className="border-b border-gray-50 last:border-0">
                             <button
                                 onClick={() => toggleCategory(category.id)}
                                 className="w-full flex items-center justify-between px-6 py-4 text-gray-800 hover:bg-gray-50 transition-colors"
                             >
                                 <div className="flex items-center gap-4">
-                                    <span className={`text-[15px] font-semibold ${expandedCategory === category.id ? 'text-black' : ''}`}>
+                                    <span className={`text-[15px] font-semibold ${expandedCategory === category.id ? 'text-heading' : ''}`}>
                                         {category.label}
                                     </span>
                                 </div>
                                 {expandedCategory === category.id ? (
-                                    <ChevronDown size={18} className="text-black" />
+                                    <ChevronDown size={18} className="text-heading" />
                                 ) : (
                                     <ChevronRight size={18} className="text-gray-400" />
                                 )}
@@ -118,7 +128,7 @@ export default function MobileSidebar({ isOpen, onClose, isAuthenticated, user, 
                                                                 sizes="40px"
                                                             />
                                                         </div>
-                                                        <span className="text-gray-600 text-[14px] font-semibold group-hover:text-black transition-colors">
+                                                        <span className="text-gray-600 text-[14px] font-semibold group-hover:text-heading transition-colors">
                                                             {item.name}
                                                         </span>
                                                     </Link>
@@ -128,7 +138,7 @@ export default function MobileSidebar({ isOpen, onClose, isAuthenticated, user, 
                                     ))}
                                     <Link
                                         href={category.basePath}
-                                        className="text-black text-xs font-bold py-4 mt-6 border-t border-gray-200 hover:gap-2 flex items-center gap-1 transition-all"
+                                        className="text-heading text-xs font-bold py-4 mt-6 border-t border-gray-200 hover:gap-2 flex items-center gap-1 transition-all"
                                         onClick={onClose}
                                     >
                                         Explore All {category.label}
@@ -146,11 +156,11 @@ export default function MobileSidebar({ isOpen, onClose, isAuthenticated, user, 
                         <div>
                             <h3 className="text-xs font-bold text-gray-400 capitalize mb-4">Support</h3>
                             <div className="space-y-4">
-                                <Link href="/contact" className="flex items-center gap-3 text-gray-600 hover:text-black" onClick={onClose}>
+                                <Link href="/contact" className="flex items-center gap-3 text-gray-600 hover:text-heading" onClick={onClose}>
                                     <HelpCircle size={18} />
                                     <span className="text-sm">Contact Us</span>
                                 </Link>
-                                <Link href="/faq" className="flex items-center gap-3 text-gray-600 hover:text-black" onClick={onClose}>
+                                <Link href="/faq" className="flex items-center gap-3 text-gray-600 hover:text-heading" onClick={onClose}>
                                     <HelpCircle size={18} />
                                     <span className="text-sm">FAQs</span>
                                 </Link>
@@ -160,8 +170,8 @@ export default function MobileSidebar({ isOpen, onClose, isAuthenticated, user, 
                         <div>
                             <h3 className="text-xs font-bold text-gray-400 capitalize mb-4">Legal</h3>
                             <div className="space-y-4">
-                                <Link href="/terms" className="block text-sm text-gray-600 hover:text-black" onClick={onClose}>Terms of Use</Link>
-                                <Link href="/privacy" className="block text-sm text-gray-600 hover:text-black" onClick={onClose}>Privacy Policy</Link>
+                                <Link href="/terms" className="block text-sm text-gray-600 hover:text-heading" onClick={onClose}>Terms of Use</Link>
+                                <Link href="/privacy" className="block text-sm text-gray-600 hover:text-heading" onClick={onClose}>Privacy Policy</Link>
                             </div>
                         </div>
                     </div>
@@ -170,7 +180,7 @@ export default function MobileSidebar({ isOpen, onClose, isAuthenticated, user, 
                         <div className="mt-8 px-6">
                             <button
                                 onClick={() => { onLogout(); onClose(); }}
-                                className="w-full py-3 border border-gray-300 rounded-lg text-sm font-bold text-gray-700 hover:bg-gray-100 hover:text-black transition-colors"
+                                className="w-full py-3 border border-gray-300 rounded-lg text-sm font-bold text-gray-700 hover:bg-gray-100 hover:text-heading transition-colors"
                             >
                                 Logout
                             </button>

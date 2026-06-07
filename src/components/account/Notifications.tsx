@@ -56,10 +56,10 @@ export default function Notifications() {
         <div className="animate-fade-in">
             <div className="hidden lg:flex items-center justify-between mb-8">
                 <div>
-                    <h1 className="text-section-title font-black text-gray-900 mb-2 uppercase tracking-tight">Notifications</h1>
+                    <h1 className="text-section-title font-black text-heading mb-2 uppercase tracking-tight">Notifications</h1>
                     <p className="text-body text-gray-600">Stay updated with your account activity</p>
                 </div>
-                <button className="px-6 py-2 text-[10px] font-black uppercase tracking-widest text-black hover:bg-black hover:text-white border border-black rounded-md transition-all duration-300">
+                <button className="px-6 py-2 text-[10px] font-black uppercase tracking-widest text-heading hover:bg-primary hover:text-on-primary border border-primary rounded-md transition-all duration-300">
                     Mark all as read
                 </button>
             </div>
@@ -80,15 +80,15 @@ export default function Notifications() {
                             </div>
                             <div className="flex-1 min-w-0">
                                 <div className="flex items-start justify-between mb-1">
-                                    <h3 className={`font-black uppercase tracking-tight ${notification.read ? 'text-gray-900' : 'text-black'}`}>{notification.title}</h3>
+                                    <h3 className={`font-black uppercase tracking-tight ${notification.read ? 'text-gray-900' : 'text-heading'}`}>{notification.title}</h3>
                                     {!notification.read && (
-                                        <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-black text-[8px] font-black text-white uppercase tracking-widest">New</div>
+                                        <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-primary text-[8px] font-black text-white uppercase tracking-widest">New</div>
                                     )}
                                 </div>
                                 <p className="text-small text-gray-600 mb-2 leading-relaxed">{notification.message}</p>
                                 <div className="flex items-center gap-3">
                                     <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{notification.time}</p>
-                                    {!notification.read && <div className="w-1.5 h-1.5 bg-black rounded-full" />}
+                                    {!notification.read && <div className="w-1.5 h-1.5 bg-primary rounded-full" />}
                                 </div>
                             </div>
                         </div>
@@ -102,14 +102,14 @@ export default function Notifications() {
                         <div className="w-20 h-20 bg-white rounded-md flex items-center justify-center mx-auto mb-6">
                             <Bell className="w-10 h-10 text-gray-200" />
                         </div>
-                        <h3 className="text-body font-black text-gray-900 mb-2 uppercase tracking-tight">No notifications</h3>
+                        <h3 className="text-body font-black text-heading mb-2 uppercase tracking-tight">No notifications</h3>
                         <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">You're all caught up!</p>
                     </div>
                 )
             }
 
             <div className="mt-8 lg:hidden">
-                <button className="w-full py-5 bg-white border border-gray-300 text-black rounded-md font-black uppercase tracking-widest text-xs hover:bg-black hover:text-white transition-all">
+                <button className="w-full py-5 bg-white border border-gray-300 text-heading rounded-md font-black uppercase tracking-widest text-xs hover:bg-primary hover:text-on-primary transition-all">
                     Mark all as read
                 </button>
             </div>

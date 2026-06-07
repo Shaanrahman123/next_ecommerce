@@ -7,6 +7,7 @@ export interface ICategory extends Document {
   image?: string;
   isActive: boolean;
   superCategories: mongoose.Types.ObjectId[];
+  sortOrder: number;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -45,11 +46,15 @@ const CategorySchema: Schema = new Schema(
       }],
       required: [true, 'Super Categories are required'],
       validate: {
-        validator: function(val: any) {
+        validator: function(val: unknown) {
           return Array.isArray(val) && val.length > 0;
         },
         message: 'At least one Super Category is required'
       }
+    },
+    sortOrder: {
+      type: Number,
+      default: 0,
     },
   },
   {

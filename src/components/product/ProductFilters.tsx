@@ -436,7 +436,7 @@ export default function ProductFilters({ onFilterChange, category = 'all' }: Pro
 
     const getColorClass = (colorId: string) => {
         const colors: any = {
-            black: 'bg-black',
+            black: 'bg-primary',
             white: 'bg-white border-gray-300',
             blue: 'bg-blue-600',
             gray: 'bg-gray-500',
@@ -506,7 +506,7 @@ export default function ProductFilters({ onFilterChange, category = 'all' }: Pro
                                                             type="checkbox"
                                                             checked={selectedFilters[section.id]?.includes(option.id) || false}
                                                             onChange={() => handleCheckboxChange(section.id, option.id)}
-                                                            className="w-4 h-4 rounded border-gray-300 text-black focus:ring-black"
+                                                            className="w-4 h-4 rounded border-gray-300 text-heading focus:ring-primary"
                                                         />
                                                         <span className="text-xs text-gray-700 flex-1">
                                                             {option.label}
@@ -550,7 +550,7 @@ export default function ProductFilters({ onFilterChange, category = 'all' }: Pro
                                                         name={section.id}
                                                         checked={selectedFilters[section.id] === option.id}
                                                         onChange={() => handleRadioChange(section.id, option.id)}
-                                                        className="w-4 h-4 border-gray-300 text-black focus:ring-black"
+                                                        className="w-4 h-4 border-gray-300 text-heading focus:ring-primary"
                                                     />
                                                     <span className="text-xs text-gray-700">{option.label}</span>
                                                 </label>
@@ -572,7 +572,7 @@ export default function ProductFilters({ onFilterChange, category = 'all' }: Pro
                                                 <div className="absolute w-full h-1.5 bg-gray-200 rounded-full">
                                                     {/* Active Track */}
                                                     <div
-                                                        className="absolute h-full bg-black rounded-full"
+                                                        className="absolute h-full bg-primary rounded-full"
                                                         style={{
                                                             left: `${((priceRange[0] - (section.min || 0)) / ((section.max || 11000) - (section.min || 0))) * 100}%`,
                                                             right: `${100 - ((priceRange[1] - (section.min || 0)) / ((section.max || 11000) - (section.min || 0))) * 100}%`,
@@ -587,7 +587,7 @@ export default function ProductFilters({ onFilterChange, category = 'all' }: Pro
                                                     max={section.max}
                                                     value={priceRange[0]}
                                                     onChange={(e) => handlePriceChange(0, parseInt(e.target.value))}
-                                                    className="absolute w-full appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-black [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-white [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:cursor-grab [&::-webkit-slider-thumb]:active:cursor-grabbing [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-black [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-white [&::-moz-range-thumb]:shadow-md [&::-moz-range-thumb]:cursor-grab [&::-moz-range-thumb]:active:cursor-grabbing"
+                                                    className="absolute w-full appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-white [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:cursor-grab [&::-webkit-slider-thumb]:active:cursor-grabbing [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-primary [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-white [&::-moz-range-thumb]:shadow-md [&::-moz-range-thumb]:cursor-grab [&::-moz-range-thumb]:active:cursor-grabbing"
                                                 />
 
                                                 {/* Max Thumb */}
@@ -597,7 +597,7 @@ export default function ProductFilters({ onFilterChange, category = 'all' }: Pro
                                                     max={section.max}
                                                     value={priceRange[1]}
                                                     onChange={(e) => handlePriceChange(1, parseInt(e.target.value))}
-                                                    className="absolute w-full appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-black [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-white [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:cursor-grab [&::-webkit-slider-thumb]:active:cursor-grabbing [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-black [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-white [&::-moz-range-thumb]:shadow-md [&::-moz-range-thumb]:cursor-grab [&::-moz-range-thumb]:active:cursor-grabbing"
+                                                    className="absolute w-full appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-white [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:cursor-grab [&::-webkit-slider-thumb]:active:cursor-grabbing [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-primary [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-white [&::-moz-range-thumb]:shadow-md [&::-moz-range-thumb]:cursor-grab [&::-moz-range-thumb]:active:cursor-grabbing"
                                                 />
                                             </div>
 
@@ -607,7 +607,7 @@ export default function ProductFilters({ onFilterChange, category = 'all' }: Pro
                                                     type="number"
                                                     value={priceRange[0]}
                                                     onChange={(e) => handlePriceChange(0, parseInt(e.target.value) || 0)}
-                                                    className="w-20 px-2 py-1.5 border border-gray-300 rounded text-xs focus:outline-none focus:ring-1 focus:ring-black"
+                                                    className="w-20 px-2 py-1.5 border border-gray-300 rounded text-xs focus:outline-none focus:ring-1 focus:ring-primary"
                                                     placeholder="Min"
                                                 />
                                                 <span className="text-xs text-gray-500">to</span>
@@ -615,7 +615,7 @@ export default function ProductFilters({ onFilterChange, category = 'all' }: Pro
                                                     type="number"
                                                     value={priceRange[1]}
                                                     onChange={(e) => handlePriceChange(1, parseInt(e.target.value) || 0)}
-                                                    className="w-20 px-2 py-1.5 border border-gray-300 rounded text-xs focus:outline-none focus:ring-1 focus:ring-black"
+                                                    className="w-20 px-2 py-1.5 border border-gray-300 rounded text-xs focus:outline-none focus:ring-1 focus:ring-primary"
                                                     placeholder="Max"
                                                 />
                                             </div>
@@ -634,7 +634,7 @@ export default function ProductFilters({ onFilterChange, category = 'all' }: Pro
                                                             type="checkbox"
                                                             checked={selectedFilters[section.id]?.includes(option.id) || false}
                                                             onChange={() => handleCheckboxChange(section.id, option.id)}
-                                                            className="w-4 h-4 rounded border-gray-300 text-black focus:ring-black"
+                                                            className="w-4 h-4 rounded border-gray-300 text-heading focus:ring-primary"
                                                         />
                                                         <div className={`w-4 h-4 rounded-full border ${getColorClass(option.id)}`} />
                                                         <span className="text-xs text-gray-700 flex-1">{option.label}</span>

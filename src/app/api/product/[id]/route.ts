@@ -6,17 +6,10 @@ import SubCategory from '@/models/SubCategory';
 import { withDb, withAdmin } from '@/lib/apiWrapper';
 import { PRODUCT_MESSAGES, GLOBAL_MESSAGES } from '@/constants/messages';
 import { uploadImageIfNeeded, uploadMultipleImages } from '@/lib/cloudinary';
-
-// Helper to slugify a string
-function slugify(text: string): string {
-  return text
-    .toString()
-    .toLowerCase()
-    .trim()
-    .replace(/\s+/g, '-')
-    .replace(/[^\w\-]+/g, '')
-    .replace(/\-\-+/g, '-');
-}
+import { getCloudinaryErrorMessage } from '@/lib/cloudinaryErrors';
+import { slugify } from '@/lib/slugify';
+import { serializeProduct } from '@/lib/productSerializer';
+import { sanitizeHomeSections } from '@/constants/homeSections';
 
 // GET /api/product/[id] — Get single product detail (public)
 export const GET = withDb(async (
@@ -43,7 +36,7 @@ export const GET = withDb(async (
       status: true,
       message: PRODUCT_MESSAGES.FETCH_SUCCESS,
       statusCode: 200,
-      data: product,
+      data: serializeProduct(product.toObject() as unknown as Record<string, unknown>),
     }, { status: 200 });
 
   } catch (error: any) {
@@ -80,9 +73,11 @@ export const PUT = withAdmin(async (
       stockQuantity,
       isActive,
       featured,
+      homeSections,
       gender,
       sizes,
       colors,
+      colorVariants,
       brand,
       material,
       season,
@@ -164,13 +159,25 @@ export const PUT = withAdmin(async (
     if (description !== undefined) updateData.description = description;
     if (price !== undefined) updateData.price = price;
     if (originalPrice !== undefined) updateData.originalPrice = originalPrice;
+    if (stockQuantity !== undefined) {
+      updateData.stockQuantity = stockQuantity;
+      if (inStock === undefined) {
+        updateData.inStock = stockQuantity > 0;
+      }
+    }
     if (inStock !== undefined) updateData.inStock = inStock;
-    if (stockQuantity !== undefined) updateData.stockQuantity = stockQuantity;
     if (isActive !== undefined) updateData.isActive = isActive;
     if (featured !== undefined) updateData.featured = featured;
+    if (homeSections !== undefined) {
+      updateData.homeSections = sanitizeHomeSections(homeSections);
+    }
     if (gender !== undefined) updateData.gender = gender;
     if (sizes !== undefined) updateData.sizes = sizes;
     if (colors !== undefined) updateData.colors = colors;
+    if (colorVariants !== undefined) {
+      updateData.colorVariants = colorVariants;
+      updateData.colors = colorVariants.map((c: { name: string }) => c.name);
+    }
     if (brand !== undefined) updateData.brand = brand;
     if (material !== undefined) updateData.material = material;
     if (season !== undefined) updateData.season = season;
@@ -187,16 +194,23 @@ export const PUT = withAdmin(async (
     }
 
     // ── Upload images if they have changed ────────────────────────────────────
-    if (heroImage !== undefined) {
-      updateData.heroImage = await uploadImageIfNeeded(heroImage, 'products') || '';
-    }
-
-    if (images !== undefined && Array.isArray(images)) {
-      if (images.length > 0) {
-        updateData.images = await uploadMultipleImages(images, 'products');
-      } else {
-        updateData.images = [];
+    try {
+      if (heroImage !== undefined) {
+        updateData.heroImage = (await uploadImageIfNeeded(heroImage, 'products')) || '';
       }
+
+      if (images !== undefined && Array.isArray(images)) {
+        if (images.length > 0) {
+          updateData.images = await uploadMultipleImages(images, 'products');
+        } else {
+          updateData.images = [];
+        }
+      }
+    } catch (uploadError) {
+      return NextResponse.json(
+        { status: false, message: getCloudinaryErrorMessage(uploadError), statusCode: 400 },
+        { status: 400 }
+      );
     }
 
     // ── Duplicate name / slug check (excluding self) ───────────────────────────
@@ -234,7 +248,7 @@ export const PUT = withAdmin(async (
       status: true,
       message: PRODUCT_MESSAGES.UPDATE_SUCCESS,
       statusCode: 200,
-      data: updatedProduct,
+      data: serializeProduct(updatedProduct!.toObject() as unknown as Record<string, unknown>),
     }, { status: 200 });
 
   } catch (error: any) {

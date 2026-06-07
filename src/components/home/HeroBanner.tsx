@@ -56,7 +56,7 @@ export default function HeroBanner() {
     };
 
     return (
-        <div className="relative h-[50vh] md:h-[85vh] min-h-[350px] md:min-h-[600px] w-full overflow-hidden bg-black">
+        <div className="relative h-[50vh] md:h-[85vh] min-h-[350px] md:min-h-[600px] w-full overflow-hidden bg-primary">
             {/* Slides */}
             {banners.map((banner, index) => (
                 <div
@@ -73,8 +73,8 @@ export default function HeroBanner() {
                         priority={index === 0}
                     />
 
-                    {/* Gradient Overlay - Darker at bottom for text legibility */}
-                    <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/20 to-transparent" />
+                    {/* Gradient Overlay */}
+                    <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/40 to-black/10" />
 
                     {/* Content */}
                     <div className="absolute inset-x-0 bottom-0 top-0 flex flex-col items-center justify-center text-center px-6 pb-12 md:pb-0">
@@ -83,7 +83,7 @@ export default function HeroBanner() {
                                 <h2 className="text-white text-[12px] md:text-xl font-medium tracking-[0.4em] uppercase opacity-90">
                                     {banner.subtitle}
                                 </h2>
-                                <h1 className="text-page-title font-black text-white leading-tight tracking-tight uppercase">
+                                <h1 className="text-page-title font-black !text-white leading-tight tracking-tight uppercase">
                                     {banner.title}
                                 </h1>
                                 <p className="text-body text-gray-300 max-w-xl mx-auto hidden md:block">
@@ -94,7 +94,7 @@ export default function HeroBanner() {
                             <div className="pt-4 md:pt-8">
                                 <Link href={banner.link}>
                                     <button
-                                        className="bg-black text-white hover:bg-white hover:text-black border border-white/20 px-8 py-3 md:px-12 md:py-5 text-[12px] md:text-base font-bold uppercase tracking-[0.3em] transition-all duration-500 rounded-none shadow-2xl backdrop-blur-sm"
+                                        className="bg-primary text-on-primary hover:bg-white hover:text-heading border border-white/20 px-8 py-3 md:px-12 md:py-5 text-[12px] md:text-base font-bold uppercase tracking-[0.3em] transition-all duration-500 rounded-none shadow-2xl backdrop-blur-sm"
                                     >
                                         Shop Collection
                                     </button>

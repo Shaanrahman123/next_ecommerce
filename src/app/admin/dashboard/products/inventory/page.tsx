@@ -15,7 +15,7 @@ export default function InventoryPage() {
         <div className="space-y-8">
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-2xl font-bold text-black font-heading">Inventory</h1>
+                    <h1 className="text-2xl font-bold text-heading font-heading">Inventory</h1>
                     <p className="text-gray-500">Track and manage your stock levels</p>
                 </div>
                 <div className="flex space-x-3">
@@ -23,7 +23,7 @@ export default function InventoryPage() {
                         <ArrowDownLeft className="w-4 h-4" />
                         <span>Export</span>
                     </button>
-                    <button className="flex items-center space-x-2 px-6 py-2 bg-black text-white rounded-xl text-sm font-medium hover:bg-gray-800 transition-all shadow-lg shadow-black/5">
+                    <button className="flex items-center space-x-2 px-6 py-2 bg-primary text-on-primary rounded-xl text-sm font-medium hover:bg-primary-hover transition-all shadow-lg shadow-black/5">
                         <ArrowUpRight className="w-4 h-4" />
                         <span>Import Stock</span>
                     </button>
@@ -33,14 +33,14 @@ export default function InventoryPage() {
             {/* Stats */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {[
-                    { label: 'Total Items', value: '2,450', color: 'bg-black' },
+                    { label: 'Total Items', value: '2,450', color: 'bg-primary' },
                     { label: 'Out of Stock', value: '12', color: 'bg-red-500' },
                     { label: 'Low Stock Alert', value: '08', color: 'bg-orange-500' },
                 ].map((stat, i) => (
                     <div key={i} className="bg-white p-6 rounded-2xl border border-gray-100">
                         <p className="text-sm font-medium text-gray-500 uppercase tracking-wider">{stat.label}</p>
                         <div className="mt-2 flex items-end justify-between">
-                            <h3 className="text-3xl font-bold text-black">{stat.value}</h3>
+                            <h3 className="text-3xl font-bold text-heading">{stat.value}</h3>
                             <div className={`w-2 h-2 rounded-full ${stat.color}`}></div>
                         </div>
                     </div>
@@ -54,7 +54,7 @@ export default function InventoryPage() {
                         <input
                             type="text"
                             placeholder="Search by SKU or name..."
-                            className="pl-10 pr-4 py-2 bg-white border border-gray-100 rounded-xl text-sm focus:ring-1 focus:ring-black outline-none transition-all w-64"
+                            className="pl-10 pr-4 py-2 bg-white border border-gray-100 rounded-xl text-sm focus:ring-1 focus:ring-primary outline-none transition-all w-64"
                         />
                     </div>
                 </div>
@@ -74,13 +74,13 @@ export default function InventoryPage() {
                             {stockItems.map((item) => (
                                 <tr key={item.id} className="hover:bg-gray-50/50 transition-colors">
                                     <td className="px-6 py-4">
-                                        <div className="font-medium text-black">{item.name}</div>
+                                        <div className="font-medium text-heading">{item.name}</div>
                                     </td>
                                     <td className="px-6 py-4">
                                         <div className="text-sm text-gray-400 font-mono">{item.sku}</div>
                                     </td>
                                     <td className="px-6 py-4">
-                                        <div className="text-sm text-black font-semibold">{item.stock} units</div>
+                                        <div className="text-sm text-heading font-semibold">{item.stock} units</div>
                                     </td>
                                     <td className="px-6 py-4">
                                         <div className="text-sm text-gray-600">{item.price}</div>

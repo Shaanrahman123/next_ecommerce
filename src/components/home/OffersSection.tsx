@@ -51,11 +51,11 @@ export default function OffersSection() {
         <section className="py-6 px-4 lg:px-4 xl:px-4 container mx-auto">
             {/* Header */}
             <div className="text-center mb-4 lg:mb-8">
-                <h2 className="text-section-title font-black text-gray-900 mb-1 uppercase tracking-tight">
+                <h2 className="text-section-title font-black text-heading mb-1 uppercase tracking-tight">
                     SPECIAL OFFERS
                 </h2>
                 <p className="text-body text-gray-600">Limited time deals you don't want to miss</p>
-                <div className="h-0.5 w-12 md:w-24 bg-gray-900 mx-auto mt-2 md:mt-4" />
+                <div className="h-0.5 w-12 md:w-24 bg-primary mx-auto mt-2 md:mt-4" />
             </div>
 
             {/* Offers Grid */}
@@ -78,7 +78,7 @@ export default function OffersSection() {
                                 <p className={`text-[10px] md:text-base font-medium ${offer.textColor} opacity-70`}>
                                     {offer.description}
                                 </p>
-                                <button className="mt-1 text-[10px] md:text-sm bg-gray-900 text-white px-3 py-1 md:px-6 md:py-2 rounded-full font-semibold hover:bg-gray-800 transition-colors duration-300">
+                                <button className="mt-1 text-[10px] md:text-sm bg-primary text-white px-3 py-1 md:px-6 md:py-2 rounded-full font-semibold hover:bg-primary-hover transition-colors duration-300">
                                     Shop Now
                                 </button>
                             </div>

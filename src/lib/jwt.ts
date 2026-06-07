@@ -67,6 +67,34 @@ export async function clearAuthCookies() {
   cookieStore.set('refreshToken', '', { maxAge: 0, path: '/' });
 }
 
+export async function setAdminAuthCookies(userId: string, email: string) {
+  const payload: TokenPayload = { userId, email };
+  const accessToken = generateAccessToken(payload);
+  const refreshToken = generateRefreshToken(payload);
+
+  const cookieStore = await cookies();
+  const accessMaxAge = parseExpirationToSeconds(JWT_ACCESS_EXPIRATION) || 900;
+  const refreshMaxAge = parseExpirationToSeconds(JWT_REFRESH_EXPIRATION) || 604800;
+
+  const cookieOptions = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax' as const,
+    path: '/',
+  };
+
+  cookieStore.set('adminAccessToken', accessToken, { ...cookieOptions, maxAge: accessMaxAge });
+  cookieStore.set('adminRefreshToken', refreshToken, { ...cookieOptions, maxAge: refreshMaxAge });
+
+  return { accessToken, refreshToken };
+}
+
+export async function clearAdminAuthCookies() {
+  const cookieStore = await cookies();
+  cookieStore.set('adminAccessToken', '', { maxAge: 0, path: '/' });
+  cookieStore.set('adminRefreshToken', '', { maxAge: 0, path: '/' });
+}
+
 function parseExpirationToSeconds(exp: string): number | null {
   const num = parseInt(exp);
   if (isNaN(num)) return null;

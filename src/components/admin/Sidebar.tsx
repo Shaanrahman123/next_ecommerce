@@ -15,11 +15,11 @@ import {
     ChevronLeft,
     ChevronRight,
     ChevronDown,
-    Search,
-    Bell
+    Layers,
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useAdminAuthActions } from '@/hooks/useAdminAuthActions';
 
 const sidebarItems = [
     { icon: LayoutDashboard, label: 'Dashboard', href: '/admin/dashboard' },
@@ -30,8 +30,18 @@ const sidebarItems = [
         subItems: [
             { label: 'All Products', href: '/admin/dashboard/products' },
             { label: 'Add Product', href: '/admin/dashboard/products/add' },
-            { label: 'Categories', href: '/admin/dashboard/products/categories' },
             { label: 'Inventory', href: '/admin/dashboard/products/inventory' },
+        ]
+    },
+    {
+        icon: Layers,
+        label: 'Categories',
+        href: '/admin/dashboard/categories',
+        subItems: [
+            { label: 'Manage All', href: '/admin/dashboard/categories' },
+            { label: 'Departments', href: '/admin/dashboard/categories?tab=departments' },
+            { label: 'Category Groups', href: '/admin/dashboard/categories?tab=groups' },
+            { label: 'Sub Categories', href: '/admin/dashboard/categories?tab=items' },
         ]
     },
     { icon: ShoppingBag, label: 'Orders', href: '/admin/dashboard/orders' },
@@ -45,6 +55,7 @@ export default function Sidebar() {
     const [isMobileOpen, setIsMobileOpen] = useState(false);
     const [openMenus, setOpenMenus] = useState<string[]>([]);
     const pathname = usePathname();
+    const { logout, isLoading: isLoggingOut } = useAdminAuthActions();
 
     const toggleSidebar = () => setIsCollapsed(!isCollapsed);
     const toggleMobileSidebar = () => setIsMobileOpen(!isMobileOpen);
@@ -63,7 +74,7 @@ export default function Sidebar() {
             <div className="lg:hidden fixed top-4 left-4 z-50">
                 <button
                     onClick={toggleMobileSidebar}
-                    className="p-2 bg-black text-white rounded-xl shadow-lg"
+                    className="p-2 bg-primary text-on-primary rounded-xl shadow-lg"
                 >
                     {isMobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
                 </button>
@@ -106,13 +117,13 @@ export default function Sidebar() {
                             </motion.div>
                         )}
                         {isCollapsed && (
-                            <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center mx-auto">
+                            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center mx-auto">
                                 <span className="text-white text-[10px] font-bold">P</span>
                             </div>
                         )}
                         <button
                             onClick={toggleSidebar}
-                            className="hidden lg:flex p-1.5 hover:bg-gray-100 rounded-lg text-gray-400 hover:text-black transition-colors"
+                            className="hidden lg:flex p-1.5 hover:bg-gray-100 rounded-lg text-gray-400 hover:text-heading transition-colors"
                         >
                             {isCollapsed ? <ChevronRight className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />}
                         </button>
@@ -135,12 +146,12 @@ export default function Sidebar() {
                                             onClick={() => toggleMenu(item.label)}
                                             className={`flex items-center w-full p-3 rounded-xl transition-all group relative
                                                 ${isActive && !isOpen
-                                                    ? 'bg-black text-white shadow-lg shadow-black/5'
-                                                    : 'text-gray-500 hover:bg-gray-50 hover:text-black'
+                                                    ? 'bg-primary text-on-primary shadow-lg shadow-black/5'
+                                                    : 'text-gray-500 hover:bg-gray-50 hover:text-heading'
                                                 }
                                             `}
                                         >
-                                            <item.icon className={`w-5 h-5 min-w-[20px] ${isActive && !isOpen ? 'text-white' : 'group-hover:text-black'}`} />
+                                            <item.icon className={`w-5 h-5 min-w-[20px] ${isActive && !isOpen ? 'text-white' : 'group-hover:text-heading'}`} />
                                             {!isCollapsed && (
                                                 <>
                                                     <span className="ml-3 font-medium whitespace-nowrap flex-1 text-left">
@@ -156,19 +167,19 @@ export default function Sidebar() {
                                             onClick={() => setIsMobileOpen(false)}
                                             className={`flex items-center p-3 rounded-xl transition-all group relative
                                                 ${isActive
-                                                    ? 'bg-black text-white shadow-lg shadow-black/5'
-                                                    : 'text-gray-500 hover:bg-gray-50 hover:text-black'
+                                                    ? 'bg-primary text-on-primary shadow-lg shadow-black/5'
+                                                    : 'text-gray-500 hover:bg-gray-50 hover:text-heading'
                                                 }
                                             `}
                                         >
-                                            <item.icon className={`w-5 h-5 min-w-[20px] ${isActive ? 'text-white' : 'group-hover:text-black'}`} />
+                                            <item.icon className={`w-5 h-5 min-w-[20px] ${isActive ? 'text-white' : 'group-hover:text-heading'}`} />
                                             {!isCollapsed && (
                                                 <span className="ml-3 font-medium whitespace-nowrap">
                                                     {item.label}
                                                 </span>
                                             )}
                                             {isCollapsed && (
-                                                <div className="absolute left-16 px-2 py-1 bg-black text-white text-xs rounded opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap z-50">
+                                                <div className="absolute left-16 px-2 py-1 bg-primary text-on-primary text-xs rounded opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap z-50">
                                                     {item.label}
                                                 </div>
                                             )}
@@ -195,8 +206,8 @@ export default function Sidebar() {
                                                                 onClick={() => setIsMobileOpen(false)}
                                                                 className={`flex items-center p-2.5 rounded-lg text-sm transition-all
                                                                     ${isActiveSub
-                                                                        ? 'text-black font-semibold bg-gray-50'
-                                                                        : 'text-gray-500 hover:text-black hover:bg-gray-50'
+                                                                        ? 'text-heading font-semibold bg-gray-50'
+                                                                        : 'text-gray-500 hover:text-heading hover:bg-gray-50'
                                                                     }
                                                                 `}
                                                             >
@@ -215,9 +226,16 @@ export default function Sidebar() {
 
                     {/* Bottom Actions */}
                     <div className="mt-auto space-y-1.5 pt-6 border-t border-gray-50">
-                        <button className="flex items-center w-full p-3 rounded-xl text-gray-500 hover:bg-gray-50 hover:text-black transition-all group">
+                        <button
+                            type="button"
+                            onClick={() => logout()}
+                            disabled={isLoggingOut}
+                            className="flex items-center w-full p-3 rounded-xl text-gray-500 hover:bg-gray-50 hover:text-heading transition-all group disabled:opacity-50"
+                        >
                             <LogOut className="w-5 h-5 min-w-[20px]" />
-                            {!isCollapsed && <span className="ml-3 font-medium">Log out</span>}
+                            {!isCollapsed && (
+                                <span className="ml-3 font-medium">{isLoggingOut ? 'Logging out...' : 'Log out'}</span>
+                            )}
                         </button>
                     </div>
                 </div>

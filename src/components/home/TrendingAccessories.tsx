@@ -7,7 +7,7 @@ const accessoriesItems = [
         subtitle: 'Perfect sound. Not just in our vocabulary',
         image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80',
         link: '/products?category=accessories&item=headphones',
-        bgColor: 'bg-black',
+        bgColor: 'bg-primary',
     },
     {
         id: 2,

@@ -44,7 +44,7 @@ export default function ProductDetailPage() {
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </div>
-                    <h1 className="text-2xl font-bold text-gray-900 mb-2">
+                    <h1 className="text-2xl font-bold text-heading mb-2">
                         Product Not Found
                     </h1>
                     <p className="text-gray-600 mb-6">
@@ -122,21 +122,21 @@ export default function ProductDetailPage() {
                         <nav className="flex items-center gap-1.5 md:gap-2 text-xs md:text-sm overflow-x-auto scrollbar-hide">
                             <button
                                 onClick={() => router.push('/')}
-                                className="text-gray-600 hover:text-black transition-colors whitespace-nowrap"
+                                className="text-gray-600 hover:text-heading transition-colors whitespace-nowrap"
                             >
                                 Home
                             </button>
                             <span className="text-gray-400">/</span>
                             <button
                                 onClick={() => router.push('/products')}
-                                className="text-gray-600 hover:text-black transition-colors whitespace-nowrap"
+                                className="text-gray-600 hover:text-heading transition-colors whitespace-nowrap"
                             >
                                 Products
                             </button>
                             <span className="text-gray-400">/</span>
                             <button
                                 onClick={() => router.push(`/products?category=${product.category}`)}
-                                className="text-gray-600 hover:text-black transition-colors capitalize whitespace-nowrap"
+                                className="text-gray-600 hover:text-heading transition-colors capitalize whitespace-nowrap"
                             >
                                 {product.category}
                             </button>

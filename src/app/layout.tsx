@@ -1,21 +1,20 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Roboto } from "next/font/google";
 import "./globals.css";
 import MainLayoutWrapper from "@/components/layout/MainLayoutWrapper";
+import AuthProvider from "@/providers/AuthProvider";
+import AdminAuthProvider from "@/providers/AdminAuthProvider";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const roboto = Roboto({
+  weight: ["300", "400", "500", "700"],
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  variable: "--font-roboto",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "MINIMAL - Premium E-Commerce",
-  description: "Discover timeless minimalist fashion. Shop premium clothing, footwear, and accessories.",
+  title: "BLAK BLAZE - Premium E-Commerce",
+  description: "Discover premium fashion. Shop clothing, footwear, and accessories.",
 };
 
 export default function RootLayout({
@@ -25,12 +24,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <MainLayoutWrapper>
-          {children}
-        </MainLayoutWrapper>
+      <body className={`${roboto.variable} font-sans antialiased`}>
+        <AuthProvider>
+          <AdminAuthProvider>
+            <MainLayoutWrapper>
+              {children}
+            </MainLayoutWrapper>
+          </AdminAuthProvider>
+        </AuthProvider>
       </body>
     </html>
   );

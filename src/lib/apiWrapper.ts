@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from './dbConnect';
-import { getAdminUser } from './authMiddleware';
+import { getAdminUser, getAuthenticatedUser } from './authMiddleware';
 import { IUser } from '@/models/User';
 
 type RouteHandler = (request: NextRequest, ...args: any[]) => Promise<NextResponse> | NextResponse;
@@ -24,6 +24,21 @@ export function withDb(handler: RouteHandler) {
       }, { status: 500 });
     }
   };
+}
+
+export function withAuth(handler: AuthenticatedRouteHandler) {
+  return withDb(async (request: NextRequest, ...args: any[]) => {
+    const user = await getAuthenticatedUser();
+    if (!user) {
+      return NextResponse.json({
+        status: false,
+        message: 'Unauthorized. Please log in.',
+        statusCode: 401
+      }, { status: 401 });
+    }
+
+    return await handler(request, user, ...args);
+  });
 }
 
 /**

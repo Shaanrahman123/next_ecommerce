@@ -262,7 +262,7 @@ function ProductsContent() {
                         {/* Load More */}
                         {filteredProducts.length > 0 && (
                             <div className="text-center mt-8 lg:mt-12">
-                                <button className="px-6 lg:px-8 py-2.5 lg:py-3 border-2 border-gray-900 text-gray-900 font-semibold rounded text-sm hover:bg-gray-900 hover:text-white transition-colors duration-300">
+                                <button className="px-6 lg:px-8 py-2.5 lg:py-3 border-2 border-primary text-heading font-semibold rounded text-sm hover:bg-primary hover:text-on-primary transition-colors duration-300">
                                     Load More Products
                                 </button>
                             </div>
@@ -274,7 +274,7 @@ function ProductsContent() {
                                 <p className="text-gray-600 text-base lg:text-lg mb-4">No products found</p>
                                 <button
                                     onClick={handleClearAllFilters}
-                                    className="text-sm text-black font-semibold hover:underline"
+                                    className="text-sm text-heading font-semibold hover:underline"
                                 >
                                     Clear all filters
                                 </button>
@@ -411,7 +411,7 @@ function ProductsContent() {
                                 </button>
                                 <button
                                     onClick={() => setShowMobileFilters(false)}
-                                    className="flex-1 bg-black text-white py-3 rounded text-sm font-semibold hover:bg-gray-900 transition-colors uppercase"
+                                    className="flex-1 bg-primary text-on-primary py-3 rounded text-sm font-semibold hover:bg-primary-hover transition-colors uppercase"
                                 >
                                     APPLY
                                 </button>

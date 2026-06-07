@@ -28,7 +28,7 @@ export default function ProductDescription({ description, category }: ProductDes
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
                             className={`flex-1 flex items-center justify-center gap-1.5 md:gap-2 px-3 md:px-6 py-3 md:py-4 text-small font-semibold transition-all duration-300 ${activeTab === tab.id
-                                ? 'bg-black text-white'
+                                ? 'bg-primary text-on-primary'
                                 : 'bg-white text-gray-600 hover:bg-gray-50'
                                 }`}
                         >
@@ -49,19 +49,19 @@ export default function ProductDescription({ description, category }: ProductDes
                             <h4 className="text-card-title text-gray-900">Key Features:</h4>
                             <ul className="space-y-2">
                                 <li className="flex items-start gap-3">
-                                    <span className="w-1.5 h-1.5 bg-black rounded-full mt-2" />
+                                    <span className="w-1.5 h-1.5 bg-primary rounded-full mt-2" />
                                     <span className="text-body text-gray-700">Premium quality materials for lasting durability</span>
                                 </li>
                                 <li className="flex items-start gap-3">
-                                    <span className="w-1.5 h-1.5 bg-black rounded-full mt-2" />
+                                    <span className="w-1.5 h-1.5 bg-primary rounded-full mt-2" />
                                     <span className="text-body text-gray-700">Carefully crafted with attention to detail</span>
                                 </li>
                                 <li className="flex items-start gap-3">
-                                    <span className="w-1.5 h-1.5 bg-black rounded-full mt-2" />
+                                    <span className="w-1.5 h-1.5 bg-primary rounded-full mt-2" />
                                     <span className="text-body text-gray-700">Versatile design suitable for various occasions</span>
                                 </li>
                                 <li className="flex items-start gap-3">
-                                    <span className="w-1.5 h-1.5 bg-black rounded-full mt-2" />
+                                    <span className="w-1.5 h-1.5 bg-primary rounded-full mt-2" />
                                     <span className="text-body text-gray-700">Comfortable fit for all-day wear</span>
                                 </li>
                             </ul>

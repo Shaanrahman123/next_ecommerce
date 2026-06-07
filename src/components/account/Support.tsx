@@ -30,14 +30,14 @@ export default function Support() {
     return (
         <div className="animate-fade-in">
             <div className="hidden lg:block mb-10">
-                <h1 className="text-section-title font-black text-gray-900 mb-2 uppercase tracking-tight">Support</h1>
+                <h1 className="text-section-title font-black text-heading mb-2 uppercase tracking-tight">Support</h1>
                 <p className="text-body text-gray-600">Get help with your orders and account</p>
             </div>
 
             <div className="lg:grid lg:grid-cols-2 lg:gap-12">
                 {/* Create Ticket */}
                 <div className="lg:bg-white lg:border lg:border-gray-300 lg:rounded-lg lg:p-8 h-fit">
-                    <h2 className="text-body font-black text-gray-900 mb-8 uppercase tracking-widest border-l-4 border-black pl-3 flex items-center gap-2">
+                    <h2 className="text-body font-black text-heading mb-8 uppercase tracking-widest border-l-4 border-primary pl-3 flex items-center gap-2">
                         <Plus className="w-5 h-5" />
                         Raise a New Ticket
                     </h2>
@@ -61,10 +61,10 @@ export default function Support() {
                                 placeholder="Describe your issue in detail..."
                                 required
                                 rows={5}
-                                className="w-full px-5 py-4 bg-gray-50 border-none rounded-md focus:outline-none focus:ring-2 focus:ring-black/5 transition-all duration-300 text-small"
+                                className="w-full px-5 py-4 bg-gray-50 border-none rounded-md focus:outline-none focus:ring-2 focus:ring-primary/5 transition-all duration-300 text-small"
                             />
                         </div>
-                        <Button type="submit" isLoading={isLoading} className="w-full h-14 bg-black text-white rounded-md font-black uppercase tracking-widest text-[10px] hover:bg-gray-900 transition-all">
+                        <Button type="submit" isLoading={isLoading} className="w-full h-14 bg-primary text-on-primary rounded-md font-black uppercase tracking-widest text-[10px] hover:bg-primary-hover transition-all">
                             Submit Ticket
                         </Button>
                     </form>
@@ -72,7 +72,7 @@ export default function Support() {
 
                 {/* Existing Tickets */}
                 <div className="mt-12 lg:mt-0">
-                    <h2 className="text-body font-black text-gray-900 mb-8 uppercase tracking-widest border-l-4 border-black pl-3">Your Tickets</h2>
+                    <h2 className="text-body font-black text-heading mb-8 uppercase tracking-widest border-l-4 border-primary pl-3">Your Tickets</h2>
                     <div className="divide-y divide-gray-300 lg:space-y-4 lg:divide-y-0">
                         {tickets.map((ticket) => (
                             <div
@@ -80,12 +80,12 @@ export default function Support() {
                                 className="flex items-center justify-between py-5 lg:p-6 lg:bg-white lg:border lg:border-gray-300 lg:rounded-lg hover:bg-gray-50 transition-all duration-300 group cursor-pointer"
                             >
                                 <div className="flex items-center gap-4 lg:gap-5">
-                                    <div className="w-12 h-12 bg-gray-50 rounded-md flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:bg-black group-hover:text-white">
+                                    <div className="w-12 h-12 bg-gray-50 rounded-md flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:bg-primary group-hover:text-white">
                                         <MessageCircle className="w-5 h-5 text-gray-900 group-hover:text-white" />
                                     </div>
                                     <div>
-                                        <p className="text-small font-black text-gray-900 uppercase tracking-tight">{ticket.id}</p>
-                                        <p className="text-body font-bold text-gray-900 mt-0.5 line-clamp-1">{ticket.subject}</p>
+                                        <p className="text-small font-black text-heading uppercase tracking-tight">{ticket.id}</p>
+                                        <p className="text-body font-bold text-heading mt-0.5 line-clamp-1">{ticket.subject}</p>
                                         <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">{ticket.date}</p>
                                     </div>
                                 </div>

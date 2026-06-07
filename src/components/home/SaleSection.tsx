@@ -63,7 +63,7 @@ export default function SaleSection() {
         <section className="py-12 px-8 lg:px-16 xl:px-24 container mx-auto bg-linear-to-b from-gray-50 to-white">
             {/* Header with Timer */}
             <div className="text-center mb-10">
-                <h2 className="text-page-title font-black text-black mb-4 uppercase tracking-tighter italic transform -skew-x-6">
+                <h2 className="text-page-title font-black text-heading mb-4 uppercase tracking-tighter italic transform -skew-x-6">
                     FLASH SALE
                 </h2>
 
@@ -71,24 +71,24 @@ export default function SaleSection() {
                 <div className="flex items-center justify-center gap-6 mb-6">
                     <Clock className="w-6 h-6 text-red-600 animate-pulse" />
                     <div className="flex gap-3">
-                        <div className="bg-black text-white px-4 py-3 rounded-md shadow-lg">
+                        <div className="bg-primary text-on-primary px-4 py-3 rounded-md shadow-lg">
                             <div className="text-3xl font-black font-mono">{String(timeLeft.hours).padStart(2, '0')}</div>
                             <div className="text-[12px] uppercase tracking-widest text-gray-400">Hours</div>
                         </div>
-                        <div className="text-4xl font-black flex items-start pt-1 text-black">:</div>
-                        <div className="bg-black text-white px-4 py-3 rounded-md shadow-lg">
+                        <div className="text-4xl font-black flex items-start pt-1 text-heading">:</div>
+                        <div className="bg-primary text-on-primary px-4 py-3 rounded-md shadow-lg">
                             <div className="text-3xl font-black font-mono">{String(timeLeft.minutes).padStart(2, '0')}</div>
                             <div className="text-[12px] uppercase tracking-widest text-gray-400">Mins</div>
                         </div>
-                        <div className="text-4xl font-black flex items-start pt-1 text-black">:</div>
-                        <div className="bg-black text-white px-4 py-3 rounded-md shadow-lg">
+                        <div className="text-4xl font-black flex items-start pt-1 text-heading">:</div>
+                        <div className="bg-primary text-on-primary px-4 py-3 rounded-md shadow-lg">
                             <div className="text-3xl font-black font-mono">{String(timeLeft.seconds).padStart(2, '0')}</div>
                             <div className="text-[12px] uppercase tracking-widest text-gray-400">Secs</div>
                         </div>
                     </div>
                 </div>
 
-                <div className="h-0.5 w-32 bg-black mx-auto mt-4" />
+                <div className="h-0.5 w-32 bg-primary mx-auto mt-4" />
             </div>
 
             {/* Sale Items Grid */}
@@ -113,7 +113,7 @@ export default function SaleSection() {
                         />
 
                         {/* Content Overlay */}
-                        <div className="absolute inset-0 bg-linear-to-t from-black/90 via-transparent to-transparent opacity-90" />
+                        <div className="absolute inset-0 bg-linear-to-t from-primary/90 via-transparent to-transparent opacity-90" />
 
                         <div className="absolute bottom-0 left-0 right-0 p-8 text-white transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
                             <h3 className="text-section-title font-black uppercase italic mb-1 leading-none">
@@ -125,7 +125,7 @@ export default function SaleSection() {
                             <p className="text-gray-300 font-medium mb-6">
                                 {item.description}
                             </p>
-                            <button className="w-full bg-white text-black py-4 font-bold uppercase tracking-widest hover:bg-gray-200 transition-colors">
+                            <button className="w-full bg-white text-heading py-4 font-bold uppercase tracking-widest hover:bg-gray-200 transition-colors">
                                 Shop Now
                             </button>
                         </div>

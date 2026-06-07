@@ -50,12 +50,12 @@ export default function MyOrders() {
                 <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6">
                     <Package className="w-10 h-10 text-gray-200" />
                 </div>
-                <h2 className="text-section-title font-black text-gray-900 mb-4 uppercase tracking-tight">No orders yet</h2>
+                <h2 className="text-section-title font-black text-heading mb-4 uppercase tracking-tight">No orders yet</h2>
                 <p className="text-body text-gray-500 mb-10 max-w-sm mx-auto">
                     You haven't placed any orders. Start exploring our premium collection today.
                 </p>
                 <Link href="/products">
-                    <Button size="lg" className="rounded-md px-12 h-14 font-black uppercase tracking-widest bg-black text-white">
+                    <Button size="lg" className="rounded-md px-12 h-14 font-black uppercase tracking-widest bg-primary text-on-primary">
                         Start Shopping
                     </Button>
                 </Link>
@@ -65,7 +65,7 @@ export default function MyOrders() {
 
     return (
         <div className="animate-fade-in">
-            <h1 className="hidden lg:block text-section-title font-black text-gray-900 mb-8 uppercase tracking-tight">Purchase History</h1>
+            <h1 className="hidden lg:block text-section-title font-black text-heading mb-8 uppercase tracking-tight">Purchase History</h1>
 
             <div className="divide-y divide-gray-300 lg:space-y-4 lg:divide-y-0">
                 {mockOrders.map((order) => {
@@ -91,7 +91,7 @@ export default function MyOrders() {
                                             #{order.id.split('-')[1]}
                                         </span>
                                     </div>
-                                    <h3 className="text-small lg:text-body font-black text-gray-900 mb-1 uppercase tracking-tight truncate">
+                                    <h3 className="text-small lg:text-body font-black text-heading mb-1 uppercase tracking-tight truncate">
                                         {firstProduct.name} {order.products.length > 1 && `+ ${order.products.length - 1} more`}
                                     </h3>
                                     <div className="flex items-center gap-3 text-[10px] font-bold text-gray-500">
@@ -100,14 +100,14 @@ export default function MyOrders() {
                                             {new Date(order.date).toLocaleDateString()}
                                         </div>
                                         <div className="w-1 h-1 bg-gray-300 rounded-full" />
-                                        <div className="text-black">₹{order.total.toLocaleString()}</div>
+                                        <div className="text-heading">₹{order.total.toLocaleString()}</div>
                                     </div>
                                 </div>
 
                                 {/* Action */}
                                 <div className="hidden lg:block">
                                     <Link href={`/account?section=order-details&orderId=${order.id}`}>
-                                        <Button variant="outline" className="rounded-md px-6 h-12 font-black text-[10px] uppercase tracking-widest flex items-center gap-2 group-hover:bg-black group-hover:text-white border-gray-300 group-hover:border-black transition-all">
+                                        <Button variant="outline" className="rounded-md px-6 h-12 font-black text-[10px] uppercase tracking-widest flex items-center gap-2 group-hover:bg-primary group-hover:text-white border-gray-300 group-hover:border-primary transition-all">
                                             View Order
                                             <ChevronRight className="w-4 h-4" />
                                         </Button>
@@ -115,7 +115,7 @@ export default function MyOrders() {
                                 </div>
                                 <div className="lg:hidden">
                                     <Link href={`/account?section=order-details&orderId=${order.id}`}>
-                                        <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 group-active:bg-black group-active:text-white transition-colors">
+                                        <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 group-active:bg-primary group-active:text-white transition-colors">
                                             <ChevronRight className="w-5 h-5" />
                                         </div>
                                     </Link>

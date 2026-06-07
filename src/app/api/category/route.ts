@@ -5,51 +5,46 @@ import { paginate } from '@/lib/pagination';
 import { withDb, withAdmin } from '@/lib/apiWrapper';
 import { CATEGORY_MESSAGES, GLOBAL_MESSAGES } from '@/constants/messages';
 import { uploadImageIfNeeded } from '@/lib/cloudinary';
-
-// helper to slugify a string
-function slugify(text: string): string {
-  return text
-    .toString()
-    .toLowerCase()
-    .trim()
-    .replace(/\s+/g, '-') // Replace spaces with -
-    .replace(/[^\w\-]+/g, '') // Remove all non-word chars
-    .replace(/\-\-+/g, '-'); // Replace multiple - with single -
-}
+import { getCloudinaryErrorMessage } from '@/lib/cloudinaryErrors';
+import { slugify } from '@/lib/slugify';
+import { serializeDocList, withImageUrl } from '@/lib/categorySerializer';
 
 export const GET = withDb(async (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
+    const all = searchParams.get('all') === 'true';
     const page = searchParams.get('page') || 1;
     const limit = searchParams.get('limit') || 10;
     const search = searchParams.get('search') || '';
     const isActiveStr = searchParams.get('isActive');
     const superCategoryId = searchParams.get('superCategory');
+    const slug = searchParams.get('slug');
 
-    const filter: any = {};
+    const filter: Record<string, unknown> = {};
 
-    // 1. Optional keyword search on name
-    if (search) {
-      filter.name = { $regex: search, $options: 'i' };
+    if (search) filter.name = { $regex: search, $options: 'i' };
+    if (isActiveStr !== null && isActiveStr !== '') filter.isActive = isActiveStr === 'true';
+    if (superCategoryId) filter.superCategories = superCategoryId;
+    if (slug) filter.slug = slug;
+
+    if (all) {
+      const docs = await Category.find(filter)
+        .populate('superCategories')
+        .sort({ sortOrder: 1, name: 1 });
+      return NextResponse.json({
+        status: true,
+        message: CATEGORY_MESSAGES.FETCH_SUCCESS,
+        statusCode: 200,
+        data: serializeDocList(docs),
+      });
     }
 
-    // 2. Optional status filter (active/inactive)
-    if (isActiveStr !== null) {
-      filter.isActive = isActiveStr === 'true';
-    }
-
-    // 3. Optional parent superCategories filter (checks if array contains superCategoryId)
-    if (superCategoryId) {
-      filter.superCategories = superCategoryId;
-    }
-
-    // Call central pagination function, populating 'superCategories' details
     const paginationResult = await paginate(
       Category,
       filter,
       page,
       limit,
-      { name: 1 },
+      { sortOrder: 1, name: 1 },
       'superCategories'
     );
 
@@ -57,123 +52,102 @@ export const GET = withDb(async (request: NextRequest) => {
       status: true,
       message: CATEGORY_MESSAGES.FETCH_SUCCESS,
       statusCode: 200,
-      data: paginationResult.docs,
+      data: serializeDocList(paginationResult.docs),
       meta: {
         totalDocs: paginationResult.totalDocs,
         limit: paginationResult.limit,
         page: paginationResult.page,
         totalPages: paginationResult.totalPages,
         hasNextPage: paginationResult.hasNextPage,
-        hasPrevPage: paginationResult.hasPrevPage
-      }
-    }, { status: 200 });
-
-  } catch (error: any) {
+        hasPrevPage: paginationResult.hasPrevPage,
+      },
+    });
+  } catch (error: unknown) {
     console.error('Error fetching Categories:', error);
-    return NextResponse.json({
-      status: false,
-      message: error.message || GLOBAL_MESSAGES.INTERNAL_SERVER_ERROR,
-      statusCode: 500
-    }, { status: 500 });
+    const message = error instanceof Error ? error.message : GLOBAL_MESSAGES.INTERNAL_SERVER_ERROR;
+    return NextResponse.json({ status: false, message, statusCode: 500 }, { status: 500 });
   }
 });
 
 export const POST = withAdmin(async (request: NextRequest) => {
   try {
     const body = await request.json();
-    const { name, description, image, isActive = true, superCategories } = body;
+    const { name, description, image, isActive = true, superCategories, sortOrder = 0 } = body;
     let { slug } = body;
 
-    // Validation
     if (!name) {
-      return NextResponse.json({
-        status: false,
-        message: CATEGORY_MESSAGES.NAME_REQUIRED,
-        statusCode: 400
-      }, { status: 400 });
+      return NextResponse.json(
+        { status: false, message: CATEGORY_MESSAGES.NAME_REQUIRED, statusCode: 400 },
+        { status: 400 }
+      );
     }
 
     if (!superCategories || !Array.isArray(superCategories) || superCategories.length === 0) {
-      return NextResponse.json({
-        status: false,
-        message: CATEGORY_MESSAGES.SUPER_CATEGORY_REQUIRED,
-        statusCode: 400
-      }, { status: 400 });
+      return NextResponse.json(
+        { status: false, message: CATEGORY_MESSAGES.SUPER_CATEGORY_REQUIRED, statusCode: 400 },
+        { status: 400 }
+      );
     }
 
-    // Verify all parent superCategory IDs exist in DB
-    let existingCount = 0;
-    try {
-      existingCount = await SuperCategory.countDocuments({
-        _id: { $in: superCategories }
-      });
-    } catch (err) {
-      // Handle potential invalid ObjectId casting error
-    }
-
+    const existingCount = await SuperCategory.countDocuments({ _id: { $in: superCategories } });
     if (existingCount !== superCategories.length) {
-      return NextResponse.json({
-        status: false,
-        message: CATEGORY_MESSAGES.SUPER_CATEGORY_NOT_FOUND,
-        statusCode: 400
-      }, { status: 400 });
+      return NextResponse.json(
+        { status: false, message: CATEGORY_MESSAGES.SUPER_CATEGORY_NOT_FOUND, statusCode: 400 },
+        { status: 400 }
+      );
     }
 
-    // Auto-generate slug if not provided
-    if (!slug) {
-      slug = slugify(name);
-    } else {
-      slug = slugify(slug);
-    }
+    slug = slug ? slugify(slug) : slugify(name);
 
-    // Check if name or slug already exists
-    const duplicate = await Category.findOne({
-      $or: [{ name }, { slug }]
-    });
-
+    const duplicate = await Category.findOne({ $or: [{ name }, { slug }] });
     if (duplicate) {
-      return NextResponse.json({
-        status: false,
-        message: duplicate.name === name 
-          ? CATEGORY_MESSAGES.NAME_EXISTS 
-          : CATEGORY_MESSAGES.SLUG_EXISTS,
-        statusCode: 400
-      }, { status: 400 });
+      return NextResponse.json(
+        {
+          status: false,
+          message: duplicate.name === name ? CATEGORY_MESSAGES.NAME_EXISTS : CATEGORY_MESSAGES.SLUG_EXISTS,
+          statusCode: 400,
+        },
+        { status: 400 }
+      );
     }
 
-    // Upload image to Cloudinary if provided, storing public_id in database
-    let imageUrl = '';
+    let imageId = '';
     if (image) {
-      imageUrl = await uploadImageIfNeeded(image, 'categories') || '';
+      try {
+        imageId = (await uploadImageIfNeeded(image, 'categories')) || '';
+      } catch (uploadError) {
+        return NextResponse.json(
+          { status: false, message: getCloudinaryErrorMessage(uploadError), statusCode: 400 },
+          { status: 400 }
+        );
+      }
     }
 
     const newCategory = new Category({
       name,
       slug,
       description,
-      image: imageUrl,
+      image: imageId,
       isActive,
-      superCategories
+      superCategories,
+      sortOrder,
     });
 
     await newCategory.save();
-
-    // Populate superCategories field for response detail completeness
     await newCategory.populate('superCategories');
 
-    return NextResponse.json({
-      status: true,
-      message: CATEGORY_MESSAGES.CREATE_SUCCESS,
-      statusCode: 201,
-      data: newCategory
-    }, { status: 201 });
-
-  } catch (error: any) {
+    return NextResponse.json(
+      {
+        status: true,
+        message: CATEGORY_MESSAGES.CREATE_SUCCESS,
+        statusCode: 201,
+        data: withImageUrl(newCategory.toObject()),
+      },
+      { status: 201 }
+    );
+  } catch (error: unknown) {
     console.error('Error creating Category:', error);
-    return NextResponse.json({
-      status: false,
-      message: error.message || GLOBAL_MESSAGES.INTERNAL_SERVER_ERROR,
-      statusCode: 500
-    }, { status: 500 });
+    const message = error instanceof Error ? error.message : GLOBAL_MESSAGES.INTERNAL_SERVER_ERROR;
+    return NextResponse.json({ status: false, message, statusCode: 500 }, { status: 500 });
   }
 });

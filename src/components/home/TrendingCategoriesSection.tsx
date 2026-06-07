@@ -53,13 +53,13 @@ export default function TrendingCategoriesSection() {
         <section className="py-12 px-8 lg:px-16 xl:px-24 container mx-auto bg-gray-50">
             {/* Header */}
             <div className="text-center mb-8">
-                <h2 className="text-3xl md:text-4xl font-black text-gray-900 uppercase tracking-tight">
+                <h2 className="text-3xl md:text-4xl font-black text-heading uppercase tracking-tight">
                     TRENDING CATEGORIES
                 </h2>
                 <p className="text-sm text-gray-600 mt-2">
                     Explore what's hot this season
                 </p>
-                <div className="h-0.5 w-24 bg-gray-900 mx-auto mt-4" />
+                <div className="h-0.5 w-24 bg-primary mx-auto mt-4" />
             </div>
 
             {/* Grid */}
@@ -70,7 +70,7 @@ export default function TrendingCategoriesSection() {
                         href={category.link}
                         className={`group relative overflow-hidden rounded-lg hover:shadow-2xl transition-all duration-300 ${category.span}`}
                     >
-                        <div className="relative bg-black aspect-[16/9]">
+                        <div className="relative bg-primary aspect-[16/9]">
                             <Image
                                 src={category.image}
                                 alt={category.name}
@@ -79,7 +79,7 @@ export default function TrendingCategoriesSection() {
                             />
 
                             {/* Overlay */}
-                            <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300" />
+                            <div className="absolute inset-0 bg-black/30 group-hover:bg-primary/20 transition-colors duration-300" />
 
                             {/* Text */}
                             <div className="absolute inset-0 flex items-center justify-center">

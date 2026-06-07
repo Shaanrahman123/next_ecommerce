@@ -26,7 +26,7 @@ export default function WishlistPage() {
             <div className="min-h-[70vh] flex items-center justify-center px-4 bg-gray-50">
                 <div className="text-center max-w-md w-full animate-fade-in">
                     <div className="w-16 h-16 bg-white rounded-lg border border-gray-300 flex items-center justify-center mx-auto mb-6 shadow-none group">
-                        <Heart className="w-8 h-8 text-gray-200 group-hover:text-black transition-colors duration-500" />
+                        <Heart className="w-8 h-8 text-gray-200 group-hover:text-heading transition-colors duration-500" />
                     </div>
                     <h1 className="text-page-title text-gray-900 mb-2 uppercase tracking-tight">
                         Wishlist is empty
@@ -35,7 +35,7 @@ export default function WishlistPage() {
                         Looks like you haven't added any premium pieces yet.
                     </p>
                     <Link href="/products">
-                        <Button className="w-full h-12 bg-black text-white rounded-md font-black uppercase tracking-widest text-[10px] hover:bg-gray-900 transition-all">
+                        <Button className="w-full h-12 bg-primary text-on-primary rounded-md font-black uppercase tracking-widest text-[10px] hover:bg-primary-hover transition-all">
                             Explore Collection
                         </Button>
                     </Link>
@@ -51,10 +51,10 @@ export default function WishlistPage() {
                 <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
                     <div>
                         <div className="flex items-center gap-2 mb-1">
-                            <div className="w-6 h-0.5 bg-black rounded-full" />
+                            <div className="w-6 h-0.5 bg-primary rounded-full" />
                             <span className="text-[9px] font-black uppercase tracking-[0.2em] text-gray-400">Curated Collection</span>
                         </div>
-                        <h1 className="text-section-title font-black text-gray-900 uppercase tracking-tight">
+                        <h1 className="text-section-title font-black text-heading uppercase tracking-tight">
                             My Wishlist
                         </h1>
                         <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-2">
@@ -102,7 +102,7 @@ export default function WishlistPage() {
                                             <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest">{item.product.category}</span>
                                         </div>
                                         <Link href={`/products/${item.productId}`}>
-                                            <h3 className="text-body font-black text-gray-900 uppercase tracking-tight mb-2 truncate group-hover:text-black">
+                                            <h3 className="text-body font-black text-heading uppercase tracking-tight mb-2 truncate group-hover:text-heading">
                                                 {item.product.name}
                                             </h3>
                                         </Link>
@@ -113,10 +113,10 @@ export default function WishlistPage() {
 
                                     <div className="space-y-4">
                                         <div className="flex items-center justify-between sm:justify-start sm:gap-6">
-                                            <span className="text-body font-black text-gray-900">₹{item.product.price.toLocaleString()}</span>
+                                            <span className="text-body font-black text-heading">₹{item.product.price.toLocaleString()}</span>
                                             <Button
                                                 onClick={() => handleMoveToCart(item.product)}
-                                                className="hidden sm:flex h-10 px-6 bg-black text-white rounded-md font-black uppercase tracking-widest text-[9px] items-center justify-center gap-2 hover:bg-gray-900 transition-all shrink-0 shadow-none border-none"
+                                                className="hidden sm:flex h-10 px-6 bg-primary text-on-primary rounded-md font-black uppercase tracking-widest text-[9px] items-center justify-center gap-2 hover:bg-primary-hover transition-all shrink-0 shadow-none border-none"
                                             >
                                                 <ShoppingBag className="w-3.5 h-3.5" />
                                                 Add to Cart
@@ -124,7 +124,7 @@ export default function WishlistPage() {
                                         </div>
                                         <Button
                                             onClick={() => handleMoveToCart(item.product)}
-                                            className="sm:hidden w-full h-10 bg-black text-white rounded-md font-black uppercase tracking-widest text-[9px] flex items-center justify-center gap-2 hover:bg-gray-900 transition-all shadow-none border-none"
+                                            className="sm:hidden w-full h-10 bg-primary text-on-primary rounded-md font-black uppercase tracking-widest text-[9px] flex items-center justify-center gap-2 hover:bg-primary-hover transition-all shadow-none border-none"
                                         >
                                             <ShoppingBag className="w-3.5 h-3.5" />
                                             Add to Cart
@@ -138,7 +138,7 @@ export default function WishlistPage() {
 
                 {/* Footer Action */}
                 <div className="mt-10 text-center">
-                    <Link href="/products" className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-gray-400 hover:text-black transition-colors group">
+                    <Link href="/products" className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-gray-400 hover:text-heading transition-colors group">
                         Continue Shopping
                         <ChevronRight className="w-3 h-3 transition-transform group-hover:translate-x-1" />
                     </Link>

@@ -47,13 +47,13 @@ export default function BeautySection() {
             <div className="text-center mb-8">
                 <div className="flex items-center justify-center gap-3 mb-4">
                     <Sparkles className="w-6 h-6 text-gray-900" />
-                    <h2 className="text-4xl md:text-5xl font-black text-black uppercase tracking-tight">
+                    <h2 className="text-4xl md:text-5xl font-black text-heading uppercase tracking-tight">
                         GROOMING ESSENTIALS
                     </h2>
                     <Sparkles className="w-6 h-6 text-gray-900" />
                 </div>
                 <p className="text-gray-600 text-lg">Premium care for the modern man</p>
-                <div className="h-0.5 w-24 bg-black mx-auto mt-4" />
+                <div className="h-0.5 w-24 bg-primary mx-auto mt-4" />
             </div>
 
             {/* Main Categories */}
@@ -72,7 +72,7 @@ export default function BeautySection() {
                                 className="object-cover rounded-lg group-hover:scale-105 transition-transform duration-500"
                             />
                             {/* Overlay */}
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent p-6 flex flex-col justify-end text-center">
+                            <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-black/20 to-transparent p-6 flex flex-col justify-end text-center">
                                 <h3 className="text-2xl font-bold text-white mb-1">
                                     {category.title}
                                 </h3>
@@ -82,7 +82,7 @@ export default function BeautySection() {
                                 <p className="text-gray-300 text-sm mb-4">
                                     {category.description}
                                 </p>
-                                <button className="bg-white text-black px-6 py-2 rounded-full font-bold uppercase tracking-wider hover:bg-gray-100 transition-colors duration-300 text-xs">
+                                <button className="bg-white text-heading px-6 py-2 rounded-full font-bold uppercase tracking-wider hover:bg-gray-100 transition-colors duration-300 text-xs">
                                     Shop Now
                                 </button>
                             </div>
@@ -93,7 +93,7 @@ export default function BeautySection() {
 
             {/* Brand Offers */}
             <div className="bg-gray-50 rounded-lg shadow-sm p-8 border border-gray-100">
-                <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center uppercase tracking-wide">
+                <h3 className="text-2xl font-bold text-heading mb-6 text-center uppercase tracking-wide">
                     Top Grooming Brands
                 </h3>
                 {/* Scrollable Brands on Mobile */}
@@ -104,7 +104,7 @@ export default function BeautySection() {
                             href={`/products?brand=${brand.name.toLowerCase()}`}
                             className="group bg-white rounded-lg p-6 text-center hover:shadow-md transition-all duration-300 hover:-translate-y-1 border border-gray-200 min-w-[150px] snap-start"
                         >
-                            <h4 className="font-bold text-black mb-1 group-hover:text-gray-700 transition-colors text-sm">
+                            <h4 className="font-bold text-heading mb-1 group-hover:text-gray-700 transition-colors text-sm">
                                 {brand.name}
                             </h4>
                             <p className="text-xs text-gray-500 font-semibold">

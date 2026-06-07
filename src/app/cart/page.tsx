@@ -19,7 +19,7 @@ export default function CartPage() {
             <div className="min-h-[70vh] flex items-center justify-center px-4 bg-gray-50">
                 <div className="text-center max-w-md w-full animate-fade-in">
                     <div className="w-16 h-16 bg-white rounded-lg border border-gray-300 flex items-center justify-center mx-auto mb-6 shadow-none group">
-                        <ShoppingBag className="w-8 h-8 text-gray-200 group-hover:text-black transition-colors duration-500" />
+                        <ShoppingBag className="w-8 h-8 text-gray-200 group-hover:text-heading transition-colors duration-500" />
                     </div>
                     <h1 className="text-page-title text-gray-900 mb-2 uppercase tracking-tight">
                         Your cart is empty
@@ -28,7 +28,7 @@ export default function CartPage() {
                         Add some premium pieces to your collection.
                     </p>
                     <Link href="/products">
-                        <Button className="w-full h-12 bg-black text-white rounded-md font-black uppercase tracking-widest text-[10px] hover:bg-gray-900 transition-all">
+                        <Button className="w-full h-12 bg-primary text-on-primary rounded-md font-black uppercase tracking-widest text-[10px] hover:bg-primary-hover transition-all">
                             Start Shopping
                         </Button>
                     </Link>
@@ -44,10 +44,10 @@ export default function CartPage() {
                 <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
                     <div>
                         <div className="flex items-center gap-2 mb-1">
-                            <div className="w-6 h-0.5 bg-black rounded-full" />
+                            <div className="w-6 h-0.5 bg-primary rounded-full" />
                             <span className="text-[9px] font-black uppercase tracking-[0.2em] text-gray-400">Your Selection</span>
                         </div>
-                        <h1 className="text-section-title font-black text-gray-900 uppercase tracking-tight">
+                        <h1 className="text-section-title font-black text-heading uppercase tracking-tight">
                             Shopping Cart
                         </h1>
                         <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-2">
@@ -99,27 +99,27 @@ export default function CartPage() {
                                                     </button>
                                                 </div>
                                                 <Link href={`/products/${item.productId}`}>
-                                                    <h3 className="text-body font-black text-gray-900 uppercase tracking-tight mb-2 truncate group-hover:text-black">
+                                                    <h3 className="text-body font-black text-heading uppercase tracking-tight mb-2 truncate group-hover:text-heading">
                                                         {item.product.name}
                                                     </h3>
                                                 </Link>
                                             </div>
 
                                             <div className="flex items-center justify-between">
-                                                <span className="text-body font-black text-gray-900">₹{item.product.price.toLocaleString()}</span>
+                                                <span className="text-body font-black text-heading">₹{item.product.price.toLocaleString()}</span>
 
                                                 {/* Quantity Controls */}
                                                 <div className="flex items-center gap-1 bg-gray-50 border border-gray-300 rounded-md p-1">
                                                     <button
                                                         onClick={() => updateQuantity(item.productId, item.size, item.color, Math.max(1, item.quantity - 1))}
-                                                        className="w-8 h-8 flex items-center justify-center hover:bg-white rounded transition-colors text-gray-500 hover:text-black"
+                                                        className="w-8 h-8 flex items-center justify-center hover:bg-white rounded transition-colors text-gray-500 hover:text-heading"
                                                     >
                                                         <Minus className="w-3.5 h-3.5" />
                                                     </button>
                                                     <span className="text-[11px] font-black w-6 text-center">{item.quantity}</span>
                                                     <button
                                                         onClick={() => updateQuantity(item.productId, item.size, item.color, item.quantity + 1)}
-                                                        className="w-8 h-8 flex items-center justify-center hover:bg-white rounded transition-colors text-gray-500 hover:text-black"
+                                                        className="w-8 h-8 flex items-center justify-center hover:bg-white rounded transition-colors text-gray-500 hover:text-heading"
                                                     >
                                                         <Plus className="w-3.5 h-3.5" />
                                                     </button>
@@ -132,7 +132,7 @@ export default function CartPage() {
                         </div>
 
                         <div className="mt-8 flex justify-start">
-                            <Link href="/products" className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-gray-400 hover:text-black transition-colors group">
+                            <Link href="/products" className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-gray-400 hover:text-heading transition-colors group">
                                 <ArrowRight className="w-3 h-3 rotate-180 transition-transform group-hover:-translate-x-1" />
                                 Continue Shopping
                             </Link>
@@ -142,7 +142,7 @@ export default function CartPage() {
                     {/* Order Summary */}
                     <div className="lg:col-span-4 pb-32 lg:pb-0">
                         <div className="bg-white border border-gray-300 rounded-lg p-6 lg:p-8 sticky top-24 shadow-none">
-                            <h2 className="text-body font-black text-gray-900 uppercase tracking-widest border-l-4 border-black pl-3 mb-8">
+                            <h2 className="text-body font-black text-heading uppercase tracking-widest border-l-4 border-primary pl-3 mb-8">
                                 Summary
                             </h2>
 
@@ -160,7 +160,7 @@ export default function CartPage() {
                                 {total < 1000 && (
                                     <div className="bg-gray-50 border border-gray-200 rounded-md p-3">
                                         <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest leading-relaxed">
-                                            Add ₹{(1000 - total).toLocaleString()} more for <span className="text-black underline underline-offset-4">free shipping</span>
+                                            Add ₹{(1000 - total).toLocaleString()} more for <span className="text-heading underline underline-offset-4">free shipping</span>
                                         </p>
                                     </div>
                                 )}
@@ -174,7 +174,7 @@ export default function CartPage() {
 
                             <Button
                                 fullWidth
-                                className="hidden lg:flex h-16 bg-black text-white rounded-md font-black uppercase tracking-[0.15em] text-[10px] hover:bg-gray-900 transition-all items-center justify-center gap-2 shadow-none border-none whitespace-nowrap group"
+                                className="hidden lg:flex h-16 bg-primary text-on-primary rounded-md font-black uppercase tracking-[0.15em] text-[10px] hover:bg-primary-hover transition-all items-center justify-center gap-2 shadow-none border-none whitespace-nowrap group"
                                 onClick={() => router.push('/checkout')}
                             >
                                 Proceed to Checkout
@@ -201,10 +201,10 @@ export default function CartPage() {
                 <div className="flex items-center justify-between gap-4 max-w-lg mx-auto">
                     <div className="flex flex-col">
                         <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest leading-tight">Total Amount</span>
-                        <span className="text-xl font-black text-gray-900 uppercase tracking-tight">₹{grandTotal.toLocaleString()}</span>
+                        <span className="text-xl font-black text-heading uppercase tracking-tight">₹{grandTotal.toLocaleString()}</span>
                     </div>
                     <Button
-                        className="flex-1 h-14 bg-black text-white rounded-md font-black uppercase tracking-[0.1em] text-[10px] flex items-center justify-center gap-2 shadow-none border-none whitespace-nowrap group"
+                        className="flex-1 h-14 bg-primary text-on-primary rounded-md font-black uppercase tracking-[0.1em] text-[10px] flex items-center justify-center gap-2 shadow-none border-none whitespace-nowrap group"
                         onClick={() => router.push('/checkout')}
                     >
                         Checkout

@@ -29,7 +29,7 @@ export default function Home() {
       {/* <BeautySection /> */}
       <CustomerReviews />
       <FeaturesSection />
-      <NewsletterSection />
+      {/* <NewsletterSection /> */}
     </div>
   );
 }

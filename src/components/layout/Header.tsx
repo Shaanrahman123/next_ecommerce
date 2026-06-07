@@ -3,13 +3,16 @@
 import Link from 'next/link';
 import { useState, useRef, useEffect } from 'react';
 import { ShoppingCart, Heart, User, Menu, X, Search, ChevronDown, LayoutDashboard, UserCircle, Lock, Package, MapPin, Star, Wallet, Headphones, Bell, LogOut } from 'lucide-react';
-import { useAuthStore, useCartStore, useWishlistStore } from '@/store';
+import { useAuthStore, useCartStore, useWishlistStore, useAddressStore } from '@/store';
+import { performLogout } from '@/utils/logout';
 import { useRouter } from 'next/navigation';
 import MegaMenu from './MegaMenu';
 import { mainNavigation, megaMenuImages } from '@/data/categories';
+import { useCategoryTree } from '@/hooks/useCategoryTree';
 import MobileSidebar from './MobileSidebar';
 import { usePathname } from 'next/navigation';
 import SearchBar from './Search';
+import BrandLogo from './BrandLogo';
 
 export default function Header() {
     const pathname = usePathname();
@@ -18,15 +21,54 @@ export default function Header() {
     const [userMenuOpen, setUserMenuOpen] = useState(false);
     const [activeMegaMenu, setActiveMegaMenu] = useState<string | null>(null);
     const { isAuthenticated, user, logout } = useAuthStore();
+    const clearAddresses = useAddressStore((s) => s.clearAddresses);
     const { getItemCount } = useCartStore();
     const { items: wishlistItems } = useWishlistStore();
     const router = useRouter();
+    const { tree: categoryTree } = useCategoryTree();
+
+    type NavItem = {
+        id: string;
+        label: string;
+        basePath: string;
+        featuredImage: string;
+        sections: Array<{
+            title: string;
+            basePath: string;
+            items: Array<{ name: string; slug: string; image: string }>;
+        }>;
+    };
+
+    const navigation: NavItem[] = categoryTree.length > 0
+        ? categoryTree.map((dept) => ({
+            id: dept.slug,
+            label: dept.label,
+            basePath: dept.basePath,
+            featuredImage: dept.imageUrl,
+            sections: dept.sections.map((section) => ({
+                title: section.title,
+                basePath: section.basePath,
+                items: section.items.map((item) => ({
+                    name: item.name,
+                    slug: item.slug,
+                    image: item.imageUrl,
+                })),
+            })),
+        }))
+        : mainNavigation
+            .filter((nav) => nav.id !== 'sale')
+            .map((nav) => ({
+                id: nav.id,
+                label: nav.label,
+                basePath: nav.basePath,
+                featuredImage: megaMenuImages[nav.id as keyof typeof megaMenuImages] || megaMenuImages.men,
+                sections: nav.sections,
+            }));
 
     const cartItemCount = getItemCount();
 
-    const handleLogout = () => {
-        logout();
-        router.push('/');
+    const handleLogout = async () => {
+        await performLogout(logout, () => router.push('/'), clearAddresses);
     };
 
     // Close dropdown when clicking outside
@@ -63,19 +105,14 @@ export default function Header() {
     const isHiddenOnMobile = hideOnMobilePaths.some(path => pathname.startsWith(path));
 
     return (
-        <header className={`sticky top-8 z-100 bg-white border-b border-gray-200 shadow-sm ${isHiddenOnMobile ? 'hidden lg:block' : ''}`}>
+        <header className={`sticky top-8 z-100 bg-primary text-white border-b border-white/10 shadow-md ${isHiddenOnMobile ? 'hidden lg:block' : ''}`}>
             <div className="container mx-auto px-4 lg:px-4 xl:px-4">
-                <div className="flex items-center justify-between h-16">
-                    {/* Logo */}
-                    <Link href="/" className="flex items-center space-x-2 group">
-                        <div className="text-lg lg:text-2xl font-bold text-black tracking-tight transition-transform duration-300 group-hover:scale-105">
-                            MINIMAL
-                        </div>
-                    </Link>
+                <div className="flex items-center justify-between h-24">
+                    <BrandLogo />
 
                     {/* Desktop Navigation - Hidden on Desktop Header to make room for Search, as per modern design */}
                     <nav className="hidden xl:flex items-center space-x-8">
-                        {mainNavigation.map((category) => (
+                        {navigation.map((category) => (
                             <div
                                 key={category.id}
                                 className="relative"
@@ -85,14 +122,15 @@ export default function Header() {
                                 <Link
                                     href={category.basePath}
                                     onClick={() => setActiveMegaMenu(null)}
-                                    className="text-base font-semibold text-gray-900 hover:text-black transition-colors duration-300 py-6 inline-block capitalize"
+                                    className="text-base font-semibold text-white/90 hover:text-white transition-colors duration-300 py-6 inline-block capitalize"
                                 >
                                     {category.label}
                                 </Link>
                                 <MegaMenu
                                     sections={category.sections}
-                                    featuredImage={megaMenuImages[category.id as keyof typeof megaMenuImages]}
+                                    featuredImage={category.featuredImage}
                                     label={category.label}
+                                    basePath={category.basePath}
                                     isOpen={activeMegaMenu === category.id}
                                     onNavItemClick={() => setActiveMegaMenu(null)}
                                 />
@@ -101,7 +139,7 @@ export default function Header() {
                     </nav>
 
                     {/* Search Bar - Center on Desktop */}
-                    <SearchBar variant="desktop" />
+                    <SearchBar variant="desktop" dark />
 
                     {/* Right Icons */}
                     <div className="flex items-center space-x-2 lg:space-x-8">
@@ -110,7 +148,7 @@ export default function Header() {
                             <div className="hidden lg:block relative" ref={dropdownRef}>
                                 <button
                                     onClick={() => setUserMenuOpen(!userMenuOpen)}
-                                    className="flex flex-col items-center gap-1 text-gray-700 hover:text-black transition-all duration-300 group"
+                                    className="flex flex-col items-center gap-1 text-white/90 hover:text-white transition-all duration-300 group"
                                     aria-label="User Account"
                                 >
                                     <User className="w-5 h-5" />
@@ -123,7 +161,7 @@ export default function Header() {
                                     <div className="hidden lg:block absolute right-0 mt-3 w-64 bg-white border border-gray-200 rounded-xl shadow-2xl animate-scale-in z-50">
                                         {/* User Info Header */}
                                         <div className="px-4 py-3 border-b border-gray-100 bg-linear-to-r from-gray-50 to-white">
-                                            <p className="text-sm font-semibold text-gray-900 truncate">
+                                            <p className="text-sm font-semibold text-heading truncate">
                                                 {user?.name || 'User'}
                                             </p>
                                             <p className="text-xs text-gray-500 truncate">
@@ -182,29 +220,12 @@ export default function Header() {
                                                 My Wishlist
                                             </Link>
                                             <Link
-                                                href="/account?section=reviews"
-                                                onClick={() => setUserMenuOpen(false)}
-                                                className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors duration-200"
-                                            >
-                                                <Star className="w-4 h-4" />
-                                                My Reviews
-                                            </Link>
-                                            {/* Wallet removed */}
-                                            <Link
                                                 href="/account?section=support"
                                                 onClick={() => setUserMenuOpen(false)}
                                                 className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors duration-200"
                                             >
                                                 <Headphones className="w-4 h-4" />
                                                 Support
-                                            </Link>
-                                            <Link
-                                                href="/account?section=notifications"
-                                                onClick={() => setUserMenuOpen(false)}
-                                                className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors duration-200"
-                                            >
-                                                <Bell className="w-4 h-4" />
-                                                Notifications
                                             </Link>
                                         </div>
 
@@ -238,11 +259,11 @@ export default function Header() {
                                             {/* User Info Header */}
                                             <div className="p-6 border-b border-gray-100 bg-linear-to-r from-gray-50 to-white">
                                                 <div className="flex items-center gap-4 mb-4">
-                                                    <div className="w-12 h-12 rounded-full bg-linear-to-br from-black to-gray-700 flex items-center justify-center text-white font-semibold text-xl shadow-md">
+                                                    <div className="w-12 h-12 rounded-full bg-linear-to-br from-primary to-gray-700 flex items-center justify-center text-white font-semibold text-xl shadow-md">
                                                         {user?.name?.charAt(0).toUpperCase() || 'U'}
                                                     </div>
                                                     <div>
-                                                        <p className="text-base font-semibold text-gray-900 truncate max-w-[150px]">
+                                                        <p className="text-base font-semibold text-heading truncate max-w-[150px]">
                                                             {user?.name || 'User'}
                                                         </p>
                                                         <p className="text-xs text-gray-500 truncate max-w-[150px]">
@@ -303,28 +324,12 @@ export default function Header() {
                                                     My Wishlist
                                                 </Link>
                                                 <Link
-                                                    href="/account?section=reviews"
-                                                    onClick={() => setUserMenuOpen(false)}
-                                                    className="flex items-center gap-4 px-4 py-3 text-body text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
-                                                >
-                                                    <Star className="w-5 h-5" />
-                                                    My Reviews
-                                                </Link>
-                                                <Link
                                                     href="/account?section=support"
                                                     onClick={() => setUserMenuOpen(false)}
                                                     className="flex items-center gap-4 px-4 py-3 text-body text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
                                                 >
                                                     <Headphones className="w-5 h-5" />
                                                     Support
-                                                </Link>
-                                                <Link
-                                                    href="/account?section=notifications"
-                                                    onClick={() => setUserMenuOpen(false)}
-                                                    className="flex items-center gap-4 px-4 py-3 text-body text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
-                                                >
-                                                    <Bell className="w-5 h-5" />
-                                                    Notifications
                                                 </Link>
                                             </div>
 
@@ -348,7 +353,7 @@ export default function Header() {
                         ) : (
                             <Link
                                 href="/login"
-                                className="hidden lg:flex flex-col items-center gap-1 text-gray-700 hover:text-black transition-all duration-300"
+                                className="hidden lg:flex flex-col items-center gap-1 text-white/90 hover:text-white transition-all duration-300"
                                 aria-label="Login"
                             >
                                 <User className="w-5 h-5" />
@@ -359,13 +364,13 @@ export default function Header() {
                         {/* Wishlist - Desktop with Label */}
                         <Link
                             href="/wishlist"
-                            className="hidden lg:flex flex-col items-center gap-1 relative text-gray-700 hover:text-black"
+                            className="hidden lg:flex flex-col items-center gap-1 relative text-white/90 hover:text-white"
                             aria-label="Wishlist"
                         >
                             <div className="relative">
                                 <Heart className="w-5 h-5" />
                                 {wishlistItems.length > 0 && (
-                                    <span className="absolute -top-2 -right-2 bg-black text-white text-[12px] rounded-full w-4 h-4 flex items-center justify-center font-bold">
+                                    <span className="absolute -top-2 -right-2 bg-white text-primary text-[12px] rounded-full w-4 h-4 flex items-center justify-center font-bold">
                                         {wishlistItems.length}
                                     </span>
                                 )}
@@ -376,13 +381,13 @@ export default function Header() {
                         {/* Cart - Desktop with Label */}
                         <Link
                             href="/cart"
-                            className="hidden lg:flex flex-col items-center gap-1 relative text-gray-700 hover:text-black"
+                            className="hidden lg:flex flex-col items-center gap-1 relative text-white/90 hover:text-white"
                             aria-label="Shopping Cart"
                         >
                             <div className="relative">
                                 <ShoppingCart className="w-5 h-5" />
                                 {cartItemCount > 0 && (
-                                    <span className="absolute -top-2 -right-2 bg-black text-white text-[12px] rounded-full w-4 h-4 flex items-center justify-center font-bold">
+                                    <span className="absolute -top-2 -right-2 bg-white text-primary text-[12px] rounded-full w-4 h-4 flex items-center justify-center font-bold">
                                         {cartItemCount}
                                     </span>
                                 )}
@@ -394,14 +399,14 @@ export default function Header() {
                         <div className="flex items-center lg:hidden">
                             <button
                                 onClick={() => setIsSearchOverlayOpen(true)}
-                                className="text-gray-700 hover:text-black p-2"
+                                className="text-white/90 hover:text-white p-2"
                                 aria-label="Search"
                             >
                                 <Search className="w-5 h-5" />
                             </button>
                             <button
                                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                                className="text-gray-700 hover:text-black p-2"
+                                className="text-white/90 hover:text-white p-2"
                                 aria-label="Toggle Menu"
                             >
                                 {mobileMenuOpen ? (
@@ -431,6 +436,7 @@ export default function Header() {
                 isAuthenticated={isAuthenticated}
                 user={user}
                 onLogout={handleLogout}
+                navigation={navigation}
             />
         </header>
     );

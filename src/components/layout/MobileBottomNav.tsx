@@ -62,13 +62,13 @@ function NavContent() {
                         <Link
                             key={item.label}
                             href={item.href}
-                            className={`flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors duration-200 ${isActive ? 'text-black font-bold' : 'text-gray-500 hover:text-black'
+                            className={`flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors duration-200 ${isActive ? 'text-primary font-bold' : 'text-gray-500 hover:text-primary'
                                 }`}
                         >
                             <div className="relative">
                                 <Icon className={`w-6 h-6 ${isActive ? 'fill-current' : ''}`} />
                                 {item.count !== undefined && item.count > 0 && (
-                                    <span className="absolute -top-2 -right-2 bg-black text-white text-[12px] rounded-full w-4 h-4 flex items-center justify-center font-bold">
+                                    <span className="absolute -top-2 -right-2 bg-primary text-on-primary text-[12px] rounded-full w-4 h-4 flex items-center justify-center font-bold">
                                         {item.count}
                                     </span>
                                 )}

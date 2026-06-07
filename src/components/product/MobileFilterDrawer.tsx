@@ -63,7 +63,7 @@ export default function MobileFilterDrawer({
 
     const getColorClass = (colorId: string) => {
         const colors: any = {
-            black: 'bg-black',
+            black: 'bg-primary',
             white: 'bg-white border-gray-300',
             blue: 'bg-blue-600',
             gray: 'bg-gray-500',
@@ -104,7 +104,7 @@ export default function MobileFilterDrawer({
                                     {section.title}
                                 </span>
                                 {selectedCount > 0 && (
-                                    <span className="text-[12px] bg-gray-900 text-white rounded-full w-4 h-4 flex items-center justify-center">
+                                    <span className="text-[12px] bg-primary text-white rounded-full w-4 h-4 flex items-center justify-center">
                                         {selectedCount}
                                     </span>
                                 )}
@@ -153,7 +153,7 @@ export default function MobileFilterDrawer({
                                                         type="checkbox"
                                                         checked={selectedFilters[activeSection]?.includes(option.id) || false}
                                                         onChange={() => onFilterChange(activeSection, option.id, 'checkbox')}
-                                                        className="w-4 h-4 rounded border-gray-300 text-black focus:ring-black"
+                                                        className="w-4 h-4 rounded border-gray-300 text-heading focus:ring-primary"
                                                     />
                                                     <span className="text-sm text-gray-900">{option.label}</span>
                                                 </div>
@@ -183,7 +183,7 @@ export default function MobileFilterDrawer({
                                                 type="checkbox"
                                                 checked={selectedFilters[activeSection]?.includes(option.id) || false}
                                                 onChange={() => onFilterChange(activeSection, option.id, 'checkbox')}
-                                                className="w-4 h-4 rounded border-gray-300 text-black focus:ring-black"
+                                                className="w-4 h-4 rounded border-gray-300 text-heading focus:ring-primary"
                                             />
                                             <span className="text-sm text-gray-900">{option.label}</span>
                                         </div>
@@ -215,7 +215,7 @@ export default function MobileFilterDrawer({
                                             name={activeSection}
                                             checked={selectedFilters[activeSection] === option.id}
                                             onChange={() => onFilterChange(activeSection, option.id, 'radio')}
-                                            className="w-4 h-4 border-gray-300 text-black focus:ring-black"
+                                            className="w-4 h-4 border-gray-300 text-heading focus:ring-primary"
                                         />
                                         <span className="text-sm text-gray-900">{option.label}</span>
                                     </div>
@@ -236,7 +236,7 @@ export default function MobileFilterDrawer({
                                             type="checkbox"
                                             checked={selectedFilters[activeSection]?.includes(option.id) || false}
                                             onChange={() => onFilterChange(activeSection, option.id, 'checkbox')}
-                                            className="w-4 h-4 rounded border-gray-300 text-black focus:ring-black"
+                                            className="w-4 h-4 rounded border-gray-300 text-heading focus:ring-primary"
                                         />
                                         <div className={`w-4 h-4 rounded-full border ${getColorClass(option.id)}`} />
                                         <span className="text-sm text-gray-900">{option.label}</span>
@@ -264,7 +264,7 @@ export default function MobileFilterDrawer({
                                     <div className="absolute w-full h-1.5 bg-gray-200 rounded-full">
                                         {/* Active Track */}
                                         <div
-                                            className="absolute h-full bg-black rounded-full"
+                                            className="absolute h-full bg-primary rounded-full"
                                             style={{
                                                 left: `${((priceRange[0] - (activeFilter.min || 0)) / ((activeFilter.max || 11000) - (activeFilter.min || 0))) * 100}%`,
                                                 right: `${100 - ((priceRange[1] - (activeFilter.min || 0)) / ((activeFilter.max || 11000) - (activeFilter.min || 0))) * 100}%`,
@@ -279,7 +279,7 @@ export default function MobileFilterDrawer({
                                         max={activeFilter.max}
                                         value={priceRange[0]}
                                         onChange={(e) => onPriceChange && onPriceChange(parseInt(e.target.value), priceRange[1])}
-                                        className="absolute w-full appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-black [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-white [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:cursor-grab [&::-webkit-slider-thumb]:active:cursor-grabbing [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-black [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-white [&::-moz-range-thumb]:shadow-md [&::-moz-range-thumb]:cursor-grab [&::-moz-range-thumb]:active:cursor-grabbing"
+                                        className="absolute w-full appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-white [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:cursor-grab [&::-webkit-slider-thumb]:active:cursor-grabbing [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-primary [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-white [&::-moz-range-thumb]:shadow-md [&::-moz-range-thumb]:cursor-grab [&::-moz-range-thumb]:active:cursor-grabbing"
                                     />
 
                                     {/* Max Thumb */}
@@ -289,7 +289,7 @@ export default function MobileFilterDrawer({
                                         max={activeFilter.max}
                                         value={priceRange[1]}
                                         onChange={(e) => onPriceChange && onPriceChange(priceRange[0], parseInt(e.target.value))}
-                                        className="absolute w-full appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-black [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-white [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:cursor-grab [&::-webkit-slider-thumb]:active:cursor-grabbing [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-black [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-white [&::-moz-range-thumb]:shadow-md [&::-moz-range-thumb]:cursor-grab [&::-moz-range-thumb]:active:cursor-grabbing"
+                                        className="absolute w-full appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-white [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:cursor-grab [&::-webkit-slider-thumb]:active:cursor-grabbing [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-primary [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-white [&::-moz-range-thumb]:shadow-md [&::-moz-range-thumb]:cursor-grab [&::-moz-range-thumb]:active:cursor-grabbing"
                                     />
                                 </div>
 
@@ -299,7 +299,7 @@ export default function MobileFilterDrawer({
                                         type="number"
                                         value={priceRange[0]}
                                         onChange={(e) => onPriceChange && onPriceChange(parseInt(e.target.value) || 0, priceRange[1])}
-                                        className="w-24 px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-black"
+                                        className="w-24 px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-primary"
                                         placeholder="Min"
                                     />
                                     <span className="text-sm text-gray-500">to</span>
@@ -307,7 +307,7 @@ export default function MobileFilterDrawer({
                                         type="number"
                                         value={priceRange[1]}
                                         onChange={(e) => onPriceChange && onPriceChange(priceRange[0], parseInt(e.target.value) || 0)}
-                                        className="w-24 px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-black"
+                                        className="w-24 px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-primary"
                                         placeholder="Max"
                                     />
                                 </div>

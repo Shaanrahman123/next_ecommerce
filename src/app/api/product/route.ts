@@ -7,17 +7,10 @@ import { paginate } from '@/lib/pagination';
 import { withDb, withAdmin } from '@/lib/apiWrapper';
 import { PRODUCT_MESSAGES, GLOBAL_MESSAGES } from '@/constants/messages';
 import { uploadImageIfNeeded, uploadMultipleImages } from '@/lib/cloudinary';
-
-// Helper to slugify a string
-function slugify(text: string): string {
-  return text
-    .toString()
-    .toLowerCase()
-    .trim()
-    .replace(/\s+/g, '-')
-    .replace(/[^\w\-]+/g, '')
-    .replace(/\-\-+/g, '-');
-}
+import { getCloudinaryErrorMessage } from '@/lib/cloudinaryErrors';
+import { slugify } from '@/lib/slugify';
+import { serializeProduct, serializeProductList } from '@/lib/productSerializer';
+import { sanitizeHomeSections } from '@/constants/homeSections';
 
 // GET /api/product — List products with filters & pagination (public)
 export const GET = withDb(async (request: NextRequest) => {
@@ -35,6 +28,7 @@ export const GET = withDb(async (request: NextRequest) => {
     const inStockStr = searchParams.get('inStock');
     const minPrice = searchParams.get('minPrice');
     const maxPrice = searchParams.get('maxPrice');
+    const homeSection = searchParams.get('homeSection');
 
     const filter: any = {};
 
@@ -52,6 +46,7 @@ export const GET = withDb(async (request: NextRequest) => {
     if (categoryId) filter.categories = categoryId;
     if (subCategoryId) filter.subCategories = subCategoryId;
     if (inStockStr !== null) filter.inStock = inStockStr === 'true';
+    if (homeSection) filter.homeSections = homeSection;
 
     // Price range filter
     if (minPrice || maxPrice) {
@@ -73,7 +68,7 @@ export const GET = withDb(async (request: NextRequest) => {
       status: true,
       message: PRODUCT_MESSAGES.FETCH_SUCCESS,
       statusCode: 200,
-      data: paginationResult.docs,
+      data: serializeProductList(paginationResult.docs as unknown as Record<string, unknown>[]),
       meta: {
         totalDocs: paginationResult.totalDocs,
         limit: paginationResult.limit,
@@ -112,9 +107,11 @@ export const POST = withAdmin(async (request: NextRequest) => {
       stockQuantity = 0,
       isActive = true,
       featured = false,
+      homeSections = [],
       gender = 'unisex',
       sizes = [],
       colors = [],
+      colorVariants = [],
       brand,
       material,
       season,
@@ -226,14 +223,26 @@ export const POST = withAdmin(async (request: NextRequest) => {
     }
 
     // ── Upload images to Cloudinary ────────────────────────────────────────────
-    // heroImage: single image → stored as public_id
-    const uploadedHeroImage = await uploadImageIfNeeded(heroImage, 'products') || '';
-
-    // images: array of additional images → stored as public_id[]
+    let uploadedHeroImage: string;
     let uploadedImages: string[] = [];
-    if (Array.isArray(images) && images.length > 0) {
-      uploadedImages = await uploadMultipleImages(images, 'products');
+
+    try {
+      uploadedHeroImage = (await uploadImageIfNeeded(heroImage, 'products')) || '';
+      if (Array.isArray(images) && images.length > 0) {
+        uploadedImages = await uploadMultipleImages(images, 'products');
+      }
+    } catch (uploadError) {
+      return NextResponse.json(
+        { status: false, message: getCloudinaryErrorMessage(uploadError), statusCode: 400 },
+        { status: 400 }
+      );
     }
+
+    const resolvedColors =
+      colorVariants.length > 0 ? colorVariants.map((c: { name: string }) => c.name) : colors;
+
+    // Validate home page section IDs
+    const validatedHomeSections = sanitizeHomeSections(homeSections);
 
     // ── Create and save product ────────────────────────────────────────────────
     const newProduct = new Product({
@@ -247,13 +256,15 @@ export const POST = withAdmin(async (request: NextRequest) => {
       superCategories,
       categories,
       subCategories,
-      inStock,
+      inStock: stockQuantity > 0 ? inStock : false,
       stockQuantity,
       isActive,
       featured,
+      homeSections: validatedHomeSections,
       gender,
       sizes,
-      colors,
+      colors: resolvedColors,
+      colorVariants,
       brand,
       material,
       season,
@@ -267,7 +278,7 @@ export const POST = withAdmin(async (request: NextRequest) => {
       status: true,
       message: PRODUCT_MESSAGES.CREATE_SUCCESS,
       statusCode: 201,
-      data: newProduct,
+      data: serializeProduct(newProduct.toObject() as unknown as Record<string, unknown>),
     }, { status: 201 });
 
   } catch (error: any) {

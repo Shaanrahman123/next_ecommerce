@@ -6,6 +6,7 @@ export interface ISuperCategory extends Document {
   description?: string;
   image?: string;
   isActive: boolean;
+  sortOrder: number;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -36,6 +37,10 @@ const SuperCategorySchema: Schema = new Schema(
     isActive: {
       type: Boolean,
       default: true,
+    },
+    sortOrder: {
+      type: Number,
+      default: 0,
     },
   },
   {

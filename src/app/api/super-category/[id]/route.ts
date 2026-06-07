@@ -3,17 +3,9 @@ import SuperCategory from '@/models/SuperCategory';
 import { withDb, withAdmin } from '@/lib/apiWrapper';
 import { SUPERCATEGORY_MESSAGES, GLOBAL_MESSAGES } from '@/constants/messages';
 import { uploadImageIfNeeded } from '@/lib/cloudinary';
-
-// helper to slugify a string
-function slugify(text: string): string {
-  return text
-    .toString()
-    .toLowerCase()
-    .trim()
-    .replace(/\s+/g, '-')
-    .replace(/[^\w\-]+/g, '')
-    .replace(/\-\-+/g, '-');
-}
+import { getCloudinaryErrorMessage } from '@/lib/cloudinaryErrors';
+import { slugify } from '@/lib/slugify';
+import { withImageUrl } from '@/lib/categorySerializer';
 
 export const GET = withDb(async (
   request: NextRequest,
@@ -78,7 +70,14 @@ export const PUT = withAdmin(async (
     if (isActive !== undefined) updateData.isActive = isActive;
     
     if (image !== undefined) {
-      updateData.image = await uploadImageIfNeeded(image, 'super_categories');
+      try {
+        updateData.image = (await uploadImageIfNeeded(image, 'super_categories')) || '';
+      } catch (uploadError) {
+        return NextResponse.json(
+          { status: false, message: getCloudinaryErrorMessage(uploadError), statusCode: 400 },
+          { status: 400 }
+        );
+      }
     }
 
     if (slug) {
@@ -119,7 +118,7 @@ export const PUT = withAdmin(async (
       status: true,
       message: SUPERCATEGORY_MESSAGES.UPDATE_SUCCESS,
       statusCode: 200,
-      data: updatedCategory
+      data: withImageUrl(updatedCategory!.toObject()),
     }, { status: 200 });
 
   } catch (error: any) {

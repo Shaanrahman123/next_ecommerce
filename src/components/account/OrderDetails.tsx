@@ -121,11 +121,11 @@ export default function OrderDetails({ orderId }: OrderDetailsProps) {
             {/* Header - Desktop */}
             <div className="hidden lg:flex items-center justify-between mb-10">
                 <div className="flex items-center gap-5">
-                    <div className="w-16 h-16 bg-black rounded-md flex items-center justify-center text-white">
+                    <div className="w-16 h-16 bg-primary rounded-md flex items-center justify-center text-white">
                         <Package className="w-8 h-8" />
                     </div>
                     <div>
-                        <h1 className="text-section-title font-black text-gray-900 uppercase tracking-tight">Order #{order.id.split('-').pop()}</h1>
+                        <h1 className="text-section-title font-black text-heading uppercase tracking-tight">Order #{order.id.split('-').pop()}</h1>
                         <p className="text-body text-gray-500 font-bold uppercase tracking-widest text-[10px] mt-1">Placed on {order.orderDate}</p>
                     </div>
                 </div>
@@ -134,13 +134,13 @@ export default function OrderDetails({ orderId }: OrderDetailsProps) {
                         variant="outline"
                         onClick={handleDownloadInvoice}
                         disabled={downloading}
-                        className="h-11 px-6 border-gray-300 rounded-md font-bold uppercase tracking-widest text-[10px] flex items-center gap-2 hover:bg-black hover:text-white transition-all shadow-none"
+                        className="h-11 px-6 border-gray-300 rounded-md font-bold uppercase tracking-widest text-[10px] flex items-center gap-2 hover:bg-primary hover:text-on-primary transition-all shadow-none"
                     >
                         <Download className="w-4 h-4" />
                         {downloading ? '...' : 'Invoice'}
                     </Button>
                     <Link href={`/account?section=track-order&orderId=${order.id}`}>
-                        <Button className="h-11 px-6 bg-black text-white rounded-md font-bold uppercase tracking-widest text-[10px] flex items-center gap-2 shadow-none">
+                        <Button className="h-11 px-6 bg-primary text-on-primary rounded-md font-bold uppercase tracking-widest text-[10px] flex items-center gap-2 shadow-none">
                             <Truck className="w-4 h-4" />
                             Track
                         </Button>
@@ -161,15 +161,15 @@ export default function OrderDetails({ orderId }: OrderDetailsProps) {
                         </div>
                         <div className="space-y-1">
                             <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Estimated Delivery</p>
-                            <p className="text-small font-black text-gray-900 uppercase">{order.deliveryDate}</p>
+                            <p className="text-small font-black text-heading uppercase">{order.deliveryDate}</p>
                         </div>
                         <div className="space-y-1">
                             <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Payment</p>
-                            <p className="text-small font-black text-gray-900 uppercase">{order.paymentStatus}</p>
+                            <p className="text-small font-black text-heading uppercase">{order.paymentStatus}</p>
                         </div>
                         <div className="space-y-1">
                             <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Tracking #</p>
-                            <p className="text-small font-black text-gray-900 uppercase truncate">{order.trackingNumber}</p>
+                            <p className="text-small font-black text-heading uppercase truncate">{order.trackingNumber}</p>
                         </div>
                     </div>
                 </div>
@@ -179,7 +179,7 @@ export default function OrderDetails({ orderId }: OrderDetailsProps) {
                     <div className="lg:col-span-2 space-y-6">
                         <div className="bg-white border border-gray-300 rounded-lg overflow-hidden shadow-none">
                             <div className="p-6 border-b border-gray-300 bg-gray-50/50">
-                                <h2 className="text-small font-black text-gray-900 uppercase tracking-widest border-l-4 border-black pl-3">Order Items ({order.items.length})</h2>
+                                <h2 className="text-small font-black text-heading uppercase tracking-widest border-l-4 border-primary pl-3">Order Items ({order.items.length})</h2>
                             </div>
                             <div className="divide-y divide-gray-300">
                                 {order.items.map((item) => (
@@ -188,13 +188,13 @@ export default function OrderDetails({ orderId }: OrderDetailsProps) {
                                             <Image src={item.image} alt={item.name} fill className="object-cover transition-transform duration-500 group-hover:scale-110" />
                                         </div>
                                         <div className="flex-1 min-w-0">
-                                            <h3 className="text-body font-black text-gray-900 uppercase tracking-tight mb-2 truncate">{item.name}</h3>
+                                            <h3 className="text-body font-black text-heading uppercase tracking-tight mb-2 truncate">{item.name}</h3>
                                             <div className="flex flex-wrap gap-x-4 gap-y-2 mb-4">
                                                 <div className="bg-gray-50 px-3 py-1 rounded-full border border-gray-300 text-[10px] font-bold text-gray-500 uppercase tracking-widest">Size: {item.size}</div>
                                                 <div className="bg-gray-50 px-3 py-1 rounded-full border border-gray-300 text-[10px] font-bold text-gray-500 uppercase tracking-widest">Color: {item.color}</div>
                                                 <div className="bg-gray-50 px-3 py-1 rounded-full border border-gray-300 text-[10px] font-bold text-gray-500 uppercase tracking-widest">Qty: {item.quantity}</div>
                                             </div>
-                                            <p className="text-body font-black text-black uppercase tracking-tight">₹{(item.price * item.quantity).toFixed(2)}</p>
+                                            <p className="text-body font-black text-heading uppercase tracking-tight">₹{(item.price * item.quantity).toFixed(2)}</p>
                                         </div>
                                     </div>
                                 ))}
@@ -203,7 +203,7 @@ export default function OrderDetails({ orderId }: OrderDetailsProps) {
 
                         {/* Order Summary - Combined on Mobile to be below products */}
                         <div className="lg:hidden bg-white border border-gray-300 rounded-lg p-6 shadow-none">
-                            <h3 className="text-small font-black text-gray-900 uppercase tracking-widest mb-6 border-l-4 border-black pl-3">Order Summary</h3>
+                            <h3 className="text-small font-black text-heading uppercase tracking-widest mb-6 border-l-4 border-primary pl-3">Order Summary</h3>
                             <div className="space-y-4">
                                 <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest text-gray-500">
                                     <span>Subtotal</span>
@@ -218,8 +218,8 @@ export default function OrderDetails({ orderId }: OrderDetailsProps) {
                                     <span className="text-gray-900">₹{order.pricing.tax.toFixed(2)}</span>
                                 </div>
                                 <div className="pt-4 border-t border-gray-300 flex justify-between items-center">
-                                    <span className="text-body font-black text-gray-900 uppercase tracking-tight">Total Amount</span>
-                                    <span className="text-section-title font-black text-black uppercase tracking-tight">₹{order.pricing.total.toFixed(2)}</span>
+                                    <span className="text-body font-black text-heading uppercase tracking-tight">Total Amount</span>
+                                    <span className="text-section-title font-black text-heading uppercase tracking-tight">₹{order.pricing.total.toFixed(2)}</span>
                                 </div>
                             </div>
                         </div>
@@ -229,14 +229,14 @@ export default function OrderDetails({ orderId }: OrderDetailsProps) {
                     <div className="space-y-6 lg:space-y-8">
                         {/* Shipping Address */}
                         <div className="bg-white border border-gray-300 rounded-lg p-6 lg:p-8 shadow-none">
-                            <h3 className="text-[10px] font-black text-gray-900 uppercase tracking-widest mb-6 flex items-center gap-3">
-                                <div className="w-8 h-8 rounded-md bg-black flex items-center justify-center text-white shrink-0">
+                            <h3 className="text-[10px] font-black text-heading uppercase tracking-widest mb-6 flex items-center gap-3">
+                                <div className="w-8 h-8 rounded-md bg-primary flex items-center justify-center text-white shrink-0">
                                     <MapPin className="w-4 h-4" />
                                 </div>
                                 Delivery Address
                             </h3>
                             <div className="space-y-1">
-                                <p className="text-body font-black text-gray-900 uppercase tracking-tight">{order.shippingAddress.name}</p>
+                                <p className="text-body font-black text-heading uppercase tracking-tight">{order.shippingAddress.name}</p>
                                 <p className="text-small font-bold text-gray-500 uppercase tracking-tight leading-relaxed">{order.shippingAddress.addressLine1}</p>
                                 {order.shippingAddress.addressLine2 && <p className="text-small font-bold text-gray-500 uppercase tracking-tight leading-relaxed">{order.shippingAddress.addressLine2}</p>}
                                 <p className="text-small font-bold text-gray-500 uppercase tracking-tight leading-relaxed">{order.shippingAddress.city}, {order.shippingAddress.state} {order.shippingAddress.zipCode}</p>
@@ -254,7 +254,7 @@ export default function OrderDetails({ orderId }: OrderDetailsProps) {
                         </div>
 
                         {/* Order Summary - Desktop */}
-                        <div className="hidden lg:block bg-black text-white rounded-lg p-8 shadow-none">
+                        <div className="hidden lg:block bg-primary text-on-primary rounded-lg p-8 shadow-none">
                             <h3 className="text-small font-black uppercase tracking-widest mb-8 border-l-4 border-white pl-3 text-white">Order Summary</h3>
                             <div className="space-y-5">
                                 <div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-gray-400">
@@ -277,7 +277,7 @@ export default function OrderDetails({ orderId }: OrderDetailsProps) {
                             <Button
                                 onClick={handleDownloadInvoice}
                                 disabled={downloading}
-                                className="w-full h-11 bg-white text-black mt-10 rounded-md font-bold uppercase tracking-widest text-[10px] hover:bg-gray-100 transition-all shadow-none flex items-center justify-center gap-2"
+                                className="w-full h-11 bg-white text-heading mt-10 rounded-md font-bold uppercase tracking-widest text-[10px] hover:bg-gray-100 transition-all shadow-none flex items-center justify-center gap-2"
                             >
                                 <Download className="w-4 h-4 shrink-0" />
                                 <span className="truncate">{downloading ? '...' : 'Download'}</span>
@@ -293,7 +293,7 @@ export default function OrderDetails({ orderId }: OrderDetailsProps) {
                     Invoice
                 </Button>
                 <Link href={`/account?section=track-order&orderId=${order.id}`} className="flex-1">
-                    <Button className="w-full h-11 bg-black text-white rounded-md font-bold uppercase tracking-widest text-[10px] shadow-none">
+                    <Button className="w-full h-11 bg-primary text-on-primary rounded-md font-bold uppercase tracking-widest text-[10px] shadow-none">
                         Track Order
                     </Button>
                 </Link>
