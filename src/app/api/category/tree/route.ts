@@ -4,7 +4,7 @@ import Category from '@/models/Category';
 import SubCategory from '@/models/SubCategory';
 import { withDb } from '@/lib/apiWrapper';
 import { GLOBAL_MESSAGES } from '@/constants/messages';
-import { getCloudinaryUrl } from '@/lib/cloudinary';
+import { getCloudinaryUrl } from '@/lib/cloudinaryUrl';
 
 export const GET = withDb(async (request: NextRequest) => {
   try {

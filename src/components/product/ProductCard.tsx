@@ -122,23 +122,32 @@ export default function ProductCard({ product, compact = false }: ProductCardPro
                             {product.name}
                         </h3>
 
-                        {/* Rating */}
-                        {product.rating && (
-                            <div className="flex items-center gap-1">
-                                <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
-                                <span className="text-small font-medium">{product.rating}</span>
-                            </div>
+                        {product.description && (
+                            <p className="text-xs text-gray-500 line-clamp-1">
+                                {product.description}
+                            </p>
                         )}
 
-                        {/* Price */}
-                        <div className="flex items-center gap-1.5">
-                            <span className="text-sm font-bold text-heading">
-                                ₹{product.price.toFixed(2)}
-                            </span>
-                            {hasDiscount && (
-                                <span className="text-xs text-gray-500 line-through">
-                                    ₹{product.originalPrice!.toFixed(2)}
+                        {/* Price + rating row */}
+                        <div className="flex items-center justify-between gap-2 pt-0.5">
+                            <div className="flex items-center gap-1.5 min-w-0">
+                                <span className="text-sm font-bold text-heading">
+                                    ₹{product.price.toFixed(2)}
                                 </span>
+                                {hasDiscount && (
+                                    <span className="text-xs text-gray-500 line-through">
+                                        ₹{product.originalPrice!.toFixed(2)}
+                                    </span>
+                                )}
+                            </div>
+                            {product.rating != null && product.rating > 0 && (
+                                <div className="flex items-center gap-0.5 shrink-0">
+                                    <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                                    <span className="text-[10px] font-semibold text-gray-700">{product.rating}</span>
+                                    {product.reviews != null && product.reviews > 0 && (
+                                        <span className="text-[10px] text-gray-400">({product.reviews})</span>
+                                    )}
+                                </div>
                             )}
                         </div>
                     </div>
@@ -222,28 +231,26 @@ export default function ProductCard({ product, compact = false }: ProductCardPro
                         {product.description}
                     </p>
 
-                    {/* Rating */}
-                    {product.rating && (
-                        <div className="flex items-center gap-1">
-                            <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                            <span className="text-small font-medium">{product.rating}</span>
-                            {product.reviews && (
-                                <span className="text-small text-gray-500">
-                                    ({product.reviews})
+                    {/* Price + rating row */}
+                    <div className="flex items-center justify-between gap-2 pt-2">
+                        <div className="flex items-center gap-2 min-w-0">
+                            <span className="text-price text-gray-900">
+                                ₹{product.price.toFixed(2)}
+                            </span>
+                            {hasDiscount && (
+                                <span className="text-small text-gray-400 line-through">
+                                    ₹{product.originalPrice!.toFixed(2)}
                                 </span>
                             )}
                         </div>
-                    )}
-
-                    {/* Price */}
-                    <div className="flex items-center gap-2 pt-2">
-                        <span className="text-price text-gray-900">
-                            ₹{product.price.toFixed(2)}
-                        </span>
-                        {hasDiscount && (
-                            <span className="text-small text-gray-400 line-through">
-                                ₹{product.originalPrice!.toFixed(2)}
-                            </span>
+                        {product.rating != null && product.rating > 0 && (
+                            <div className="flex items-center gap-0.5 shrink-0">
+                                <Star className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
+                                <span className="text-xs font-medium">{product.rating}</span>
+                                {product.reviews != null && product.reviews > 0 && (
+                                    <span className="text-xs text-gray-500">({product.reviews})</span>
+                                )}
+                            </div>
                         )}
                     </div>
 

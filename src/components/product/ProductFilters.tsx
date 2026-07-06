@@ -1,26 +1,16 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
+import { FilterSection, FilterOption } from '@/types/filters';
+import { COLOR_HEX } from '@/constants/colorHex';
 
-interface FilterOption {
-    id: string;
-    label: string;
-    count?: number;
-}
-
-interface FilterSection {
-    id: string;
-    title: string;
-    type: 'checkbox' | 'radio' | 'range' | 'color';
-    options?: FilterOption[];
-    min?: number;
-    max?: number;
-    categories?: string[]; // Which categories this filter applies to
+interface LegacyFilterSection extends FilterSection {
+    categories?: string[];
 }
 
 // Comprehensive filter definitions for different product categories
-const allFilterSections: FilterSection[] = [
+const allFilterSections: LegacyFilterSection[] = [
     // SHIRTS SPECIFIC FILTERS
     {
         id: 'sleeve-type',
@@ -336,8 +326,13 @@ const allFilterSections: FilterSection[] = [
 ];
 
 interface ProductFiltersProps {
-    onFilterChange: (filters: any) => void;
-    category?: string; // Current product category (e.g., 'shirts', 'jeans', 'accessories')
+    onFilterChange: (filters: Record<string, unknown>) => void;
+    category?: string;
+    sections?: FilterSection[];
+    selectedFilters?: Record<string, unknown>;
+    priceRange?: number[];
+    onPriceRangeChange?: (range: number[]) => void;
+    isLoading?: boolean;
 }
 
 // Export the filter sections so they can be used in other components
@@ -355,23 +350,40 @@ export function getFilterSectionsForCategory(category: string) {
     });
 }
 
-export default function ProductFilters({ onFilterChange, category = 'all' }: ProductFiltersProps) {
-    const [expandedSections, setExpandedSections] = useState<string[]>([]); // All sections start collapsed
-    const [selectedFilters, setSelectedFilters] = useState<any>({});
-    const [priceRange, setPriceRange] = useState<number[]>([180, 11000]);
+export default function ProductFilters({
+    onFilterChange,
+    category = 'all',
+    sections,
+    selectedFilters: controlledFilters,
+    priceRange: controlledPriceRange,
+    onPriceRangeChange,
+    isLoading = false,
+}: ProductFiltersProps) {
+    const [expandedSections, setExpandedSections] = useState<string[]>([]);
+    const [internalFilters, setInternalFilters] = useState<Record<string, unknown>>({});
+    const [internalPriceRange, setInternalPriceRange] = useState<number[]>([0, 10000]);
     const [showMoreSections, setShowMoreSections] = useState<{ [key: string]: boolean }>({});
 
-    // Filter sections based on current category
+    const isControlled = controlledFilters !== undefined;
+    const selectedFilters = isControlled ? controlledFilters : internalFilters;
+    const priceRange = controlledPriceRange ?? internalPriceRange;
+
     const filterSections = useMemo(() => {
-        return allFilterSections.filter(section => {
-            // If section has no categories specified, it applies to all
-            if (!section.categories || section.categories.length === 0) {
-                return true;
-            }
-            // Otherwise, check if current category matches
+        if (sections?.length) return sections;
+        return allFilterSections.filter((section) => {
+            if (!section.categories || section.categories.length === 0) return true;
             return section.categories.includes(category);
         });
-    }, [category]);
+    }, [sections, category]);
+
+    useEffect(() => {
+        const priceSection = filterSections.find((s) => s.id === 'price');
+        if (priceSection && !controlledPriceRange) {
+            const min = priceSection.min ?? 0;
+            const max = priceSection.max ?? 10000;
+            setInternalPriceRange([min, max]);
+        }
+    }, [filterSections, controlledPriceRange]);
 
     const toggleSection = (sectionId: string) => {
         setExpandedSections(prev =>
@@ -388,68 +400,49 @@ export default function ProductFilters({ onFilterChange, category = 'all' }: Pro
         }));
     };
 
-    const handleCheckboxChange = (sectionId: string, optionId: string) => {
-        setSelectedFilters((prev: any) => {
-            const sectionFilters = prev[sectionId] || [];
-            const newFilters = sectionFilters.includes(optionId)
-                ? sectionFilters.filter((id: string) => id !== optionId)
-                : [...sectionFilters, optionId];
+    const updateFilters = (updated: Record<string, unknown>) => {
+        if (!isControlled) setInternalFilters(updated);
+        onFilterChange(updated);
+    };
 
-            const updated = { ...prev, [sectionId]: newFilters };
-            onFilterChange(updated);
-            return updated;
-        });
+    const updatePriceRange = (newRange: number[]) => {
+        if (!controlledPriceRange) setInternalPriceRange(newRange);
+        onPriceRangeChange?.(newRange);
+        updateFilters({ ...selectedFilters, price: newRange });
+    };
+
+    const handleCheckboxChange = (sectionId: string, optionId: string) => {
+        const sectionFilters = (selectedFilters[sectionId] as string[]) || [];
+        const newFilters = sectionFilters.includes(optionId)
+            ? sectionFilters.filter((id: string) => id !== optionId)
+            : [...sectionFilters, optionId];
+        updateFilters({ ...selectedFilters, [sectionId]: newFilters });
     };
 
     const handleRadioChange = (sectionId: string, optionId: string) => {
-        setSelectedFilters((prev: any) => {
-            const updated = { ...prev, [sectionId]: optionId };
-            onFilterChange(updated);
-            return updated;
-        });
+        updateFilters({ ...selectedFilters, [sectionId]: optionId });
     };
 
     const handlePriceChange = (index: number, value: number) => {
         const newRange = [...priceRange];
         newRange[index] = value;
-
-        // Ensure min doesn't exceed max and vice versa
-        if (index === 0 && value > priceRange[1]) {
-            newRange[1] = value;
-        } else if (index === 1 && value < priceRange[0]) {
-            newRange[0] = value;
-        }
-
-        setPriceRange(newRange);
-        setSelectedFilters((prev: any) => {
-            const updated = { ...prev, price: newRange };
-            onFilterChange(updated);
-            return updated;
-        });
+        if (index === 0 && value > priceRange[1]) newRange[1] = value;
+        else if (index === 1 && value < priceRange[0]) newRange[0] = value;
+        updatePriceRange(newRange);
     };
 
     const clearAll = () => {
-        setSelectedFilters({});
-        setPriceRange([180, 11000]);
+        const priceSection = filterSections.find((s) => s.id === 'price');
+        const defaultRange = [priceSection?.min ?? 0, priceSection?.max ?? 10000];
+        if (!controlledPriceRange) setInternalPriceRange(defaultRange);
+        onPriceRangeChange?.(defaultRange);
+        if (!isControlled) setInternalFilters({});
         onFilterChange({});
     };
 
-    const getColorClass = (colorId: string) => {
-        const colors: any = {
-            black: 'bg-primary',
-            white: 'bg-white border-gray-300',
-            blue: 'bg-blue-600',
-            gray: 'bg-gray-500',
-            green: 'bg-green-600',
-            'navy-blue': 'bg-blue-900',
-            olive: 'bg-green-700',
-            red: 'bg-red-600',
-            yellow: 'bg-yellow-400',
-            pink: 'bg-pink-500',
-            brown: 'bg-amber-800',
-            beige: 'bg-amber-200',
-        };
-        return colors[colorId] || 'bg-gray-400';
+    const getColorStyle = (colorId: string, label: string) => {
+        const hex = COLOR_HEX[colorId] || COLOR_HEX[label.toLowerCase()];
+        return hex ? { backgroundColor: hex } : undefined;
     };
 
     return (
@@ -467,7 +460,17 @@ export default function ProductFilters({ onFilterChange, category = 'all' }: Pro
 
             {/* Filter Sections */}
             <div className="space-y-6">
-                {filterSections.map((section) => {
+                {isLoading && (
+                    <div className="space-y-4 animate-pulse">
+                        {[1, 2, 3, 4].map((i) => (
+                            <div key={i} className="h-8 bg-gray-100 rounded" />
+                        ))}
+                    </div>
+                )}
+                {!isLoading && filterSections.length === 0 && (
+                    <p className="text-xs text-gray-500">No filters available for this category yet.</p>
+                )}
+                {!isLoading && filterSections.map((section) => {
                     const INITIAL_SHOW_COUNT = 10;
                     const showMore = showMoreSections[section.id] || false;
                     const hasOptions = section.options && section.options.length > 0;
@@ -504,7 +507,7 @@ export default function ProductFilters({ onFilterChange, category = 'all' }: Pro
                                                     >
                                                         <input
                                                             type="checkbox"
-                                                            checked={selectedFilters[section.id]?.includes(option.id) || false}
+                                                            checked={(selectedFilters[section.id] as string[] | undefined)?.includes(option.id) || false}
                                                             onChange={() => handleCheckboxChange(section.id, option.id)}
                                                             className="w-4 h-4 rounded border-gray-300 text-heading focus:ring-primary"
                                                         />
@@ -632,11 +635,14 @@ export default function ProductFilters({ onFilterChange, category = 'all' }: Pro
                                                     >
                                                         <input
                                                             type="checkbox"
-                                                            checked={selectedFilters[section.id]?.includes(option.id) || false}
+                                                            checked={(selectedFilters[section.id] as string[] | undefined)?.includes(option.id) || false}
                                                             onChange={() => handleCheckboxChange(section.id, option.id)}
                                                             className="w-4 h-4 rounded border-gray-300 text-heading focus:ring-primary"
                                                         />
-                                                        <div className={`w-4 h-4 rounded-full border ${getColorClass(option.id)}`} />
+                                                        <div
+                                                            className="w-4 h-4 rounded-full border border-gray-200"
+                                                            style={getColorStyle(option.id, option.label)}
+                                                        />
                                                         <span className="text-xs text-gray-700 flex-1">{option.label}</span>
                                                         {option.count && (
                                                             <span className="text-xs text-gray-500">({option.count})</span>

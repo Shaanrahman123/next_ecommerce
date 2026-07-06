@@ -125,25 +125,3 @@ export async function uploadImageIfNeeded(
 
   return uploadSingleImage(fileInput as File | Buffer | string | ArrayBuffer, folder);
 }
-
-export function getCloudinaryUrl(
-  publicId?: string | null,
-  options: { width?: number; height?: number; crop?: string } = {}
-): string {
-  if (!publicId) return PLACEHOLDER_IMAGE;
-  if (publicId.startsWith('http://') || publicId.startsWith('https://')) return publicId;
-
-  if (!isCloudinaryConfigured()) return PLACEHOLDER_IMAGE;
-
-  const { width = 400, height = 400, crop = 'fill' } = options;
-  const id = publicId.replace(/^\//, '');
-
-  return cloudinary.url(id, {
-    secure: true,
-    width,
-    height,
-    crop,
-    fetch_format: 'auto',
-    quality: 'auto',
-  });
-}

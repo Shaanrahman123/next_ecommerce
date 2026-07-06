@@ -101,13 +101,43 @@ export const POST = withAdmin(async (request: NextRequest) => {
 
     const duplicate = await Category.findOne({ $or: [{ name }, { slug }] });
     if (duplicate) {
+      const existingIds = new Set(duplicate.superCategories.map((id) => String(id)));
+      const newDeptIds = superCategories.filter((id: string) => !existingIds.has(String(id)));
+
+      if (newDeptIds.length === 0) {
+        return NextResponse.json(
+          {
+            status: false,
+            message: CATEGORY_MESSAGES.NAME_EXISTS,
+            statusCode: 400,
+          },
+          { status: 400 }
+        );
+      }
+
+      duplicate.superCategories = [...duplicate.superCategories, ...newDeptIds];
+      if (description && !duplicate.description) duplicate.description = description;
+      if (image && !duplicate.image) {
+        try {
+          duplicate.image = (await uploadImageIfNeeded(image, 'categories')) || duplicate.image;
+        } catch (uploadError) {
+          return NextResponse.json(
+            { status: false, message: getCloudinaryErrorMessage(uploadError), statusCode: 400 },
+            { status: 400 }
+          );
+        }
+      }
+      await duplicate.save();
+      await duplicate.populate('superCategories');
+
       return NextResponse.json(
         {
-          status: false,
-          message: duplicate.name === name ? CATEGORY_MESSAGES.NAME_EXISTS : CATEGORY_MESSAGES.SLUG_EXISTS,
-          statusCode: 400,
+          status: true,
+          message: CATEGORY_MESSAGES.LINKED_TO_DEPARTMENTS,
+          statusCode: 200,
+          data: withImageUrl(duplicate.toObject()),
         },
-        { status: 400 }
+        { status: 200 }
       );
     }
 

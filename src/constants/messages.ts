@@ -71,6 +71,7 @@ export const CATEGORY_MESSAGES = {
   DUPLICATE_SLUG: 'Another Category with this slug already exists',
   SUPER_CATEGORY_REQUIRED: 'At least one Super Category is required in the superCategories array',
   SUPER_CATEGORY_NOT_FOUND: 'One or more referenced Super Categories do not exist or are inactive',
+  LINKED_TO_DEPARTMENTS: 'Category linked to additional departments successfully',
 };
 
 
@@ -94,6 +95,23 @@ export const SUBCATEGORY_MESSAGES = {
   DUPLICATE_SLUG: 'Another Sub Category with this slug already exists',
   CATEGORY_REQUIRED: 'Parent category is required',
   CATEGORY_NOT_FOUND: 'Referenced category does not exist',
+};
+
+export const USER_ADMIN_MESSAGES = {
+  FETCH_SUCCESS: 'Users fetched successfully',
+  NOT_FOUND: 'User not found',
+  UPDATE_SUCCESS: 'User updated successfully',
+};
+
+export const CMS_MESSAGES = {
+  HERO_FETCH_SUCCESS: 'Hero slides fetched successfully',
+  HERO_CREATE_SUCCESS: 'Hero slide created successfully',
+  HERO_UPDATE_SUCCESS: 'Hero slide updated successfully',
+  HERO_DELETE_SUCCESS: 'Hero slide deleted successfully',
+  HERO_NOT_FOUND: 'Hero slide not found',
+  HERO_TITLE_REQUIRED: 'Slide title is required',
+  HERO_IMAGE_REQUIRED: 'Slide image is required',
+  HERO_LINK_REQUIRED: 'Slide link is required',
 };
 
 export const PRODUCT_MESSAGES = {

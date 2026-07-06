@@ -13,6 +13,9 @@ export interface IProduct extends Document {
   subCategories: mongoose.Types.ObjectId[];
   inStock: boolean;
   stockQuantity: number;
+  soldQuantity: number;
+  returnDays: number;
+  isReturnable: boolean;
   isActive: boolean;
   featured: boolean;
   homeSections?: string[];
@@ -100,6 +103,20 @@ const ProductSchema: Schema = new Schema(
       type: Number,
       default: 0,
       min: [0, 'Stock quantity cannot be negative'],
+    },
+    soldQuantity: {
+      type: Number,
+      default: 0,
+      min: [0, 'Sold quantity cannot be negative'],
+    },
+    returnDays: {
+      type: Number,
+      default: 10,
+      min: [0, 'Return days cannot be negative'],
+    },
+    isReturnable: {
+      type: Boolean,
+      default: true,
     },
     isActive: {
       type: Boolean,

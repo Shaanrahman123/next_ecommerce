@@ -1,4 +1,4 @@
-import { getCloudinaryUrl } from '@/lib/cloudinary';
+import { getCloudinaryUrl } from '@/lib/cloudinaryUrl';
 
 export function withImageUrl<T extends { image?: string }>(
   doc: T,

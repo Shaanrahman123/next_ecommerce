@@ -13,6 +13,20 @@ export interface HomePageSection {
   description: string;
 }
 
+export const HOME_SECTION_DISPLAY_TITLES: Record<HomeSectionId, string> = {
+  'trending-accessories': 'Trending In Accessories',
+  'trending-indian-wear': 'Trending In Indian Wear',
+  'trending-sports-wear': 'Trending In Sports Wear',
+  'trending-footwear': 'Trending In Footwear',
+};
+
+export const HOME_SECTION_BG: Record<HomeSectionId, string> = {
+  'trending-accessories': 'bg-white',
+  'trending-indian-wear': 'bg-gray-50',
+  'trending-sports-wear': 'bg-white',
+  'trending-footwear': 'bg-gray-50',
+};
+
 export const HOME_PAGE_SECTIONS: HomePageSection[] = [
   {
     id: 'trending-accessories',

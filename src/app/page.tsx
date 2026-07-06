@@ -1,35 +1,63 @@
+import { Suspense } from 'react';
 import HeroBanner from '@/components/home/HeroBanner';
-import OffersSection from '@/components/home/OffersSection';
-import TrendingCategoriesSection from '@/components/home/TrendingCategoriesSection';
-import DripDropBanner from '@/components/home/DripDropBanner';
+import HeroBannerSkeleton from '@/components/home/HeroBannerSkeleton';
 import CategoryGrid from '@/components/home/CategoryGrid';
-import SaleSection from '@/components/home/SaleSection';
-import BeautySection from '@/components/home/BeautySection';
-import TrendingSection from '@/components/home/TrendingSection';
-import FeaturedProducts from '@/components/home/FeaturedProducts';
+import CategoryGridSkeleton from '@/components/home/CategoryGridSkeleton';
+import OffersSection from '@/components/home/OffersSection';
+import DripDropBanner from '@/components/home/DripDropBanner';
 import CustomerReviews from '@/components/home/CustomerReviews';
-import FeaturesSection from '@/components/home/FeaturesSection';
-import NewsletterSection from '@/components/home/NewsletterSection';
-import TrendingIndianWear from '@/components/home/TrendingIndianWear';
-import TrendingSportsWear from '@/components/home/TrendingSportsWear';
-import TrendingFootwear from '@/components/home/TrendingFootwear';
-import TrendingAccessories from '@/components/home/TrendingAccessories';
+import TrendingHomeSection from '@/components/home/TrendingHomeSection';
+import TrendingHomeSectionSkeleton from '@/components/home/TrendingHomeSectionSkeleton';
+import ScrollReveal from '@/components/ui/ScrollReveal';
 
 export default function Home() {
   return (
-    <div>
-      <HeroBanner />
-      <CategoryGrid />
-      <TrendingAccessories />
-      <OffersSection />
-      <TrendingIndianWear />
-      <DripDropBanner />
-      <TrendingSportsWear />
-      <TrendingFootwear />
-      {/* <BeautySection /> */}
-      <CustomerReviews />
-      <FeaturesSection />
-      {/* <NewsletterSection /> */}
+    <div className="bg-[#faf7f2] min-h-screen">
+      <ScrollReveal direction="none" duration={0.9}>
+        <Suspense fallback={<HeroBannerSkeleton />}>
+          <HeroBanner />
+        </Suspense>
+      </ScrollReveal>
+
+      <Suspense fallback={<CategoryGridSkeleton />}>
+        <CategoryGrid />
+      </Suspense>
+
+      <ScrollReveal delay={0.05}>
+        <Suspense fallback={<TrendingHomeSectionSkeleton />}>
+          <TrendingHomeSection sectionId="trending-accessories" />
+        </Suspense>
+      </ScrollReveal>
+
+      <ScrollReveal delay={0.05}>
+        <OffersSection />
+      </ScrollReveal>
+
+      <ScrollReveal delay={0.05}>
+        <Suspense fallback={<TrendingHomeSectionSkeleton />}>
+          <TrendingHomeSection sectionId="trending-indian-wear" />
+        </Suspense>
+      </ScrollReveal>
+
+      <ScrollReveal delay={0.05}>
+        <DripDropBanner />
+      </ScrollReveal>
+
+      <ScrollReveal delay={0.05}>
+        <Suspense fallback={<TrendingHomeSectionSkeleton />}>
+          <TrendingHomeSection sectionId="trending-sports-wear" />
+        </Suspense>
+      </ScrollReveal>
+
+      <ScrollReveal delay={0.05}>
+        <Suspense fallback={<TrendingHomeSectionSkeleton />}>
+          <TrendingHomeSection sectionId="trending-footwear" />
+        </Suspense>
+      </ScrollReveal>
+
+      <ScrollReveal delay={0.05}>
+        <CustomerReviews />
+      </ScrollReveal>
     </div>
   );
 }

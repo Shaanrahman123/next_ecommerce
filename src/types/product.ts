@@ -26,6 +26,9 @@ export interface Product {
   subCategories: SubCategoryItem[] | string[];
   inStock: boolean;
   stockQuantity: number;
+  soldQuantity?: number;
+  returnDays?: number;
+  isReturnable?: boolean;
   isActive: boolean;
   featured: boolean;
   homeSections?: string[];
@@ -53,6 +56,9 @@ export interface ProductFormPayload {
   subCategories: string[];
   inStock: boolean;
   stockQuantity: number;
+  returnDays?: number;
+  isReturnable?: boolean;
+  soldQuantity?: number;
   isActive?: boolean;
   featured?: boolean;
   homeSections?: string[];

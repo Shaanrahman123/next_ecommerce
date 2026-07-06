@@ -5,6 +5,17 @@ import {
   ProductListMeta,
   SpecOptionsMap,
 } from '@/types/product';
+import type { StockFilter } from '@/lib/inventoryUtils';
+
+export interface InventoryStats {
+  totalProducts: number;
+  totalUnits: number;
+  inStock: number;
+  lowStock: number;
+  outOfStock: number;
+  inactive: number;
+  lowStockThreshold: number;
+}
 
 async function adminFetch<T>(url: string, options: RequestInit = {}): Promise<ApiResponse<T>> {
   const config: RequestInit = {
@@ -45,8 +56,9 @@ export const productService = {
     category?: string;
     subCategory?: string;
     inStock?: boolean;
+    all?: boolean;
   } = {}) {
-    return adminFetch<Product[]>(`/api/product${buildQuery(params)}`) as Promise<
+    return adminFetch<Product[]>(`/api/product${buildQuery({ ...params, all: params.all ?? true })}`) as Promise<
       ApiResponse<Product[]> & { meta?: ProductListMeta }
     >;
   },
@@ -81,6 +93,25 @@ export const productService = {
     return adminFetch<{ key: string; value: string }>('/api/product/spec-options', {
       method: 'POST',
       body: JSON.stringify(payload),
+    });
+  },
+
+  getInventory(params: {
+    page?: number;
+    limit?: number;
+    search?: string;
+    stockFilter?: StockFilter;
+  } = {}) {
+    return adminFetch<Product[]>(`/api/admin/products/inventory${buildQuery(params)}`) as Promise<
+      ApiResponse<Product[]> & { meta?: ProductListMeta & { stockFilter?: StockFilter }; stats?: InventoryStats }
+    >;
+  },
+
+  updateStock(id: string, payload: { stockQuantity: number; inStock?: boolean }) {
+    const inStock = payload.inStock ?? payload.stockQuantity > 0;
+    return adminFetch<Product>(`/api/product/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify({ stockQuantity: payload.stockQuantity, inStock }),
     });
   },
 };

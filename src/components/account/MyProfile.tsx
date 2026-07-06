@@ -120,9 +120,8 @@ export default function MyProfile() {
                             type="email"
                             value={user?.email || ''}
                             disabled
-                            className="h-14 opacity-70 cursor-not-allowed"
+                            helperText="Email cannot be changed"
                         />
-                        <p className="mt-1.5 text-xs font-medium text-gray-500">Email cannot be changed</p>
                     </div>
                 </div>
 

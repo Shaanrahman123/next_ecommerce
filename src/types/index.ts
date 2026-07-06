@@ -1,6 +1,7 @@
 export * from './auth';
 export * from './api';
 export * from './user';
+export * from './cart';
 
 export const LOGIN_TYPES = {
   DIRECT: 'direct',
@@ -30,6 +31,10 @@ export interface Product {
     sizes: string[];
     colors: string[];
     inStock: boolean;
+    stockQuantity?: number;
+    soldQuantity?: number;
+    returnDays?: number;
+    isReturnable?: boolean;
     featured?: boolean;
     rating?: number;
     reviews?: number;

@@ -1,188 +1,235 @@
-import { Package, Search, ChevronRight, Check, MapPin, Truck, Box, Home, Phone, Mail } from 'lucide-react';
+'use client';
+
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import {
+  Package,
+  Search,
+  Check,
+  MapPin,
+  Truck,
+  Box,
+  Home,
+  Phone,
+  Loader2,
+  ArrowLeft,
+} from 'lucide-react';
 import Button from '@/components/ui/Button';
-import { useState } from 'react';
+import { orderService } from '@/services/order.service';
+import { getStatusLabel } from '@/lib/orderPolicy';
+import type { OrderSummary, OrderStatus } from '@/types/order';
 
 interface TrackOrderProps {
-    orderId: string | null;
+  orderId: string | null;
 }
 
-const trackingSteps = [
-    {
-        title: 'Order Placed',
-        description: 'Your premium selection has been reserved.',
-        date: 'Jan 28, 2024 - 10:30 AM',
-        icon: Box,
-        status: 'completed'
-    },
-    {
-        title: 'Processing',
-        description: 'Quality checks and premium packaging in progress.',
-        date: 'Jan 29, 2024 - 02:15 PM',
-        icon: Package,
-        status: 'completed'
-    },
-    {
-        title: 'Shipped',
-        description: 'On its way via premium express courier.',
-        date: 'Jan 31, 2024 - 09:00 AM',
-        icon: Truck,
-        status: 'completed'
-    },
-    {
-        title: 'Delivered',
-        description: 'Package received and signed by recipient.',
-        date: 'Feb 02, 2024 - 04:30 PM',
-        icon: Home,
-        status: 'current'
-    }
+const STATUS_STEPS: { key: OrderStatus; title: string; description: string; icon: typeof Box }[] = [
+  { key: 'pending', title: 'Order Placed', description: 'Your order has been received.', icon: Box },
+  { key: 'confirmed', title: 'Confirmed', description: 'Order confirmed and being prepared.', icon: Package },
+  { key: 'processing', title: 'Processing', description: 'Quality checks and packaging in progress.', icon: Package },
+  { key: 'shipped', title: 'Shipped', description: 'On its way to your address.', icon: Truck },
+  { key: 'delivered', title: 'Delivered', description: 'Package delivered successfully.', icon: Home },
 ];
 
+function stepIndex(status: OrderStatus): number {
+  if (status === 'cancelled') return -1;
+  const idx = STATUS_STEPS.findIndex((s) => s.key === status);
+  return idx >= 0 ? idx : 0;
+}
+
 export default function TrackOrder({ orderId: initialOrderId }: TrackOrderProps) {
-    const [orderId, setOrderId] = useState(initialOrderId || '');
-    const [searching, setSearching] = useState(!!initialOrderId);
+  const [orderId, setOrderId] = useState(initialOrderId || '');
+  const [order, setOrder] = useState<OrderSummary | null>(null);
+  const [isLoading, setIsLoading] = useState(!!initialOrderId);
+  const [error, setError] = useState<string | null>(null);
+  const [searching, setSearching] = useState(!!initialOrderId);
 
-    if (searching && orderId) {
-        return (
-            <div className="animate-fade-in">
-                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-10">
-                    <div className="flex items-center gap-5">
-                        <div className="w-16 h-16 bg-primary rounded-md flex items-center justify-center text-white shrink-0">
-                            <Truck className="w-8 h-8" />
-                        </div>
-                        <div>
-                            <h1 className="text-section-title font-black text-heading uppercase tracking-tight">Track Package</h1>
-                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">ID: {orderId}</p>
-                        </div>
-                    </div>
-                    <button
-                        onClick={() => setSearching(false)}
-                        className="flex items-center justify-center gap-2 h-11 px-6 border border-gray-300 rounded-md text-[10px] font-black text-heading hover:bg-primary hover:text-on-primary transition-all uppercase tracking-widest"
-                    >
-                        <Search className="w-3.5 h-3.5" />
-                        New Search
-                    </button>
-                </div>
+  const loadOrder = async (id: string) => {
+    if (!id.trim()) return;
+    setIsLoading(true);
+    setError(null);
+    try {
+      const res = await orderService.getOrder(id.trim());
+      setOrder(res.data || null);
+      setSearching(true);
+    } catch {
+      setOrder(null);
+      setError('Order not found. Check your order ID and try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    {/* Main Timeline */}
-                    <div className="lg:col-span-2 space-y-8">
-                        <div className="bg-white border border-gray-300 rounded-lg p-8 lg:p-12">
-                            <div className="relative space-y-12">
-                                {/* Vertical Line */}
-                                <div className="absolute left-[19px] top-2 bottom-2 w-0.5 bg-gray-100" />
+  useEffect(() => {
+    if (initialOrderId) loadOrder(initialOrderId);
+  }, [initialOrderId]);
 
-                                {trackingSteps.map((step, index) => {
-                                    const Icon = step.icon;
-                                    const isCompleted = step.status === 'completed';
-                                    const isCurrent = step.status === 'current';
-
-                                    return (
-                                        <div key={index} className="relative flex gap-8 group">
-                                            {/* Step Marker */}
-                                            <div className={`relative z-10 w-10 h-10 rounded-full border-2 flex items-center justify-center transition-all duration-500 shrink-0 ${isCompleted ? 'bg-primary border-primary text-white' :
-                                                isCurrent ? 'bg-white border-primary text-heading scale-110 shadow-lg' :
-                                                    'bg-white border-gray-200 text-gray-300'
-                                                }`}>
-                                                {isCompleted ? <Check className="w-5 h-5" /> : <Icon className="w-5 h-5" />}
-                                            </div>
-
-                                            {/* Content */}
-                                            <div className="flex-1 pt-1">
-                                                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-2 mb-2">
-                                                    <h3 className={`text-body font-black uppercase tracking-tight ${isCompleted || isCurrent ? 'text-gray-900' : 'text-gray-300'}`}>
-                                                        {step.title}
-                                                    </h3>
-                                                    <span className={`text-[9px] font-black uppercase tracking-[0.15em] ${isCurrent ? 'text-heading' : 'text-gray-400'}`}>
-                                                        {step.date}
-                                                    </span>
-                                                </div>
-                                                <p className={`text-[11px] font-bold leading-relaxed uppercase tracking-wider ${isCompleted || isCurrent ? 'text-gray-500' : 'text-gray-300'}`}>
-                                                    {step.description}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Sidebar Info */}
-                    <div className="space-y-6">
-                        <div className="bg-white border border-gray-300 rounded-lg p-6 lg:p-8 shadow-none">
-                            <h3 className="text-[10px] font-black text-heading uppercase tracking-widest mb-6 flex items-center gap-3">
-                                <div className="w-8 h-8 rounded-md bg-primary flex items-center justify-center text-white shrink-0">
-                                    <MapPin className="w-4 h-4" />
-                                </div>
-                                Delivery Address
-                            </h3>
-                            <div className="space-y-1">
-                                <p className="text-body font-black text-heading uppercase tracking-tight">John Doe</p>
-                                <p className="text-small font-bold text-gray-500 uppercase tracking-tight leading-relaxed">123 Main Street</p>
-                                <p className="text-small font-bold text-gray-500 uppercase tracking-tight leading-relaxed">Apartment 4B</p>
-                                <p className="text-small font-bold text-gray-500 uppercase tracking-tight leading-relaxed">New York, NY 10001</p>
-                                <div className="pt-4 mt-4 border-t border-gray-300 space-y-2">
-                                    <div className="flex items-center gap-3 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
-                                        <Phone className="w-3.5 h-3.5" />
-                                        +1 (555) 123-4567
-                                    </div>
-                                    <div className="flex items-center gap-3 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
-                                        <Mail className="w-3.5 h-3.5" />
-                                        john.doe@example.com
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="bg-white border border-gray-300 rounded-lg p-6">
-                            <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-6">Need Assistance?</p>
-                            <Button fullWidth variant="outline" className="h-12 border-gray-300 rounded-md text-[10px] font-black uppercase tracking-widest shadow-none flex items-center justify-center text-center leading-none">
-                                Contact Support
-                            </Button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        );
+  if (searching) {
+    if (isLoading) {
+      return (
+        <div className="flex justify-center py-20">
+          <Loader2 className="w-8 h-8 animate-spin text-gray-400" />
+        </div>
+      );
     }
 
-    return (
-        <div className="animate-fade-in lg:bg-white lg:border lg:border-gray-300 lg:rounded-lg lg:p-12">
-            <div className="max-w-2xl mx-auto text-center py-10 lg:py-0">
-                <div className="relative inline-block mb-10 group">
-                    <div className="w-24 h-24 bg-primary rounded-md flex items-center justify-center mx-auto text-white transition-transform duration-500 group-hover:rotate-6">
-                        <Package className="w-10 h-10" />
-                    </div>
-                </div>
-                <h1 className="text-section-title font-black text-heading mb-4 uppercase tracking-tight">Track Your Order</h1>
-                <p className="text-body text-gray-500 mb-12 max-w-md mx-auto leading-relaxed">
-                    Enter your order ID below to see exactly where your premium items are in real-time.
-                </p>
-
-                <div className="space-y-4 max-w-md mx-auto">
-                    <input
-                        type="text"
-                        placeholder="Order ID (e.g. 12345678)"
-                        value={orderId}
-                        onChange={(e) => setOrderId(e.target.value)}
-                        className="w-full h-16 bg-gray-50 border border-gray-100 rounded-md px-8 text-body font-black focus:ring-2 focus:ring-primary focus:bg-white transition-all outline-hidden"
-                    />
-                    <Button
-                        fullWidth
-                        className="rounded-md h-16 font-black uppercase tracking-widest bg-primary text-on-primary hover:bg-primary-hover transition-all flex items-center justify-center gap-3 shadow-none border-none"
-                        onClick={() => setSearching(true)}
-                    >
-                        Locate Package
-                        <ChevronRight className="w-5 h-5" />
-                    </Button>
-                </div>
-
-                <div className="mt-12 p-6 bg-gray-50 rounded-md inline-block max-w-xs mx-auto">
-                    <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest leading-relaxed">
-                        Order ID is in your confirmation email
-                    </p>
-                </div>
-            </div>
+    if (error || !order) {
+      return (
+        <div className="text-center py-16 px-4 space-y-4">
+          <p className="text-gray-500">{error || 'Order not found'}</p>
+          <Button variant="outline" onClick={() => { setSearching(false); setError(null); }}>
+            Try again
+          </Button>
         </div>
+      );
+    }
+
+    const currentIdx = stepIndex(order.status);
+    const addr = order.shippingAddress;
+    const isCancelled = order.status === 'cancelled';
+
+    return (
+      <div className="animate-fade-in pb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="w-12 h-12 bg-heading rounded-xl flex items-center justify-center text-white shrink-0">
+              <Truck className="w-6 h-6" />
+            </div>
+            <div className="min-w-0">
+              <h1 className="text-lg font-bold text-heading truncate">Track Order</h1>
+              <p className="text-sm text-gray-500">{order.orderNumber}</p>
+            </div>
+          </div>
+          <div className="flex gap-2">
+            <Link href={`/account?section=order-details&orderId=${order._id}`}>
+              <Button variant="outline" size="sm" className="text-xs font-bold uppercase tracking-wider">
+                Order Details
+              </Button>
+            </Link>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => { setSearching(false); setOrder(null); }}
+              className="text-xs font-bold uppercase tracking-wider"
+            >
+              New Search
+            </Button>
+          </div>
+        </div>
+
+        <div className="mb-4 px-4 py-3 rounded-xl bg-amber-50 border border-amber-200/70 text-sm">
+          <span className="font-bold text-heading">Status: </span>
+          <span className="text-amber-900">{getStatusLabel(order.status, order.returnStatus)}</span>
+        </div>
+
+        {isCancelled ? (
+          <div className="rounded-xl border border-red-200 bg-red-50 p-6 text-center text-sm text-red-700">
+            This order was cancelled
+            {order.cancelledAt ? ` on ${new Date(order.cancelledAt).toLocaleDateString('en-IN')}` : ''}.
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-2 rounded-2xl border border-gray-200 bg-white p-5 sm:p-8">
+              <div className="relative space-y-8">
+                <div className="absolute left-[19px] top-2 bottom-2 w-0.5 bg-gray-100" />
+                {STATUS_STEPS.map((step, index) => {
+                  const Icon = step.icon;
+                  const isCompleted = index < currentIdx;
+                  const isCurrent = index === currentIdx;
+                  const date =
+                    index === 0
+                      ? new Date(order.createdAt).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' })
+                      : isCurrent || isCompleted
+                        ? new Date(order.updatedAt).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' })
+                        : '—';
+
+                  return (
+                    <div key={step.key} className="relative flex gap-4 sm:gap-6">
+                      <div
+                        className={`relative z-10 w-10 h-10 rounded-full border-2 flex items-center justify-center shrink-0 ${
+                          isCompleted
+                            ? 'bg-heading border-heading text-white'
+                            : isCurrent
+                              ? 'bg-white border-heading text-heading shadow-md'
+                              : 'bg-white border-gray-200 text-gray-300'
+                        }`}
+                      >
+                        {isCompleted ? <Check className="w-5 h-5" /> : <Icon className="w-5 h-5" />}
+                      </div>
+                      <div className="flex-1 pt-0.5 min-w-0">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-1">
+                          <h3 className={`text-sm font-bold ${isCompleted || isCurrent ? 'text-heading' : 'text-gray-300'}`}>
+                            {step.title}
+                          </h3>
+                          <span className="text-[11px] font-medium text-gray-400">{date}</span>
+                        </div>
+                        <p className={`text-xs leading-relaxed ${isCompleted || isCurrent ? 'text-gray-500' : 'text-gray-300'}`}>
+                          {step.description}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="rounded-2xl border border-gray-200 bg-white p-5 sm:p-6">
+              <h3 className="text-xs font-bold text-heading uppercase tracking-wider mb-4 flex items-center gap-2">
+                <MapPin className="w-4 h-4" />
+                Delivery Address
+              </h3>
+              <div className="text-sm space-y-1">
+                <p className="font-bold text-heading">{addr.fullName}</p>
+                <p className="text-gray-600 leading-relaxed">{addr.addressLine1}</p>
+                {addr.addressLine2 && <p className="text-gray-600">{addr.addressLine2}</p>}
+                <p className="text-gray-600">
+                  {addr.city}, {addr.state} {addr.zipCode}
+                </p>
+                <div className="flex items-center gap-2 pt-3 mt-2 border-t border-gray-100 text-gray-500">
+                  <Phone className="w-4 h-4 shrink-0" />
+                  {addr.phone}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     );
+  }
+
+  return (
+    <div className="animate-fade-in max-w-lg mx-auto py-6 sm:py-10 px-2">
+      <Link href="/account?section=orders" className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-heading mb-6">
+        <ArrowLeft className="w-4 h-4" />
+        Back to orders
+      </Link>
+      <div className="text-center mb-8">
+        <div className="w-16 h-16 bg-heading rounded-xl flex items-center justify-center mx-auto text-white mb-4">
+          <Package className="w-8 h-8" />
+        </div>
+        <h1 className="text-xl font-bold text-heading mb-2">Track Your Order</h1>
+        <p className="text-sm text-gray-500">Enter your order ID to see live status updates.</p>
+      </div>
+
+      <div className="space-y-3">
+        <input
+          type="text"
+          placeholder="Order ID"
+          value={orderId}
+          onChange={(e) => setOrderId(e.target.value)}
+          className="w-full h-12 bg-gray-50 border border-gray-200 rounded-xl px-4 text-sm font-medium focus:ring-2 focus:ring-amber-400/40 outline-none"
+        />
+        <Button
+          fullWidth
+          variant="premium"
+          size="lg"
+          onClick={() => loadOrder(orderId)}
+          className="uppercase tracking-wider text-xs"
+        >
+          <Search className="w-4 h-4 mr-1.5" />
+          Track Order
+        </Button>
+      </div>
+    </div>
+  );
 }

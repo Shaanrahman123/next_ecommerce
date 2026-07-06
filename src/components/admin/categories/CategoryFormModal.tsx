@@ -183,6 +183,10 @@ export default function CategoryFormModal({
                   </button>
                 ))}
               </div>
+              <p className="text-xs text-gray-400 ml-1">
+                One category group can belong to multiple departments (e.g. Bottomwear for Men & Women).
+                If the name already exists, saving will link it to the newly selected departments.
+              </p>
             </div>
           )}
 

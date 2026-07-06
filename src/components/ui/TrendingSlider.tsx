@@ -4,140 +4,124 @@ import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import {
+  HomeSection,
+  HomeSectionInner,
+  IndianSectionHeader,
+  FestiveCard,
+} from '@/components/home/indian/IndianDecor';
+import { SectionTheme } from '@/components/home/indian/sectionThemes';
 
 interface SliderItem {
-    id: number;
-    title: string;
-    subtitle: string;
-    image: string;
-    link: string;
-    bgColor?: string;
-    badge?: string | null;
+  id: number;
+  title: string;
+  subtitle: string;
+  image: string;
+  link: string;
+  badge?: string | null;
 }
 
 interface TrendingSliderProps {
-    items: SliderItem[];
-    title: string;
-    bgColor?: string;
+  items: SliderItem[];
+  theme: SectionTheme;
 }
 
-export default function TrendingSlider({ items, title, bgColor = 'bg-gray-50' }: TrendingSliderProps) {
-    const scrollContainerRef = useRef<HTMLDivElement>(null);
-    const [showLeftButton, setShowLeftButton] = useState(false);
-    const [showRightButton, setShowRightButton] = useState(true);
+export default function TrendingSlider({ items, theme }: TrendingSliderProps) {
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [showLeftButton, setShowLeftButton] = useState(false);
+  const [showRightButton, setShowRightButton] = useState(true);
 
-    const checkScrollPosition = () => {
-        if (!scrollContainerRef.current) return;
+  const checkScrollPosition = () => {
+    if (!scrollContainerRef.current) return;
+    const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+    setShowLeftButton(scrollLeft > 10);
+    setShowRightButton(scrollLeft < scrollWidth - clientWidth - 10);
+  };
 
-        const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+  useEffect(() => {
+    checkScrollPosition();
+    window.addEventListener('resize', checkScrollPosition);
+    return () => window.removeEventListener('resize', checkScrollPosition);
+  }, [items.length]);
 
-        // Show left button if scrolled from the start
-        setShowLeftButton(scrollLeft > 10);
+  const scroll = (direction: 'left' | 'right') => {
+    if (!scrollContainerRef.current) return;
+    const container = scrollContainerRef.current;
+    const scrollAmount = direction === 'left' ? -container.clientWidth * 0.75 : container.clientWidth * 0.75;
+    container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+  };
 
-        // Show right button if not at the end
-        setShowRightButton(scrollLeft < scrollWidth - clientWidth - 10);
-    };
+  return (
+    <HomeSection tone={theme.tone} pattern={theme.pattern}>
+      <HomeSectionInner>
+        <IndianSectionHeader
+          badge={theme.badge}
+          title={theme.titleMain}
+          titleAccent={theme.titleAccent}
+          subtitle={theme.subtitle}
+        />
 
-    useEffect(() => {
-        checkScrollPosition();
-        window.addEventListener('resize', checkScrollPosition);
-        return () => window.removeEventListener('resize', checkScrollPosition);
-    }, []);
+        <div className="relative group">
+          {showLeftButton && (
+            <button
+              onClick={() => scroll('left')}
+              className="hidden lg:flex absolute -left-3 top-1/2 -translate-y-1/2 z-10 w-10 h-10 items-center justify-center bg-white/90 rounded-full shadow-md border border-amber-200/60 hover:border-amber-400 transition-all"
+              aria-label="Previous items"
+            >
+              <ChevronLeft className="w-5 h-5 text-amber-900" />
+            </button>
+          )}
+          {showRightButton && (
+            <button
+              onClick={() => scroll('right')}
+              className="hidden lg:flex absolute -right-3 top-1/2 -translate-y-1/2 z-10 w-10 h-10 items-center justify-center bg-white/90 rounded-full shadow-md border border-amber-200/60 hover:border-amber-400 transition-all"
+              aria-label="Next items"
+            >
+              <ChevronRight className="w-5 h-5 text-amber-900" />
+            </button>
+          )}
 
-    const scroll = (direction: 'left' | 'right') => {
-        if (!scrollContainerRef.current) return;
-
-        const container = scrollContainerRef.current;
-        const scrollAmount = direction === 'left' ? -container.clientWidth * 0.8 : container.clientWidth * 0.8;
-
-        container.scrollBy({
-            left: scrollAmount,
-            behavior: 'smooth'
-        });
-    };
-
-    return (
-        <section className={`py-6 lg:py-16 ${bgColor}`}>
-            <div className="container mx-auto px-4 lg:px-4 xl:px-4">
-                {/* Section Header */}
-                <div className="mb-4 lg:mb-12">
-                    <h2 className="text-section-title font-black text-heading uppercase tracking-tight">
-                        {title}
-                    </h2>
-                </div>
-
-                {/* Slider Container */}
-                <div className="relative group">
-                    {/* Left Navigation Button */}
-                    {showLeftButton && (
-                        <button
-                            onClick={() => scroll('left')}
-                            className="hidden lg:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 items-center justify-center bg-white/95 backdrop-blur-sm rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 border border-gray-200 group/btn -translate-x-6 opacity-0 group-hover:opacity-100 group-hover:translate-x-0"
-                            aria-label="Previous items"
-                        >
-                            <ChevronLeft className="w-6 h-6 text-gray-800 group-hover/btn:text-heading transition-colors" />
-                        </button>
+          <div
+            ref={scrollContainerRef}
+            onScroll={checkScrollPosition}
+            className="flex overflow-x-auto gap-4 scrollbar-hide snap-x snap-mandatory scroll-smooth pb-1"
+          >
+            {items.map((item) => (
+              <Link
+                key={item.id}
+                href={item.link}
+                className="shrink-0 w-[42vw] sm:w-[30vw] md:w-[22vw] lg:w-[17vw] xl:w-[15vw] snap-start group/card"
+              >
+                <FestiveCard accent={theme.cardAccent} className="overflow-hidden">
+                  <div className="relative aspect-[3/4] overflow-hidden bg-stone-100">
+                    <Image
+                      src={item.image}
+                      alt={item.title}
+                      fill
+                      className="object-cover group-hover/card:scale-105 transition-transform duration-500"
+                      sizes="(max-width:768px) 42vw, 17vw"
+                    />
+                    <div className="absolute inset-0 bg-linear-to-t from-amber-950/25 via-transparent to-transparent" />
+                    {item.badge && (
+                      <div className="absolute top-2 left-2 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-linear-to-r from-amber-600 to-orange-600 text-white shadow-sm">
+                        {item.badge}
+                      </div>
                     )}
-
-                    {/* Right Navigation Button */}
-                    {showRightButton && (
-                        <button
-                            onClick={() => scroll('right')}
-                            className="hidden lg:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 items-center justify-center bg-white/95 backdrop-blur-sm rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 border border-gray-200 group/btn translate-x-6 opacity-0 group-hover:opacity-100 group-hover:translate-x-0"
-                            aria-label="Next items"
-                        >
-                            <ChevronRight className="w-6 h-6 text-gray-800 group-hover/btn:text-heading transition-colors" />
-                        </button>
+                  </div>
+                  <div className="p-3 border-t border-amber-100/50">
+                    <h3 className="text-xs lg:text-sm font-semibold text-heading leading-tight line-clamp-2">
+                      {item.title}
+                    </h3>
+                    {item.subtitle && (
+                      <p className="text-[10px] lg:text-xs text-gray-500 mt-1 line-clamp-1">{item.subtitle}</p>
                     )}
-
-                    {/* Scrollable Container */}
-                    <div
-                        ref={scrollContainerRef}
-                        onScroll={checkScrollPosition}
-                        className="flex overflow-x-auto gap-3 lg:gap-6 scrollbar-hide snap-x snap-mandatory scroll-smooth ps-2 lg:ps-0"
-                    >
-                        {items.map((item) => (
-                            <Link
-                                key={item.id}
-                                href={item.link}
-                                className="shrink-0 w-[calc(35%-6px)] sm:w-[calc(33.333%-8px)] md:w-[calc(25%-12px)] lg:w-[calc(20%-19.2px)] snap-start group/card relative overflow-hidden rounded-lg shadow-md hover:shadow-2xl transition-all duration-300"
-                            >
-                                {/* Badge */}
-                                {item.badge && (
-                                    <div className="absolute top-1 left-1 lg:top-3 lg:left-3 bg-red-500 text-white text-[8px] lg:text-xs font-bold px-1.5 py-0.5 rounded z-10">
-                                        {item.badge}
-                                    </div>
-                                )}
-
-                                {/* Image Container - Square on mobile, taller on desktop */}
-                                <div className={`relative aspect-square lg:aspect-3/4 overflow-hidden ${item.bgColor || 'bg-gray-100'}`}>
-                                    <Image
-                                        src={item.image}
-                                        alt={item.title}
-                                        fill
-                                        className="object-cover group-hover/card:scale-110 transition-transform duration-500"
-                                    />
-                                    {/* Gradient Overlay — black only */}
-                                    <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/50 to-transparent" />
-                                </div>
-
-                                {/* Content */}
-                                <div className="absolute bottom-0 left-0 right-0 p-1.5 lg:p-4 text-white">
-                                    <h3 className="text-[10px] lg:text-sm xl:text-base font-bold mb-0.5 lg:mb-1 leading-tight line-clamp-2">
-                                        {item.title}
-                                    </h3>
-                                    {/* <p className="text-[9px] lg:text-xs text-gray-200 leading-tight mb-0.5 lg:mb-2 line-clamp-2">
-                                        {item.subtitle}
-                                    </p> */}
-                                    <button className="text-[9px] lg:text-xs font-bold uppercase tracking-wider hover:underline">
-                                        + Explore
-                                    </button>
-                                </div>
-                            </Link>
-                        ))}
-                    </div>
-                </div>
-            </div>
-        </section>
-    );
+                  </div>
+                </FestiveCard>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </HomeSectionInner>
+    </HomeSection>
+  );
 }

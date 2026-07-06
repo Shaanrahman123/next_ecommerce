@@ -1,132 +1,169 @@
 'use client';
 
-import {
-    Package,
-    ChevronRight,
-    Calendar,
-    Clock,
-    CheckCircle,
-    XCircle,
-    ShoppingBag
-} from 'lucide-react';
-import { mockOrders } from '@/data/orders';
-import Button from '@/components/ui/Button';
+import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { Package, ChevronRight, Calendar, Loader2 } from 'lucide-react';
+import Button from '@/components/ui/Button';
+import OrderActionButtons from '@/components/account/OrderActionButtons';
+import { orderService } from '@/services/order.service';
+import { formatINR } from '@/lib/shippingUtils';
+import { getStatusLabel } from '@/lib/orderPolicy';
+import type { OrderListItem, OrderSummary, OrderStatus, ReturnStatus } from '@/types/order';
+
+function statusInfo(status: OrderStatus, returnStatus?: ReturnStatus) {
+  const label = getStatusLabel(status, returnStatus);
+  if (returnStatus === 'requested') return { label, color: 'text-amber-700 bg-amber-50 border-amber-200' };
+  if (status === 'delivered') return { label, color: 'text-emerald-700 bg-emerald-50 border-emerald-200' };
+  if (status === 'shipped') return { label, color: 'text-indigo-700 bg-indigo-50 border-indigo-200' };
+  if (status === 'cancelled') return { label, color: 'text-red-600 bg-red-50 border-red-200' };
+  if (status === 'processing' || status === 'confirmed') return { label, color: 'text-sky-700 bg-sky-50 border-sky-200' };
+  return { label, color: 'text-amber-800 bg-amber-50 border-amber-200' };
+}
 
 export default function MyOrders() {
-    const getStatusInfo = (status: string) => {
-        switch (status) {
-            case 'delivered':
-                return {
-                    icon: <CheckCircle className="w-3.5 h-3.5" />,
-                    color: 'text-green-600 bg-green-50 border-gray-300',
-                    label: 'Delivered'
-                };
-            case 'shipped':
-                return {
-                    icon: <Package className="w-3.5 h-3.5" />,
-                    color: 'text-blue-600 bg-blue-50 border-gray-300',
-                    label: 'Shipped'
-                };
-            case 'processing':
-                return {
-                    icon: <Clock className="w-3.5 h-3.5" />,
-                    color: 'text-yellow-600 bg-yellow-50 border-gray-300',
-                    label: 'Processing'
-                };
-            default:
-                return {
-                    icon: <Clock className="w-3.5 h-3.5" />,
-                    color: 'text-gray-600 bg-gray-50 border-gray-300',
-                    label: status.toUpperCase()
-                };
-        }
-    };
+  const [orders, setOrders] = useState<OrderListItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [expandedActions, setExpandedActions] = useState<string | null>(null);
+  const [actionOrder, setActionOrder] = useState<OrderSummary | null>(null);
 
-    if (mockOrders.length === 0) {
-        return (
-            <div className="bg-white rounded-md p-16 text-center border border-gray-300">
-                <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <Package className="w-10 h-10 text-gray-200" />
-                </div>
-                <h2 className="text-section-title font-black text-heading mb-4 uppercase tracking-tight">No orders yet</h2>
-                <p className="text-body text-gray-500 mb-10 max-w-sm mx-auto">
-                    You haven't placed any orders. Start exploring our premium collection today.
-                </p>
-                <Link href="/products">
-                    <Button size="lg" className="rounded-md px-12 h-14 font-black uppercase tracking-widest bg-primary text-on-primary">
-                        Start Shopping
-                    </Button>
-                </Link>
-            </div>
-        );
+  const fetchOrders = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const res = await orderService.listOrders();
+      setOrders(res.data || []);
+    } catch {
+      setOrders([]);
+    } finally {
+      setIsLoading(false);
     }
+  }, []);
 
+  useEffect(() => {
+    fetchOrders();
+  }, [fetchOrders]);
+
+  const openQuickActions = async (orderId: string, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (expandedActions === orderId) {
+      setExpandedActions(null);
+      setActionOrder(null);
+      return;
+    }
+    try {
+      const res = await orderService.getOrder(orderId);
+      setActionOrder(res.data || null);
+      setExpandedActions(orderId);
+    } catch {
+      setExpandedActions(null);
+    }
+  };
+
+  if (isLoading) {
     return (
-        <div className="animate-fade-in">
-            <h1 className="hidden lg:block text-section-title font-black text-heading mb-8 uppercase tracking-tight">Purchase History</h1>
-
-            <div className="divide-y divide-gray-300 lg:space-y-4 lg:divide-y-0">
-                {mockOrders.map((order) => {
-                    const status = getStatusInfo(order.status);
-                    const firstProduct = order.products[0];
-
-                    return (
-                        <div key={order.id} className="group transition-all duration-300 lg:bg-white lg:border lg:border-gray-300 lg:rounded-lg lg:overflow-hidden">
-                            <div className="py-5 lg:p-6 flex gap-4 lg:gap-6 items-center">
-                                {/* Image */}
-                                <div className="relative w-20 h-20 lg:w-24 lg:h-28 rounded-md lg:rounded-md overflow-hidden bg-gray-50 shrink-0 border border-gray-300">
-                                    <Image src={firstProduct.image} alt="" fill className="object-cover group-hover:scale-110 transition-transform duration-500" />
-                                </div>
-
-                                {/* Info */}
-                                <div className="flex-1 min-w-0">
-                                    <div className="flex items-center justify-between gap-2 mb-1">
-                                        <span className={`px-2 py-0.5 rounded-full text-[9px] lg:text-[10px] font-black border flex items-center gap-1 uppercase tracking-widest ${status.color}`}>
-                                            {status.icon}
-                                            {status.label}
-                                        </span>
-                                        <span className="text-[9px] lg:text-[10px] font-black text-gray-400 uppercase tracking-widest">
-                                            #{order.id.split('-')[1]}
-                                        </span>
-                                    </div>
-                                    <h3 className="text-small lg:text-body font-black text-heading mb-1 uppercase tracking-tight truncate">
-                                        {firstProduct.name} {order.products.length > 1 && `+ ${order.products.length - 1} more`}
-                                    </h3>
-                                    <div className="flex items-center gap-3 text-[10px] font-bold text-gray-500">
-                                        <div className="flex items-center gap-1">
-                                            <Calendar className="w-3 h-3" />
-                                            {new Date(order.date).toLocaleDateString()}
-                                        </div>
-                                        <div className="w-1 h-1 bg-gray-300 rounded-full" />
-                                        <div className="text-heading">₹{order.total.toLocaleString()}</div>
-                                    </div>
-                                </div>
-
-                                {/* Action */}
-                                <div className="hidden lg:block">
-                                    <Link href={`/account?section=order-details&orderId=${order.id}`}>
-                                        <Button variant="outline" className="rounded-md px-6 h-12 font-black text-[10px] uppercase tracking-widest flex items-center gap-2 group-hover:bg-primary group-hover:text-white border-gray-300 group-hover:border-primary transition-all">
-                                            View Order
-                                            <ChevronRight className="w-4 h-4" />
-                                        </Button>
-                                    </Link>
-                                </div>
-                                <div className="lg:hidden">
-                                    <Link href={`/account?section=order-details&orderId=${order.id}`}>
-                                        <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 group-active:bg-primary group-active:text-white transition-colors">
-                                            <ChevronRight className="w-5 h-5" />
-                                        </div>
-                                    </Link>
-                                </div>
-                            </div>
-                            {/* Tap overlay for mobile */}
-                            <Link href={`/account?section=order-details&orderId=${order.id}`} className="lg:hidden absolute inset-0 z-0" />
-                        </div>
-                    );
-                })}
-            </div>
-        </div>
+      <div className="flex justify-center py-20">
+        <Loader2 className="w-8 h-8 animate-spin text-gray-400" />
+      </div>
     );
+  }
+
+  if (orders.length === 0) {
+    return (
+      <div className="rounded-2xl p-12 text-center border border-gray-200 bg-white">
+        <Package className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+        <h2 className="text-lg font-bold text-heading mb-2">No orders yet</h2>
+        <p className="text-sm text-gray-500 mb-6 max-w-sm mx-auto">
+          You haven&apos;t placed any orders. Start exploring our collection.
+        </p>
+        <Link href="/products">
+          <Button variant="premium" size="lg" className="uppercase tracking-wider text-xs">
+            Start Shopping
+          </Button>
+        </Link>
+      </div>
+    );
+  }
+
+  return (
+    <div className="animate-fade-in pb-6">
+      <h1 className="hidden lg:block text-xl font-bold text-heading mb-6">My Orders</h1>
+
+      <div className="space-y-3 lg:space-y-4">
+        {orders.map((order) => {
+          const status = statusInfo(order.status, order.returnStatus);
+          const preview = order.previewItem;
+          const hasActions = order.actions?.canCancel || order.actions?.canReturn;
+
+          return (
+            <div
+              key={order._id}
+              className="rounded-xl border border-gray-200 bg-white overflow-hidden hover:shadow-sm transition-shadow"
+            >
+              <Link
+                href={`/account?section=order-details&orderId=${order._id}`}
+                className="flex gap-3 sm:gap-4 p-4 sm:p-5 items-center group"
+              >
+                <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden bg-gray-50 shrink-0 border border-gray-200">
+                  {preview?.image ? (
+                    <Image src={preview.image} alt="" fill className="object-cover group-hover:scale-105 transition-transform" unoptimized />
+                  ) : (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <Package className="w-7 h-7 text-gray-300" />
+                    </div>
+                  )}
+                </div>
+
+                <div className="flex-1 min-w-0">
+                  <div className="flex flex-wrap items-center gap-2 mb-1">
+                    <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border uppercase tracking-wide ${status.color}`}>
+                      {status.label}
+                    </span>
+                    <span className="text-[10px] font-semibold text-gray-400">{order.orderNumber}</span>
+                  </div>
+                  <h3 className="text-sm sm:text-base font-bold text-heading truncate">
+                    {preview?.name || 'Order'}
+                    {order.itemCount > 1 && ` + ${order.itemCount - 1} more`}
+                  </h3>
+                  <div className="flex items-center gap-3 mt-1 text-xs text-gray-500">
+                    <span className="flex items-center gap-1">
+                      <Calendar className="w-3 h-3" />
+                      {new Date(order.createdAt).toLocaleDateString('en-IN')}
+                    </span>
+                    <span className="font-bold text-heading">{formatINR(order.total)}</span>
+                  </div>
+                </div>
+
+                <ChevronRight className="w-5 h-5 text-gray-300 group-hover:text-heading shrink-0" />
+              </Link>
+
+              {hasActions && (
+                <div className="px-4 sm:px-5 pb-4 border-t border-gray-100 pt-3">
+                  {expandedActions === order._id && actionOrder ? (
+                    <OrderActionButtons
+                      order={actionOrder}
+                      onUpdated={(updated) => {
+                        setActionOrder(updated);
+                        fetchOrders();
+                      }}
+                      layout="row"
+                      size="sm"
+                    />
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={(e) => openQuickActions(order._id, e)}
+                      className="text-xs font-bold text-amber-900 hover:underline uppercase tracking-wider"
+                    >
+                      Cancel / Return options
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
 }

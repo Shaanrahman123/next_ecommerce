@@ -19,7 +19,7 @@ export const GET = withDb(async (
   try {
     const { id } = await params;
 
-    const product = await Product.findById(id)
+    const product = await Product.findOne({ _id: id, isActive: true })
       .populate('superCategories')
       .populate('categories')
       .populate('subCategories');
@@ -71,6 +71,8 @@ export const PUT = withAdmin(async (
       subCategories,
       inStock,
       stockQuantity,
+      returnDays,
+      isReturnable,
       isActive,
       featured,
       homeSections,
@@ -165,6 +167,8 @@ export const PUT = withAdmin(async (
         updateData.inStock = stockQuantity > 0;
       }
     }
+    if (returnDays !== undefined) updateData.returnDays = Math.max(0, Number(returnDays) || 0);
+    if (isReturnable !== undefined) updateData.isReturnable = Boolean(isReturnable);
     if (inStock !== undefined) updateData.inStock = inStock;
     if (isActive !== undefined) updateData.isActive = isActive;
     if (featured !== undefined) updateData.featured = featured;

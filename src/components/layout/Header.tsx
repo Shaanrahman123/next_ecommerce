@@ -104,42 +104,49 @@ export default function Header() {
 
     const isHiddenOnMobile = hideOnMobilePaths.some(path => pathname.startsWith(path));
 
+    const activeCategory = navigation.find((c) => c.id === activeMegaMenu);
+
     return (
-        <header className={`sticky top-8 z-100 bg-primary text-white border-b border-white/10 shadow-md ${isHiddenOnMobile ? 'hidden lg:block' : ''}`}>
-            <div className="container mx-auto px-4 lg:px-4 xl:px-4">
-                <div className="flex items-center justify-between h-24">
+        <header
+            className={`relative sticky top-8 z-[100] bg-[#faf7f2] backdrop-blur-lg text-heading shadow-sm ${
+                activeMegaMenu ? 'border-b-0' : 'border-b border-amber-200/60'
+            } ${isHiddenOnMobile ? 'hidden lg:block' : ''}`}
+            onMouseLeave={() => setActiveMegaMenu(null)}
+        >
+            <div className="container mx-auto px-4 lg:px-6 xl:px-8">
+                <div className="flex items-center justify-between h-20 gap-4">
                     <BrandLogo />
 
-                    {/* Desktop Navigation - Hidden on Desktop Header to make room for Search, as per modern design */}
-                    <nav className="hidden xl:flex items-center space-x-8">
+                    {/* Desktop Navigation */}
+                    <nav className="hidden lg:flex items-center gap-6 xl:gap-8 shrink-0">
                         {navigation.map((category) => (
                             <div
                                 key={category.id}
                                 className="relative"
                                 onMouseEnter={() => setActiveMegaMenu(category.id)}
-                                onMouseLeave={() => setActiveMegaMenu(null)}
                             >
                                 <Link
                                     href={category.basePath}
                                     onClick={() => setActiveMegaMenu(null)}
-                                    className="text-base font-semibold text-white/90 hover:text-white transition-colors duration-300 py-6 inline-block capitalize"
+                                    className={`flex items-center gap-1 text-sm font-semibold transition-colors duration-300 py-6 capitalize whitespace-nowrap ${
+                                        activeMegaMenu === category.id
+                                            ? 'text-amber-900'
+                                            : 'text-heading/75 hover:text-amber-900'
+                                    }`}
                                 >
                                     {category.label}
+                                    <ChevronDown
+                                        className={`w-3.5 h-3.5 transition-transform duration-200 ${
+                                            activeMegaMenu === category.id ? 'rotate-180 text-amber-700' : 'text-amber-600/60'
+                                        }`}
+                                    />
                                 </Link>
-                                <MegaMenu
-                                    sections={category.sections}
-                                    featuredImage={category.featuredImage}
-                                    label={category.label}
-                                    basePath={category.basePath}
-                                    isOpen={activeMegaMenu === category.id}
-                                    onNavItemClick={() => setActiveMegaMenu(null)}
-                                />
                             </div>
                         ))}
                     </nav>
 
-                    {/* Search Bar - Center on Desktop */}
-                    <SearchBar variant="desktop" dark />
+                    {/* Search Bar */}
+                    <SearchBar variant="desktop" theme="premium" />
 
                     {/* Right Icons */}
                     <div className="flex items-center space-x-2 lg:space-x-8">
@@ -148,7 +155,7 @@ export default function Header() {
                             <div className="hidden lg:block relative" ref={dropdownRef}>
                                 <button
                                     onClick={() => setUserMenuOpen(!userMenuOpen)}
-                                    className="flex flex-col items-center gap-1 text-white/90 hover:text-white transition-all duration-300 group"
+                                    className="flex flex-col items-center gap-1 text-heading/75 hover:text-amber-900 transition-all duration-300 group"
                                     aria-label="User Account"
                                 >
                                     <User className="w-5 h-5" />
@@ -353,7 +360,7 @@ export default function Header() {
                         ) : (
                             <Link
                                 href="/login"
-                                className="hidden lg:flex flex-col items-center gap-1 text-white/90 hover:text-white transition-all duration-300"
+                                className="hidden lg:flex flex-col items-center gap-1 text-heading/75 hover:text-amber-900 transition-all duration-300"
                                 aria-label="Login"
                             >
                                 <User className="w-5 h-5" />
@@ -364,13 +371,13 @@ export default function Header() {
                         {/* Wishlist - Desktop with Label */}
                         <Link
                             href="/wishlist"
-                            className="hidden lg:flex flex-col items-center gap-1 relative text-white/90 hover:text-white"
+                            className="hidden lg:flex flex-col items-center gap-1 relative text-heading/75 hover:text-amber-900 transition-colors"
                             aria-label="Wishlist"
                         >
                             <div className="relative">
                                 <Heart className="w-5 h-5" />
                                 {wishlistItems.length > 0 && (
-                                    <span className="absolute -top-2 -right-2 bg-white text-primary text-[12px] rounded-full w-4 h-4 flex items-center justify-center font-bold">
+                                    <span className="absolute -top-2 -right-2 bg-amber-600 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center font-bold">
                                         {wishlistItems.length}
                                     </span>
                                 )}
@@ -381,13 +388,13 @@ export default function Header() {
                         {/* Cart - Desktop with Label */}
                         <Link
                             href="/cart"
-                            className="hidden lg:flex flex-col items-center gap-1 relative text-white/90 hover:text-white"
+                            className="hidden lg:flex flex-col items-center gap-1 relative text-heading/75 hover:text-amber-900 transition-colors"
                             aria-label="Shopping Cart"
                         >
                             <div className="relative">
                                 <ShoppingCart className="w-5 h-5" />
                                 {cartItemCount > 0 && (
-                                    <span className="absolute -top-2 -right-2 bg-white text-primary text-[12px] rounded-full w-4 h-4 flex items-center justify-center font-bold">
+                                    <span className="absolute -top-2 -right-2 bg-amber-600 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center font-bold">
                                         {cartItemCount}
                                     </span>
                                 )}
@@ -399,14 +406,14 @@ export default function Header() {
                         <div className="flex items-center lg:hidden">
                             <button
                                 onClick={() => setIsSearchOverlayOpen(true)}
-                                className="text-white/90 hover:text-white p-2"
+                                className="text-heading/75 hover:text-amber-900 p-2"
                                 aria-label="Search"
                             >
                                 <Search className="w-5 h-5" />
                             </button>
                             <button
                                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                                className="text-white/90 hover:text-white p-2"
+                                className="text-heading/75 hover:text-amber-900 p-2"
                                 aria-label="Toggle Menu"
                             >
                                 {mobileMenuOpen ? (
@@ -420,14 +427,28 @@ export default function Header() {
                         </div>
                     </div>
                 </div>
-
-                {/* Mobile Search Overlay */}
-                <SearchBar
-                    variant="overlay"
-                    isOpen={isSearchOverlayOpen}
-                    onClose={() => setIsSearchOverlayOpen(false)}
-                />
             </div>
+
+            {/* Mega menu — rendered once at header level for correct positioning & hover */}
+            {activeCategory && (
+                <MegaMenu
+                    key={activeCategory.id}
+                    menuId={activeCategory.id}
+                    sections={activeCategory.sections}
+                    featuredImage={activeCategory.featuredImage}
+                    label={activeCategory.label}
+                    basePath={activeCategory.basePath}
+                    isOpen
+                    onNavItemClick={() => setActiveMegaMenu(null)}
+                />
+            )}
+
+            {/* Mobile Search Overlay */}
+            <SearchBar
+                variant="overlay"
+                isOpen={isSearchOverlayOpen}
+                onClose={() => setIsSearchOverlayOpen(false)}
+            />
 
             {/* Mobile Sidebar */}
             <MobileSidebar

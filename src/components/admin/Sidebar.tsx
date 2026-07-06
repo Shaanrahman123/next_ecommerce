@@ -1,10 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     LayoutDashboard,
     Package,
+    Star,
     ShoppingBag,
     Users,
     BarChart3,
@@ -16,6 +17,7 @@ import {
     ChevronRight,
     ChevronDown,
     Layers,
+    LayoutTemplate,
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -30,6 +32,7 @@ const sidebarItems = [
         subItems: [
             { label: 'All Products', href: '/admin/dashboard/products' },
             { label: 'Add Product', href: '/admin/dashboard/products/add' },
+            { label: 'Filter Fields', href: '/admin/dashboard/products/filter-fields' },
             { label: 'Inventory', href: '/admin/dashboard/products/inventory' },
         ]
     },
@@ -45,9 +48,25 @@ const sidebarItems = [
         ]
     },
     { icon: ShoppingBag, label: 'Orders', href: '/admin/dashboard/orders' },
+    { icon: Star, label: 'Reviews', href: '/admin/dashboard/reviews' },
     { icon: Users, label: 'Customers', href: '/admin/dashboard/customers' },
+    {
+        icon: LayoutTemplate,
+        label: 'CMS',
+        href: '/admin/dashboard/cms',
+        subItems: [
+            { label: 'Hero Carousel', href: '/admin/dashboard/cms/hero-carousel' },
+        ],
+    },
     { icon: BarChart3, label: 'Analytics', href: '/admin/dashboard/analytics' },
-    { icon: Settings, label: 'Settings', href: '/admin/dashboard/settings' },
+    {
+        icon: Settings,
+        label: 'Settings',
+        href: '/admin/dashboard/settings',
+        subItems: [
+            { label: 'Shipping & Fees', href: '/admin/dashboard/settings/shipping' },
+        ],
+    },
 ];
 
 export default function Sidebar() {
@@ -67,6 +86,15 @@ export default function Sidebar() {
                 : [...prev, label]
         );
     };
+
+    useEffect(() => {
+        sidebarItems.forEach((item) => {
+            const subItems = 'subItems' in item ? item.subItems : undefined;
+            if (subItems?.some((sub) => pathname === sub.href || pathname.startsWith(`${sub.href}/`))) {
+                setOpenMenus((prev) => (prev.includes(item.label) ? prev : [...prev, item.label]));
+            }
+        });
+    }, [pathname]);
 
     return (
         <>
@@ -113,7 +141,7 @@ export default function Sidebar() {
                                 animate={{ opacity: 1 }}
                                 className="font-bold text-xl tracking-tighter"
                             >
-                                PREMIUM<span className="text-gray-400">ADMIN</span>
+                                <span className="text-gray-400">BLAK BLAZE</span>
                             </motion.div>
                         )}
                         {isCollapsed && (
@@ -135,7 +163,10 @@ export default function Sidebar() {
                             // @ts-ignore
                             const hasSubItems = item.subItems && item.subItems.length > 0;
                             // @ts-ignore
-                            const isSubActive = hasSubItems && item.subItems.some(sub => pathname === sub.href);
+                            const isSubActive = hasSubItems && item.subItems.some(
+                                (sub: { href: string }) =>
+                                    pathname === sub.href || pathname.startsWith(`${sub.href}/`)
+                            );
                             const isActive = pathname === item.href || isSubActive;
                             const isOpen = openMenus.includes(item.label);
 
@@ -197,8 +228,10 @@ export default function Sidebar() {
                                             >
                                                 <div className="mt-1 ml-4 pl-4 border-l border-gray-100 space-y-1">
                                                     {/* @ts-ignore */}
-                                                    {item.subItems.map((subItem) => {
-                                                        const isActiveSub = pathname === subItem.href;
+                                                    {item.subItems.map((subItem: { href: string; label: string }) => {
+                                                        const isActiveSub =
+                                                            pathname === subItem.href ||
+                                                            pathname.startsWith(`${subItem.href}/`);
                                                         return (
                                                             <Link
                                                                 key={subItem.href}

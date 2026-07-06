@@ -21,7 +21,7 @@ export function useAuthActions() {
   const [error, setError] = useState('');
 
   const handleAuthSuccess = useCallback(
-    async (user: Parameters<typeof setUser>[0]) => {
+    async (user: Parameters<typeof setUser>[0], redirectTo = '/') => {
       setUser(user);
       try {
         const profile = await userService.getProfile();
@@ -32,18 +32,18 @@ export function useAuthActions() {
       } catch {
         // Profile load optional on first login
       }
-      router.push('/');
+      router.push(redirectTo);
     },
     [setUser, setAddresses, router]
   );
 
   const login = useCallback(
-    async (payload: LoginPayload) => {
+    async (payload: LoginPayload, redirectTo?: string) => {
       setIsLoading(true);
       setError('');
       try {
         const data = await authService.login({ ...payload, loginType: payload.loginType ?? LOGIN_TYPES.DIRECT });
-        if (data.user) handleAuthSuccess(mapAuthUserToStoreUser(data.user));
+        if (data.user) handleAuthSuccess(mapAuthUserToStoreUser(data.user), redirectTo);
       } catch (err) {
         setError(getAuthErrorMessage(err, 'Invalid email or password'));
       } finally {

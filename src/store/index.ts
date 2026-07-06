@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { User, CartItem, WishlistItem, Product, Address } from '@/types';
+import type { CartProductSnapshot } from '@/types/cart';
 
 interface AuthState {
     user: User | null;
@@ -16,6 +17,7 @@ interface CartState {
     addItem: (item: CartItem) => void;
     removeItem: (productId: string, size: string, color: string) => void;
     updateQuantity: (productId: string, size: string, color: string, quantity: number) => void;
+    syncCartProducts: (snapshots: Record<string, CartProductSnapshot>) => void;
     clearCart: () => void;
     getTotal: () => number;
     getItemCount: () => number;
@@ -97,6 +99,28 @@ export const useCartStore = create<CartState>()(
                             ? { ...item, quantity }
                             : item
                     ),
+                })),
+            syncCartProducts: (snapshots) =>
+                set((state) => ({
+                    items: state.items.map((item) => {
+                        const snap = snapshots[item.productId];
+                        if (!snap) return item;
+                        return {
+                            ...item,
+                            product: {
+                                ...item.product,
+                                name: snap.name,
+                                price: snap.price,
+                                originalPrice: snap.originalPrice,
+                                inStock: snap.inStock,
+                                stockQuantity: snap.stockQuantity,
+                                soldQuantity: snap.soldQuantity,
+                                returnDays: snap.returnDays,
+                                isReturnable: snap.isReturnable,
+                                images: snap.images.length ? snap.images : item.product.images,
+                            },
+                        };
+                    }),
                 })),
             clearCart: () => set({ items: [] }),
             getTotal: () => {

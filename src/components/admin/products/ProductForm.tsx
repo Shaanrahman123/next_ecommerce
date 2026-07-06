@@ -12,17 +12,22 @@ import {
   ChevronRight,
   ChevronLeft,
   Loader2,
+  Plus,
+  Sparkles,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import AdminSelect from '@/components/admin/categories/AdminSelect';
 import ProductGalleryField from '@/components/admin/products/ProductGalleryField';
 import { categoryService } from '@/services/category.service';
 import { productService } from '@/services/product.service';
+import { categoryFilterService } from '@/services/categoryFilter.service';
 import { Product, ColorVariant } from '@/types/product';
 import { SuperCategory, CategoryGroup, SubCategoryItem } from '@/types/category';
+import { CategoryFilterFieldDto } from '@/types/filters';
 import { HOME_PAGE_SECTIONS, HomeSectionId } from '@/constants/homeSections';
-
-const SPEC_KEYS = ['Fabric', 'Pattern', 'Occasion'];
+import { PRESET_COLORS, PresetColor } from '@/constants/presetColors';
+import { suggestPresetForSlug, SPEC_PRESET_LABELS } from '@/constants/specPresets';
+import Link from 'next/link';
 
 const SIZE_GROUPS = [
   { id: 'alpha', label: 'Alpha Sizes (Topwear)', options: ['XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL'] },
@@ -79,10 +84,13 @@ export default function ProductForm({ mode, productId }: ProductFormProps) {
     mrp: '',
     brand: '',
     stockQuantity: '0',
+    returnDays: '10',
+    isReturnable: true,
     featured: false,
     isActive: true,
   });
 
+  const [filterFields, setFilterFields] = useState<CategoryFilterFieldDto[]>([]);
   const [specs, setSpecs] = useState<Record<string, string>>({});
   const [specOptions, setSpecOptions] = useState<Record<string, string[]>>({});
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
@@ -94,10 +102,20 @@ export default function ProductForm({ mode, productId }: ProductFormProps) {
   const [heroPreviewUrl, setHeroPreviewUrl] = useState('');
   const [gallery, setGallery] = useState<GalleryItem[]>([]);
 
-  const [adding, setAdding] = useState<{ type: 'option' | 'color'; key?: string } | null>(null);
+  const [adding, setAdding] = useState<{ type: 'option' | 'color' | 'field'; key?: string } | null>(null);
   const [tempVal, setTempVal] = useState('');
   const [tempColor, setTempColor] = useState({ name: '', hex: '#000000' });
   const [isAddingOption, setIsAddingOption] = useState(false);
+
+  const [presets, setPresets] = useState<string[]>([]);
+  const [specCatalog, setSpecCatalog] = useState<
+    Array<{ key: string; label: string; fieldUsageCount: number; optionCount: number }>
+  >([]);
+  const [selectedPreset, setSelectedPreset] = useState('');
+  const [isApplyingPreset, setIsApplyingPreset] = useState(false);
+  const [newFieldKey, setNewFieldKey] = useState('');
+  const [newFieldLabel, setNewFieldLabel] = useState('');
+  const [isAddingField, setIsAddingField] = useState(false);
 
   const currentIdx = TABS.findIndex((t) => t.id === activeTab);
   const nextTab = () => currentIdx < TABS.length - 1 && setActiveTab(TABS[currentIdx + 1].id);
@@ -135,10 +153,38 @@ export default function ProductForm({ mode, productId }: ProductFormProps) {
     categoryService.listItems({ category: groupId }).then((res) => setItems(res.data || [])).catch(() => {});
   }, [groupId]);
 
-  // Load spec options when sub-category changes
+  const reloadFilterFields = useCallback(async () => {
+    if (!subCategoryId) {
+      setFilterFields([]);
+      return;
+    }
+    try {
+      const res = await categoryFilterService.listForSubCategory(subCategoryId);
+      setFilterFields(res.data || []);
+    } catch {
+      setFilterFields([]);
+    }
+  }, [subCategoryId]);
+
+  const specKeys = filterFields.map((f) => f.key);
+  const currentSubSlug = items.find((i) => i._id === subCategoryId)?.slug || '';
+  const suggestedPreset = currentSubSlug ? suggestPresetForSlug(currentSubSlug) : null;
+
+  // Load filter fields + spec options when sub-category changes
   useEffect(() => {
-    loadSpecOptions(subCategoryId || undefined);
-  }, [subCategoryId, loadSpecOptions]);
+    if (!subCategoryId) {
+      setFilterFields([]);
+      setSpecOptions({});
+      return;
+    }
+    reloadFilterFields();
+    loadSpecOptions(subCategoryId);
+  }, [subCategoryId, loadSpecOptions, reloadFilterFields]);
+
+  useEffect(() => {
+    categoryFilterService.listPresets().then((res) => setPresets(res.data || [])).catch(() => {});
+    categoryFilterService.getCatalog().then((res) => setSpecCatalog(res.data || [])).catch(() => {});
+  }, []);
 
   const toggleHomeSection = (id: HomeSectionId) => {
     setHomeSections((prev) =>
@@ -164,6 +210,8 @@ export default function ProductForm({ mode, productId }: ProductFormProps) {
           mrp: p.originalPrice ? String(p.originalPrice) : '',
           brand: p.brand || '',
           stockQuantity: String(p.stockQuantity ?? 0),
+          returnDays: String((p as Product & { returnDays?: number }).returnDays ?? 10),
+          isReturnable: (p as Product & { isReturnable?: boolean }).isReturnable !== false,
           featured: p.featured,
           isActive: p.isActive,
         });
@@ -256,6 +304,84 @@ export default function ProductForm({ mode, productId }: ProductFormProps) {
     setAdding(null);
   };
 
+  const handleAddSpecField = async (key?: string, label?: string) => {
+    const fieldKey = (key || newFieldKey).trim();
+    const fieldLabel = (label || newFieldLabel || fieldKey).trim();
+    if (!subCategoryId || !fieldKey) return;
+
+    setIsAddingField(true);
+    try {
+      await categoryFilterService.create({
+        subCategory: subCategoryId,
+        key: fieldKey,
+        label: fieldLabel,
+        sortOrder: filterFields.length,
+      });
+      setNewFieldKey('');
+      setNewFieldLabel('');
+      setAdding(null);
+      await reloadFilterFields();
+    } catch (err: unknown) {
+      const msg =
+        err && typeof err === 'object' && 'message' in err
+          ? String((err as { message: string }).message)
+          : 'Failed to add specification field';
+      alert(msg);
+    } finally {
+      setIsAddingField(false);
+    }
+  };
+
+  const handleDeleteSpecField = async (field: CategoryFilterFieldDto) => {
+    if (!confirm(`Remove "${field.label}" from this category? Existing products keep their saved values.`)) return;
+    try {
+      await categoryFilterService.delete(field._id);
+      setSpecs((prev) => {
+        const next = { ...prev };
+        delete next[field.key];
+        return next;
+      });
+      await reloadFilterFields();
+    } catch (err: unknown) {
+      const msg =
+        err && typeof err === 'object' && 'message' in err
+          ? String((err as { message: string }).message)
+          : 'Failed to remove field';
+      alert(msg);
+    }
+  };
+
+  const handleApplyPreset = async (preset?: string) => {
+    const presetKey = preset || selectedPreset;
+    if (!subCategoryId || !presetKey) return;
+    setIsApplyingPreset(true);
+    try {
+      await categoryFilterService.applyPreset(subCategoryId, presetKey);
+      await reloadFilterFields();
+      await loadSpecOptions(subCategoryId);
+      setSelectedPreset('');
+    } catch (err: unknown) {
+      const msg =
+        err && typeof err === 'object' && 'message' in err
+          ? String((err as { message: string }).message)
+          : 'Failed to apply preset';
+      alert(msg);
+    } finally {
+      setIsApplyingPreset(false);
+    }
+  };
+
+  const isColorSelected = (name: string) =>
+    selectedColors.some((c) => c.name.toLowerCase() === name.toLowerCase());
+
+  const togglePresetColor = (preset: PresetColor) => {
+    if (isColorSelected(preset.name)) {
+      setSelectedColors((prev) => prev.filter((c) => c.name.toLowerCase() !== preset.name.toLowerCase()));
+    } else {
+      setSelectedColors((prev) => [...prev, { name: preset.name, hex: preset.hex }]);
+    }
+  };
+
   const validate = (): string | null => {
     if (!form.name.trim()) return 'Product title is required';
     if (!form.description.trim()) return 'Description is required';
@@ -282,7 +408,7 @@ export default function ProductForm({ mode, productId }: ProductFormProps) {
     const gender = dept ? genderFromSlug(dept.slug) : 'unisex';
     const stockQty = Math.max(0, parseInt(form.stockQuantity, 10) || 0);
 
-    const specifications = SPEC_KEYS.filter((k) => specs[k]).map((k) => ({
+    const specifications = specKeys.filter((k) => specs[k]).map((k) => ({
       key: k,
       value: specs[k],
     }));
@@ -299,6 +425,8 @@ export default function ProductForm({ mode, productId }: ProductFormProps) {
       subCategories: [subCategoryId],
       inStock: stockQty > 0,
       stockQuantity: stockQty,
+      returnDays: Math.max(0, parseInt(form.returnDays, 10) || 10),
+      isReturnable: form.isReturnable,
       isActive: form.isActive,
       featured: form.featured,
       homeSections,
@@ -526,6 +654,32 @@ export default function ProductForm({ mode, productId }: ProductFormProps) {
                           className="w-full px-6 py-4 bg-gray-50 rounded-xl font-bold outline-none focus:ring-1 focus:ring-primary"
                         />
                       </div>
+                      <div className="space-y-2">
+                        <label className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">
+                          Return Window (Days)
+                        </label>
+                        <input
+                          placeholder="10"
+                          type="number"
+                          min="0"
+                          value={form.returnDays}
+                          onChange={(e) => setForm({ ...form, returnDays: e.target.value })}
+                          className="w-full px-6 py-4 bg-gray-50 rounded-xl font-bold outline-none focus:ring-1 focus:ring-primary"
+                        />
+                        <p className="text-[11px] text-gray-400 ml-1">Default 10 days · set 0 for non-returnable</p>
+                      </div>
+                    </div>
+
+                    <div className="pt-2">
+                      <label className="flex items-center gap-3 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={form.isReturnable}
+                          onChange={(e) => setForm({ ...form, isReturnable: e.target.checked })}
+                          className="w-5 h-5 rounded accent-primary"
+                        />
+                        <span className="text-sm font-bold text-gray-600">Eligible for returns &amp; refunds</span>
+                      </label>
                     </div>
 
                     <div className="pt-4 border-t border-gray-100 space-y-5">
@@ -584,45 +738,197 @@ export default function ProductForm({ mode, productId }: ProductFormProps) {
               )}
 
               {activeTab === 'spec' && (
-                <motion.div key="spec" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-10">
-                  <h2 className="text-2xl font-bold uppercase border-b pb-4 border-gray-50">
-                    Product Specifications
-                  </h2>
+                <motion.div key="spec" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-8">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b pb-4 border-gray-50">
+                    <div>
+                      <h2 className="text-2xl font-bold uppercase">Product Specifications</h2>
+                      <p className="text-xs text-gray-400 mt-1">
+                        Add custom spec sections for any product — values are saved and reused across products.
+                      </p>
+                    </div>
+                    {subCategoryId && (
+                      <Link
+                        href="/admin/dashboard/products/filter-fields"
+                        className="text-xs font-bold text-blue-600 hover:underline uppercase shrink-0"
+                      >
+                        Advanced field manager →
+                      </Link>
+                    )}
+                  </div>
+
                   {!subCategoryId && (
                     <p className="text-sm text-amber-600 font-semibold bg-amber-50 p-4 rounded-xl">
-                      Select a sub-category in General tab first — spec options can be scoped to that category.
+                      Select a sub-category in the General tab first — then you can add specification sections here.
                     </p>
                   )}
-                  <div className="grid grid-cols-1 gap-y-10">
-                    {SPEC_KEYS.map((s) => (
-                      <div key={s} className="space-y-3">
-                        <div className="flex justify-between items-center ml-1">
-                          <label className="text-xs font-bold text-gray-400 uppercase tracking-widest">
-                            {s}
-                          </label>
+
+                  {subCategoryId && (
+                    <div className="space-y-4">
+                      {/* Quick preset */}
+                      <div className="bg-gray-50 border border-gray-100 rounded-2xl p-5 space-y-4">
+                        <div className="flex items-center gap-2">
+                          <Sparkles className="w-4 h-4 text-amber-600" />
+                          <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">
+                            Quick setup
+                          </p>
+                        </div>
+                        {suggestedPreset && filterFields.length === 0 && (
                           <button
                             type="button"
-                            onClick={() => setAdding({ type: 'option', key: s })}
-                            className="text-xs font-bold text-blue-600 hover:underline"
+                            onClick={() => handleApplyPreset(suggestedPreset)}
+                            disabled={isApplyingPreset}
+                            className="w-full sm:w-auto px-5 py-3 bg-primary text-on-primary rounded-xl text-xs font-bold uppercase tracking-wide hover:opacity-90 disabled:opacity-60"
                           >
-                            + ADD NEW
+                            {isApplyingPreset
+                              ? 'Applying...'
+                              : `Apply suggested: ${SPEC_PRESET_LABELS[suggestedPreset] || suggestedPreset}`}
+                          </button>
+                        )}
+                        <div className="flex flex-col sm:flex-row gap-3">
+                          <select
+                            value={selectedPreset}
+                            onChange={(e) => setSelectedPreset(e.target.value)}
+                            className="flex-1 px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm font-semibold outline-none focus:ring-1 focus:ring-primary"
+                          >
+                            <option value="">Choose a preset template…</option>
+                            {presets.map((p) => (
+                              <option key={p} value={p}>
+                                {SPEC_PRESET_LABELS[p] || p}
+                              </option>
+                            ))}
+                          </select>
+                          <button
+                            type="button"
+                            onClick={() => handleApplyPreset()}
+                            disabled={!selectedPreset || isApplyingPreset}
+                            className="px-6 py-3 bg-white border border-gray-200 rounded-xl text-xs font-bold uppercase tracking-wide hover:bg-gray-100 disabled:opacity-50"
+                          >
+                            Apply preset
                           </button>
                         </div>
+                      </div>
+
+                      {/* Add new field */}
+                      <div className="bg-white border border-gray-100 rounded-2xl p-5 space-y-4">
+                        <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">
+                          Add specification section
+                        </p>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                          <input
+                            placeholder="Field name (e.g. Movement, Fabric)"
+                            value={newFieldKey}
+                            onChange={(e) => {
+                              setNewFieldKey(e.target.value);
+                              if (!newFieldLabel) setNewFieldLabel(e.target.value);
+                            }}
+                            className="px-4 py-3 bg-gray-50 rounded-xl font-semibold text-sm outline-none focus:ring-1 focus:ring-primary"
+                          />
+                          <input
+                            placeholder="Display label (optional)"
+                            value={newFieldLabel}
+                            onChange={(e) => setNewFieldLabel(e.target.value)}
+                            className="px-4 py-3 bg-gray-50 rounded-xl font-semibold text-sm outline-none focus:ring-1 focus:ring-primary"
+                          />
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => handleAddSpecField()}
+                          disabled={!newFieldKey.trim() || isAddingField}
+                          className="inline-flex items-center gap-2 px-5 py-3 bg-primary text-on-primary rounded-xl text-xs font-bold uppercase tracking-wide disabled:opacity-50"
+                        >
+                          <Plus className="w-4 h-4" />
+                          {isAddingField ? 'Adding…' : 'Add section'}
+                        </button>
+
+                        {specCatalog.length > 0 && (
+                          <div className="pt-3 border-t border-gray-50">
+                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">
+                              Reuse from catalog
+                            </p>
+                            <div className="flex flex-wrap gap-2">
+                              {specCatalog
+                                .filter((c) => !filterFields.some((f) => f.key.toLowerCase() === c.key.toLowerCase()))
+                                .slice(0, 12)
+                                .map((c) => (
+                                  <button
+                                    key={c.key}
+                                    type="button"
+                                    onClick={() => handleAddSpecField(c.key, c.label)}
+                                    className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-50 text-amber-900 border border-amber-100 hover:bg-amber-100 transition-colors"
+                                  >
+                                    + {c.label}
+                                    {c.optionCount > 0 && (
+                                      <span className="text-amber-600/60 ml-1">({c.optionCount})</span>
+                                    )}
+                                  </button>
+                                ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {subCategoryId && filterFields.length === 0 && (
+                    <div className="text-center py-10 px-6 border-2 border-dashed border-gray-200 rounded-2xl">
+                      <p className="text-sm font-semibold text-gray-500 mb-1">No specification sections yet</p>
+                      <p className="text-xs text-gray-400 mb-4">
+                        For a watch, add sections like Movement, Strap Material, Dial Color — not Fabric or Pattern.
+                      </p>
+                      {suggestedPreset && (
+                        <button
+                          type="button"
+                          onClick={() => handleApplyPreset(suggestedPreset)}
+                          className="text-xs font-bold text-blue-600 hover:underline"
+                        >
+                          Apply {SPEC_PRESET_LABELS[suggestedPreset] || suggestedPreset} preset →
+                        </button>
+                      )}
+                    </div>
+                  )}
+
+                  <div className="grid grid-cols-1 gap-8">
+                    {filterFields.map((field) => (
+                      <div
+                        key={field._id}
+                        className="space-y-3 p-5 rounded-2xl border border-gray-100 bg-white shadow-sm"
+                      >
+                        <div className="flex justify-between items-center gap-3">
+                          <label className="text-xs font-bold text-gray-500 uppercase tracking-widest">
+                            {field.label}
+                          </label>
+                          <div className="flex items-center gap-3">
+                            <button
+                              type="button"
+                              onClick={() => setAdding({ type: 'option', key: field.key })}
+                              className="text-xs font-bold text-blue-600 hover:underline"
+                            >
+                              + Add value
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleDeleteSpecField(field)}
+                              className="text-xs font-bold text-red-500 hover:underline inline-flex items-center gap-1"
+                            >
+                              <Trash2 className="w-3 h-3" /> Remove
+                            </button>
+                          </div>
+                        </div>
                         <div className="flex flex-wrap gap-2">
-                          {(specOptions[s] || []).length === 0 ? (
+                          {(specOptions[field.key] || []).length === 0 ? (
                             <p className="text-xs text-gray-400 italic py-2">
-                              No {s.toLowerCase()} options yet — click + ADD NEW to create one
+                              No values yet — click &quot;+ Add value&quot; to create reusable options
                             </p>
                           ) : (
-                            (specOptions[s] || []).map((opt) => (
+                            (specOptions[field.key] || []).map((opt) => (
                               <button
                                 key={opt}
                                 type="button"
-                                onClick={() => setSpecs({ ...specs, [s]: opt })}
+                                onClick={() => setSpecs({ ...specs, [field.key]: opt })}
                                 className={`px-5 py-3 rounded-xl text-xs font-bold border transition-all ${
-                                  specs[s] === opt
+                                  specs[field.key] === opt
                                     ? 'bg-primary text-on-primary border-primary'
-                                    : 'bg-white text-gray-500 border-gray-100 hover:border-gray-200'
+                                    : 'bg-gray-50 text-gray-500 border-gray-100 hover:border-gray-200'
                                 }`}
                               >
                                 {opt}
@@ -630,6 +936,11 @@ export default function ProductForm({ mode, productId }: ProductFormProps) {
                             ))
                           )}
                         </div>
+                        {specs[field.key] && (
+                          <p className="text-[10px] text-green-600 font-semibold">
+                            Selected: {specs[field.key]}
+                          </p>
+                        )}
                       </div>
                     ))}
                   </div>
@@ -703,30 +1014,86 @@ export default function ProductForm({ mode, productId }: ProductFormProps) {
                         + ADD CUSTOM COLOR
                       </button>
                     </div>
-                    <div className="flex flex-wrap gap-6 items-start">
-                      {selectedColors.map((c, i) => (
-                        <div key={i} className="flex flex-col items-center gap-2 group relative">
-                          <div
-                            className="w-14 h-14 rounded-xl border-4 border-white shadow-xl flex items-center justify-center overflow-hidden"
-                            style={{ backgroundColor: c.hex }}
-                          >
+
+                    <div className="space-y-3">
+                      <p className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">
+                        Quick Pick — Famous Colors
+                      </p>
+                      <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-3 max-h-[320px] overflow-y-auto pr-1 scrollbar-thin">
+                        {PRESET_COLORS.map((preset) => {
+                          const selected = isColorSelected(preset.name);
+                          return (
                             <button
+                              key={preset.name}
                               type="button"
-                              onClick={() => setSelectedColors(selectedColors.filter((_, idx) => idx !== i))}
-                              className="opacity-0 group-hover:opacity-100 bg-black/20 backdrop-blur-md p-2 rounded-lg text-white transition-all"
+                              onClick={() => togglePresetColor(preset)}
+                              title={preset.name}
+                              className={`flex flex-col items-center gap-1.5 p-2 rounded-xl border-2 transition-all hover:scale-105 ${
+                                selected
+                                  ? 'border-primary bg-primary/5 shadow-md ring-2 ring-primary/20'
+                                  : 'border-gray-100 bg-white hover:border-gray-200'
+                              }`}
                             >
-                              <Trash2 className="w-4 h-4" />
+                              <div
+                                className={`w-10 h-10 rounded-full shadow-inner shrink-0 ${
+                                  preset.border ? 'border border-gray-200' : ''
+                                } ${preset.multi ? 'overflow-hidden' : ''}`}
+                                style={
+                                  preset.multi
+                                    ? undefined
+                                    : { backgroundColor: preset.hex }
+                                }
+                              >
+                                {preset.multi && (
+                                  <div className="w-full h-full grid grid-cols-2 grid-rows-2">
+                                    <div className="bg-green-500" />
+                                    <div className="bg-yellow-400" />
+                                    <div className="bg-pink-500" />
+                                    <div className="bg-orange-500" />
+                                  </div>
+                                )}
+                              </div>
+                              <span
+                                className={`text-[9px] font-bold text-center leading-tight line-clamp-2 ${
+                                  selected ? 'text-primary' : 'text-gray-500'
+                                }`}
+                              >
+                                {preset.name}
+                              </span>
                             </button>
-                          </div>
-                          <span className="text-[10px] font-bold text-gray-500 uppercase tracking-tighter">
-                            {c.name}
-                          </span>
-                        </div>
-                      ))}
-                      {selectedColors.length === 0 && (
-                        <p className="text-xs text-gray-400 italic">No colors added yet</p>
-                      )}
+                          );
+                        })}
+                      </div>
                     </div>
+
+                    {selectedColors.length > 0 && (
+                      <div className="space-y-3 pt-4 border-t border-gray-50">
+                        <p className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">
+                          Selected ({selectedColors.length})
+                        </p>
+                        <div className="flex flex-wrap gap-4 items-start">
+                          {selectedColors.map((c, i) => (
+                            <div key={`${c.name}-${i}`} className="flex flex-col items-center gap-2 group relative">
+                              <div
+                                className="w-14 h-14 rounded-xl border-4 border-white shadow-xl flex items-center justify-center overflow-hidden"
+                                style={{ backgroundColor: c.hex }}
+                              >
+                                <button
+                                  type="button"
+                                  onClick={() => setSelectedColors(selectedColors.filter((_, idx) => idx !== i))}
+                                  className="opacity-0 group-hover:opacity-100 bg-black/20 backdrop-blur-md p-2 rounded-lg text-white transition-all"
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </button>
+                              </div>
+                              <span className="text-[10px] font-bold text-gray-500 uppercase tracking-tighter max-w-[72px] text-center truncate">
+                                {c.name}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </motion.div>
               )}

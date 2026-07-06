@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import Input from '@/components/ui/Input';
 import Button from '@/components/ui/Button';
 import {
@@ -16,6 +17,16 @@ import { validateEmail, validatePassword } from '@/utils/validation';
 import { LoginFormData } from '@/types/auth';
 
 export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading…</div>}>
+      <LoginForm />
+    </Suspense>
+  );
+}
+
+function LoginForm() {
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get('redirect') || '/';
   const { login, socialAuth, isLoading, error, setError } = useAuthActions();
   const [formData, setFormData] = useState<LoginFormData>({ email: '', password: '' });
   const [errors, setErrors] = useState<Partial<LoginFormData>>({});
@@ -32,7 +43,7 @@ export default function LoginPage() {
     e.preventDefault();
     setError('');
     if (!validateForm()) return;
-    await login({ email: formData.email, password: formData.password });
+    await login({ email: formData.email, password: formData.password }, redirectTo);
   };
 
   const updateField = (field: keyof LoginFormData, value: string) => {

@@ -1,4 +1,5 @@
 import TrendingSlider from '@/components/ui/TrendingSlider';
+import { TRENDING_SECTION_THEMES } from '@/components/home/indian/sectionThemes';
 
 const accessoriesItems = [
     {
@@ -44,5 +45,5 @@ const accessoriesItems = [
 ];
 
 export default function TrendingAccessories() {
-    return <TrendingSlider items={accessoriesItems} title="Trending In Accessories" bgColor="bg-gray-50" />;
+    return <TrendingSlider items={accessoriesItems} theme={TRENDING_SECTION_THEMES['trending-accessories']} />;
 }

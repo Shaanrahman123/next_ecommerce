@@ -8,11 +8,24 @@ import {
 } from '@/types/user';
 
 async function userRequest<T>(url: string, options: RequestInit = {}): Promise<T> {
-  const response = await fetch(url, {
+  const config: RequestInit = {
     credentials: 'include',
     headers: { 'Content-Type': 'application/json', ...options.headers },
     ...options,
-  });
+  };
+
+  let response = await fetch(url, config);
+
+  // If unauthorized, attempt a silent token refresh and retry once
+  if (response.status === 401) {
+    const refreshed = await fetch('/api/auth/refresh', {
+      method: 'POST',
+      credentials: 'include',
+    });
+    if (refreshed.ok) {
+      response = await fetch(url, config);
+    }
+  }
 
   const data = (await response.json()) as T & { status: boolean; message: string; statusCode: number };
 
