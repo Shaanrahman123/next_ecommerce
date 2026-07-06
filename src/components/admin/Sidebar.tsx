@@ -126,7 +126,7 @@ export default function Sidebar() {
                 initial={false}
                 animate={{
                     width: isCollapsed ? '80px' : '280px',
-                    x: isMobileOpen ? 0 : (isMobileOpen ? 0 : undefined) // Mobile control
+                    x: isMobileOpen ? 0 : (isMobileOpen ? 0 : undefined) // Mobile ontrol
                 }}
                 className={`fixed top-0 left-0 h-full bg-white border-r border-gray-100 z-50 overflow-hidden transition-all duration-300 ease-in-out
           ${isMobileOpen ? 'translate-x-0 w-[280px]' : '-translate-x-full lg:translate-x-0'}
