@@ -3,8 +3,9 @@
 import React from 'react';
 import Sidebar from '@/components/admin/Sidebar';
 import AdminAuthGuard from '@/components/admin/AdminAuthGuard';
-import { Search, Bell, User } from 'lucide-react';
+import { Search, User } from 'lucide-react';
 import { useAdminAuthStore, mapAdminToDisplayName } from '@/store/adminAuth';
+import { AdminNotifications, NotificationDropdown } from '@/components/admin/AdminNotifications';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
     const { admin } = useAdminAuthStore();
@@ -30,10 +31,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                                 />
                             </div>
 
-                            <button className="relative p-2 text-gray-400 hover:text-heading hover:bg-gray-50 rounded-xl transition-all">
-                                <Bell className="w-5 h-5" />
-                                <span className="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full border-2 border-white"></span>
-                            </button>
+                            <NotificationDropdown />
 
                             <div className="flex items-center space-x-3 pl-2 lg:pl-6 border-l border-gray-100">
                                 <div className="hidden text-right lg:block">
@@ -51,6 +49,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                         {children}
                     </main>
                 </div>
+                <AdminNotifications />
             </div>
         </AdminAuthGuard>
     );

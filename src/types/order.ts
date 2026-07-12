@@ -83,6 +83,7 @@ export interface OrderListItem {
     name: string;
     image: string;
     quantity: number;
+    rating?: number;
   };
   actions?: Pick<OrderActions, 'canCancel' | 'canReturn'>;
 }

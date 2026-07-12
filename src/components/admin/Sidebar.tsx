@@ -18,6 +18,7 @@ import {
     ChevronDown,
     Layers,
     LayoutTemplate,
+    LifeBuoy,
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -48,6 +49,7 @@ const sidebarItems = [
         ]
     },
     { icon: ShoppingBag, label: 'Orders', href: '/admin/dashboard/orders' },
+    { icon: LifeBuoy, label: 'Support', href: '/admin/dashboard/support' },
     { icon: Star, label: 'Reviews', href: '/admin/dashboard/reviews' },
     { icon: Users, label: 'Customers', href: '/admin/dashboard/customers' },
     {
@@ -56,6 +58,8 @@ const sidebarItems = [
         href: '/admin/dashboard/cms',
         subItems: [
             { label: 'Hero Carousel', href: '/admin/dashboard/cms/hero-carousel' },
+            { label: 'Special Offers', href: '/admin/dashboard/cms/special-offers' },
+            { label: 'Pages', href: '/admin/dashboard/cms/pages' },
         ],
     },
     { icon: BarChart3, label: 'Analytics', href: '/admin/dashboard/analytics' },

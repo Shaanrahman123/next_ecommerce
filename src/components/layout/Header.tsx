@@ -9,15 +9,18 @@ import { useRouter } from 'next/navigation';
 import MegaMenu from './MegaMenu';
 import { mainNavigation, megaMenuImages } from '@/data/categories';
 import { useCategoryTree } from '@/hooks/useCategoryTree';
-import MobileSidebar from './MobileSidebar';
 import { usePathname } from 'next/navigation';
 import SearchBar from './Search';
 import BrandLogo from './BrandLogo';
 
-export default function Header() {
+interface HeaderProps {
+    onMobileMenuOpen: () => void;
+    onMobileMenuClose: () => void;
+    onMobileSearchOpen: () => void;
+}
+
+export default function Header({ onMobileMenuOpen, onMobileMenuClose, onMobileSearchOpen }: HeaderProps) {
     const pathname = usePathname();
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-    const [isSearchOverlayOpen, setIsSearchOverlayOpen] = useState(false);
     const [userMenuOpen, setUserMenuOpen] = useState(false);
     const [activeMegaMenu, setActiveMegaMenu] = useState<string | null>(null);
     const { isAuthenticated, user, logout } = useAuthStore();
@@ -92,7 +95,7 @@ export default function Header() {
     // Close all menus on navigation
     useEffect(() => {
         setActiveMegaMenu(null);
-        setMobileMenuOpen(false);
+        onMobileMenuClose();
         setUserMenuOpen(false);
     }, [pathname]);
 
@@ -405,24 +408,20 @@ export default function Header() {
                         {/* Mobile Actions */}
                         <div className="flex items-center lg:hidden">
                             <button
-                                onClick={() => setIsSearchOverlayOpen(true)}
+                                onClick={onMobileSearchOpen}
                                 className="text-heading/75 hover:text-amber-900 p-2"
                                 aria-label="Search"
                             >
                                 <Search className="w-5 h-5" />
                             </button>
                             <button
-                                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                                onClick={onMobileMenuOpen}
                                 className="text-heading/75 hover:text-amber-900 p-2"
                                 aria-label="Toggle Menu"
                             >
-                                {mobileMenuOpen ? (
-                                    <X className="w-6 h-6" />
-                                ) : (
-                                    <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M0 1C0 0.734784 0.105357 0.48043 0.292893 0.292893C0.48043 0.105357 0.734784 0 1 0H19C19.2652 0 19.5196 0.105357 19.7071 0.292893C19.8946 0.48043 20 0.734784 20 1C20 1.26522 19.8946 1.51957 19.7071 1.70711C19.5196 1.89464 19.2652 2 19 2H1C0.734784 2 0.48043 1.89464 0.292893 1.70711C0.105357 1.51957 0 1.26522 0 1ZM1 10H19C19.2652 10 19.5196 9.89464 19.7071 9.70711C19.8946 9.51957 20 9.26522 20 9C20 8.73478 19.8946 8.48043 19.7071 8.29289C19.5196 8.10536 19.2652 8 19 8H1C0.734784 8 0.48043 8.10536 0.292893 8.29289C0.105357 8.48043 0 8.73478 0 9C0 9.26522 0.105357 9.51957 0.292893 9.70711C0.48043 9.89464 0.734784 10 1 10ZM19 16H10C9.73478 16 9.48043 16.1054 9.29289 16.2929C9.10536 16.4804 9 16.7348 9 17C9 17.2652 9.10536 17.5196 9.29289 17.7071C9.48043 17.8946 9.73478 18 10 18H19C19.2652 18 19.5196 17.8946 19.7071 17.7071C19.8946 17.5196 20 17.2652 20 17C20 16.7348 19.8946 16.4804 19.7071 16.2929C19.5196 16.1054 19.2652 16 19 16Z" fill="currentColor" />
-                                    </svg>
-                                )}
+                                <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M0 1C0 0.734784 0.105357 0.48043 0.292893 0.292893C0.48043 0.105357 0.734784 0 1 0H19C19.2652 0 19.5196 0.105357 19.7071 0.292893C19.8946 0.48043 20 0.734784 20 1C20 1.26522 19.8946 1.51957 19.7071 1.70711C19.5196 1.89464 19.2652 2 19 2H1C0.734784 2 0.48043 1.89464 0.292893 1.70711C0.105357 1.51957 0 1.26522 0 1ZM1 10H19C19.2652 10 19.5196 9.89464 19.7071 9.70711C19.8946 9.51957 20 9.26522 20 9C20 8.73478 19.8946 8.48043 19.7071 8.29289C19.5196 8.10536 19.2652 8 19 8H1C0.734784 8 0.48043 8.10536 0.292893 8.29289C0.105357 8.48043 0 8.73478 0 9C0 9.26522 0.105357 9.51957 0.292893 9.70711C0.48043 9.89464 0.734784 10 1 10ZM19 16H10C9.73478 16 9.48043 16.1054 9.29289 16.2929C9.10536 16.4804 9 16.7348 9 17C9 17.2652 9.10536 17.5196 9.29289 17.7071C9.48043 17.8946 9.73478 18 10 18H19C19.2652 18 19.5196 17.8946 19.7071 17.7071C19.8946 17.5196 20 17.2652 20 17C20 16.7348 19.8946 16.4804 19.7071 16.2929C19.5196 16.1054 19.2652 16 19 16Z" fill="currentColor" />
+                                </svg>
                             </button>
                         </div>
                     </div>
@@ -443,22 +442,6 @@ export default function Header() {
                 />
             )}
 
-            {/* Mobile Search Overlay */}
-            <SearchBar
-                variant="overlay"
-                isOpen={isSearchOverlayOpen}
-                onClose={() => setIsSearchOverlayOpen(false)}
-            />
-
-            {/* Mobile Sidebar */}
-            <MobileSidebar
-                isOpen={mobileMenuOpen}
-                onClose={() => setMobileMenuOpen(false)}
-                isAuthenticated={isAuthenticated}
-                user={user}
-                onLogout={handleLogout}
-                navigation={navigation}
-            />
         </header>
     );
 }

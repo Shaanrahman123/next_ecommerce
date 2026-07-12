@@ -4,7 +4,6 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { X, ChevronRight, ChevronDown, HelpCircle } from 'lucide-react';
-import BrandLogo from './BrandLogo';
 import { mainNavigation } from '@/data/categories';
 
 interface MobileSidebarProps {
@@ -37,47 +36,83 @@ export default function MobileSidebar({ isOpen, onClose, isAuthenticated, user, 
         <>
             {/* Backdrop */}
             <div
-                className={`fixed inset-0 bg-black/60 z-60 transition-opacity duration-300 ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+                className={`fixed inset-0 bg-black/60 z-[110] transition-opacity duration-300 ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
                     }`}
                 onClick={onClose}
             />
 
             {/* Sidebar */}
             <div
-                className={`fixed inset-y-0 left-0 w-[85%] max-w-sm bg-white z-70 transform transition-transform duration-300 ease-out overflow-y-auto scrollbar-hide shadow-2xl ${isOpen ? 'translate-x-0' : '-translate-x-full'
+                className={`fixed inset-y-0 left-0 w-[85%] max-w-sm bg-white z-[120] transform transition-transform duration-300 ease-out overflow-y-auto scrollbar-hide shadow-2xl ${isOpen ? 'translate-x-0' : '-translate-x-full'
                     }`}
             >
-                {/* Header / Banner Area matching Minimal theme */}
-                <div className="relative h-40 bg-primary overflow-hidden">
-                    {/* Decorative abstract shapes */}
-                    <div className="absolute top-[-20%] right-[-10%] w-32 h-32 rounded-full bg-gray-800/50 blur-xl"></div>
-                    <div className="absolute bottom-[-10%] left-[-10%] w-24 h-24 rounded-full bg-primary/50 blur-lg"></div>
-
-                    <div className="absolute inset-0 flex flex-col justify-center px-6 text-white">
-                        <BrandLogo className="mb-3" />
-                        <h2 className="text-2xl font-bold tracking-tight mb-1 text-white">Welcome</h2>
-                        <p className="text-gray-300 text-sm font-medium">Discover premium fashion</p>
-
-                        {!isAuthenticated ? (
-                            <div className="mt-3 flex items-center gap-2 text-sm font-bold capitalize">
-                                <Link href="/login" className="hover:underline" onClick={onClose}>Sign Up</Link>
-                                <span>•</span>
-                                <Link href="/login" className="hover:underline" onClick={onClose}>Login</Link>
-                            </div>
-                        ) : (
-                            <div className="mt-3 text-sm font-bold capitalize">
-                                {user?.name || 'User'}
-                            </div>
-                        )}
-                    </div>
+                {/* Header — premium redesign */}
+                <div className="relative bg-gradient-to-br from-[#1a1209] via-[#2c1f0e] to-[#1a1209] overflow-hidden">
+                    {/* Decorative blobs */}
+                    <div className="absolute -top-8 -right-8 w-40 h-40 rounded-full bg-amber-600/20 blur-2xl pointer-events-none" />
+                    <div className="absolute -bottom-6 -left-6 w-32 h-32 rounded-full bg-amber-400/10 blur-xl pointer-events-none" />
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 rounded-full bg-white/[0.03] blur-3xl pointer-events-none" />
 
                     {/* Close Button */}
                     <button
                         onClick={onClose}
-                        className="absolute top-4 right-4 p-2 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors backdrop-blur-sm"
+                        className="absolute top-3 right-3 z-10 p-1.5 bg-white/10 hover:bg-white/20 rounded-full text-white/80 hover:text-white transition-all backdrop-blur-sm"
+                        aria-label="Close menu"
                     >
-                        <X size={20} />
+                        <X size={16} />
                     </button>
+
+                    <div className="relative px-5 pt-5 pb-6">
+                        {/* Brand name */}
+                        <Link href="/" onClick={onClose} className="inline-block mb-5">
+                            <span className="text-xs font-black tracking-[0.3em] text-amber-400/80 uppercase">Blak Blaze</span>
+                        </Link>
+
+                        {isAuthenticated ? (
+                            /* Authenticated user panel */
+                            <div className="flex items-center gap-3">
+                                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-400 to-amber-700 flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-amber-900/40 shrink-0">
+                                    {user?.name?.charAt(0).toUpperCase() || 'U'}
+                                </div>
+                                <div className="min-w-0">
+                                    <p className="text-white font-bold text-base leading-tight truncate">
+                                        {user?.name || 'User'}
+                                    </p>
+                                    <p className="text-amber-300/70 text-xs mt-0.5 truncate">
+                                        {user?.email || 'Member'}
+                                    </p>
+                                    <span className="inline-block mt-1.5 px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 text-[10px] font-semibold tracking-wide border border-amber-500/20">
+                                        Premium Member
+                                    </span>
+                                </div>
+                            </div>
+                        ) : (
+                            /* Guest panel */
+                            <div>
+                                <h2 className="text-white text-xl font-bold tracking-tight leading-snug">
+                                    Welcome to<br />
+                                    <span className="text-amber-400">Blak Blaze</span>
+                                </h2>
+                                <p className="text-white/50 text-xs mt-1.5 mb-4">Discover premium fashion</p>
+                                <div className="flex items-center gap-2">
+                                    <Link
+                                        href="/login"
+                                        onClick={onClose}
+                                        className="flex-1 text-center py-2 rounded-lg bg-amber-500 hover:bg-amber-400 text-white text-xs font-bold transition-colors"
+                                    >
+                                        Login
+                                    </Link>
+                                    <Link
+                                        href="/login"
+                                        onClick={onClose}
+                                        className="flex-1 text-center py-2 rounded-lg border border-white/20 hover:border-amber-400/60 text-white/80 hover:text-amber-300 text-xs font-bold transition-colors"
+                                    >
+                                        Sign Up
+                                    </Link>
+                                </div>
+                            </div>
+                        )}
+                    </div>
                 </div>
 
                 {/* Categories Section */}

@@ -63,7 +63,7 @@ export default function CategoryGridView({ items }: CategoryGridViewProps) {
           </div>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 lg:gap-8">
+        <div className="grid grid-cols-2 xl:grid-cols-4 gap-4 md:gap-6 lg:gap-8">
           {items.map((category, i) => {
             const style = CARD_STYLES[i % CARD_STYLES.length];
             return (
@@ -72,7 +72,7 @@ export default function CategoryGridView({ items }: CategoryGridViewProps) {
                 <article
                   className={`relative h-full rounded-2xl border bg-white overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 ${style.border}`}
                 >
-                  <div className="relative aspect-[4/5] overflow-hidden bg-stone-100">
+                    <div className="relative aspect-[3/4] overflow-hidden bg-stone-100">
                     <CategoryGridImage src={category.imageUrl} alt={category.title} />
                     <div
                       className={`absolute inset-0 bg-linear-to-t ${style.overlay} to-transparent`}
@@ -84,13 +84,13 @@ export default function CategoryGridView({ items }: CategoryGridViewProps) {
                       </span>
                     )}
                     <div className="absolute bottom-0 left-0 right-0 p-5 lg:p-6">
-                      <h3 className="text-xl lg:text-2xl font-bold text-white uppercase tracking-tight drop-shadow-md">
+                      <h3 className="text-sm sm:text-xl lg:text-2xl font-bold text-white uppercase tracking-tight drop-shadow-md">
                         {category.title}
                       </h3>
                     </div>
                   </div>
 
-                  <div className="p-5 lg:p-6 space-y-3">
+                  <div className="p-3 sm:p-5 lg:p-6 space-y-2">
                     <p className="text-sm text-gray-600 leading-relaxed line-clamp-2">{category.description}</p>
                     <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-amber-800 group-hover:gap-2.5 transition-all">
                       Shop Now <ArrowUpRight className="w-3.5 h-3.5" />

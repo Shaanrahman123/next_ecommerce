@@ -29,6 +29,8 @@ export interface IUser extends Document {
   }>;
   otp?: string;
   otpExpiry?: Date;
+  lastCheckedOrdersAt?: Date;
+  lastCheckedTicketsAt?: Date;
   comparePassword(candidatePassword: string): Promise<boolean>;
   createdAt: Date;
   updatedAt: Date;
@@ -113,6 +115,14 @@ const UserSchema: Schema = new Schema(
     },
     otpExpiry: {
       type: Date,
+    },
+    lastCheckedOrdersAt: {
+      type: Date,
+      default: Date.now,
+    },
+    lastCheckedTicketsAt: {
+      type: Date,
+      default: Date.now,
     },
   },
   {

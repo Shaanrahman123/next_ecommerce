@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import type { ProductSearchResult, SearchSuggestion } from '@/app/api/product/search/route';
+import { categoryService } from '@/services/category.service';
 
 interface SearchProps {
   variant?: 'desktop' | 'overlay';
@@ -23,12 +24,16 @@ function useDebouncedValue<T>(value: T, delay: number): T {
   return debounced;
 }
 
+const FALLBACK_TERMS = ['T-Shirts', 'Jeans', 'Kurta', 'Sneakers', 'Saree', 'Dress'];
+
 export default function Search({ variant = 'desktop', isOpen, onClose, theme = 'premium' }: SearchProps) {
   const [query, setQuery] = useState('');
   const [suggestions, setSuggestions] = useState<SearchSuggestion[]>([]);
   const [products, setProducts] = useState<ProductSearchResult[]>([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [popularTerms, setPopularTerms] = useState<string[]>([]);
+  const [isLoadingTerms, setIsLoadingTerms] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const mobileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
@@ -84,6 +89,25 @@ export default function Search({ variant = 'desktop', isOpen, onClose, theme = '
     if (isOpen) {
       document.body.style.overflow = 'hidden';
       setTimeout(() => mobileInputRef.current?.focus(), 100);
+      // Load category names when overlay opens (only once)
+      if (popularTerms.length === 0) {
+        setIsLoadingTerms(true);
+        categoryService.getTree(true)
+          .then((res) => {
+            if (res.data && res.data.length > 0) {
+              // Flatten all sub-category item names from the tree, deduplicate, take up to 8
+              const names = res.data
+                .flatMap((dept) => dept.sections.flatMap((sec) => sec.items.map((it) => it.name)))
+                .filter((n, i, arr) => n && arr.indexOf(n) === i)
+                .slice(0, 8);
+              setPopularTerms(names.length > 0 ? names : FALLBACK_TERMS);
+            } else {
+              setPopularTerms(FALLBACK_TERMS);
+            }
+          })
+          .catch(() => setPopularTerms(FALLBACK_TERMS))
+          .finally(() => setIsLoadingTerms(false));
+      }
     } else {
       document.body.style.overflow = 'unset';
       setQuery('');
@@ -259,7 +283,7 @@ export default function Search({ variant = 'desktop', isOpen, onClose, theme = '
 
   if (variant === 'overlay' && isOpen) {
     return (
-      <div className="fixed inset-0 z-[100] bg-[#faf7f2] animate-slide-up flex flex-col">
+      <div className="fixed inset-0 z-[500] bg-[#faf7f2] animate-slide-up flex flex-col">
         <div className="flex items-center p-4 gap-3 border-b border-amber-100 bg-white">
           <button onClick={onClose} className="text-heading p-1">
             <ArrowLeft className="w-5 h-5" />
@@ -279,7 +303,7 @@ export default function Search({ variant = 'desktop', isOpen, onClose, theme = '
           </form>
         </div>
 
-        <div className="flex-1 overflow-y-auto">
+          <div className="flex-1 overflow-y-auto">
           {query.length >= 2 ? (
             <div className="bg-white">
               <SuggestionsList compact />
@@ -289,19 +313,27 @@ export default function Search({ variant = 'desktop', isOpen, onClose, theme = '
               <h3 className="text-xs font-bold text-amber-800/60 uppercase tracking-widest mb-4">
                 Popular Searches
               </h3>
-              <div className="flex flex-col gap-1">
-                {['T-Shirts', 'Jeans', 'Kurta', 'Sneakers', 'Watch', 'Saree'].map((term) => (
-                  <button
-                    key={term}
-                    type="button"
-                    onClick={() => setQuery(term)}
-                    className="flex items-center py-3 border-b border-amber-50 text-sm text-heading hover:text-amber-800 text-left"
-                  >
-                    <SearchIcon className="w-4 h-4 mr-3 text-amber-400" />
-                    {term}
-                  </button>
-                ))}
-              </div>
+              {isLoadingTerms ? (
+                <div className="space-y-3">
+                  {[...Array(5)].map((_, i) => (
+                    <div key={i} className="h-5 bg-amber-50 rounded animate-pulse" style={{ width: `${60 + i * 8}%` }} />
+                  ))}
+                </div>
+              ) : (
+                <div className="flex flex-col gap-1">
+                  {popularTerms.map((term) => (
+                    <button
+                      key={term}
+                      type="button"
+                      onClick={() => setQuery(term)}
+                      className="flex items-center py-3 border-b border-amber-50 text-sm text-heading hover:text-amber-800 text-left transition-colors"
+                    >
+                      <SearchIcon className="w-4 h-4 mr-3 text-amber-400 shrink-0" />
+                      {term}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           )}
         </div>

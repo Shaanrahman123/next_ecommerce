@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types/api';
-import { HeroSlide, HeroSlideFormPayload } from '@/types/cms';
+import { CmsPage, CmsPageFormPayload, HeroSlide, HeroSlideFormPayload } from '@/types/cms';
 
 async function adminFetch<T>(url: string, options: RequestInit = {}): Promise<ApiResponse<T>> {
   const config: RequestInit = {
@@ -23,6 +23,7 @@ async function adminFetch<T>(url: string, options: RequestInit = {}): Promise<Ap
 }
 
 export const cmsService = {
+  // ── Hero Carousel ─────────────────────────────────────────────────────────
   listHeroSlides() {
     return adminFetch<HeroSlide[]>('/api/admin/cms/hero-carousel');
   },
@@ -43,5 +44,32 @@ export const cmsService = {
 
   deleteHeroSlide(id: string) {
     return adminFetch<null>(`/api/admin/cms/hero-carousel/${id}`, { method: 'DELETE' });
+  },
+
+  // ── CMS Pages ─────────────────────────────────────────────────────────────
+  listPages() {
+    return adminFetch<CmsPage[]>('/api/admin/cms/pages');
+  },
+
+  getPage(slug: string) {
+    return adminFetch<CmsPage>(`/api/admin/cms/pages/${slug}`);
+  },
+
+  createPage(payload: CmsPageFormPayload) {
+    return adminFetch<CmsPage>('/api/admin/cms/pages', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+  },
+
+  updatePage(slug: string, payload: Partial<CmsPageFormPayload>) {
+    return adminFetch<CmsPage>(`/api/admin/cms/pages/${slug}`, {
+      method: 'PUT',
+      body: JSON.stringify(payload),
+    });
+  },
+
+  deletePage(slug: string) {
+    return adminFetch<null>(`/api/admin/cms/pages/${slug}`, { method: 'DELETE' });
   },
 };

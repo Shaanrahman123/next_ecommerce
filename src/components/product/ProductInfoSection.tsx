@@ -319,28 +319,25 @@ export default function ProductInfoSection({
       </div>
 
       <div className="md:hidden fixed bottom-0 pb-[calc(0.5rem+env(safe-area-inset-bottom,0px))] left-0 right-0 bg-white border-t border-gray-200 p-3 shadow-[0_-4px_20px_rgba(0,0,0,0.06)] z-40">
-        <div className="flex gap-2">
+        <div className="flex gap-2 max-w-lg mx-auto">
           <Button
             onClick={onBuyNow}
             variant="premium"
             size="lg"
             disabled={outOfStock}
-            className="flex-[0.75]"
+            className="flex-1"
           >
-            <Zap className="w-4 h-4" />
-            Buy Now
+            <Zap className="w-4 h-4 shrink-0" />
+            <span>Buy Now</span>
           </Button>
-          <Button
+          <button
             onClick={onAddToCart}
-            variant="premium-soft"
-            size="lg"
-            iconOnly
             disabled={outOfStock}
             aria-label={addedToCart ? 'Added to cart' : 'Add to cart'}
-            className="flex-[0.25]"
+            className="w-12 h-12 flex items-center justify-center rounded-xl border-2 border-heading bg-white text-heading hover:bg-heading hover:text-white transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
           >
             {addedToCart ? <Check className="w-5 h-5" /> : <ShoppingCart className="w-5 h-5" />}
-          </Button>
+          </button>
         </div>
       </div>
     </>

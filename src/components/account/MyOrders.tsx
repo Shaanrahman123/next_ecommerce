@@ -3,9 +3,10 @@
 import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Package, ChevronRight, Calendar, Loader2 } from 'lucide-react';
+import { Package, ChevronRight, Calendar, Loader2, Star } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import OrderActionButtons from '@/components/account/OrderActionButtons';
+import OrderItemReviews from '@/components/account/OrderItemReviews';
 import { orderService } from '@/services/order.service';
 import { formatINR } from '@/lib/shippingUtils';
 import { getStatusLabel } from '@/lib/orderPolicy';
@@ -24,7 +25,8 @@ function statusInfo(status: OrderStatus, returnStatus?: ReturnStatus) {
 export default function MyOrders() {
   const [orders, setOrders] = useState<OrderListItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [expandedActions, setExpandedActions] = useState<string | null>(null);
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [expandMode, setExpandMode] = useState<'actions' | 'reviews' | null>(null);
   const [actionOrder, setActionOrder] = useState<OrderSummary | null>(null);
 
   const fetchOrders = useCallback(async () => {
@@ -43,20 +45,23 @@ export default function MyOrders() {
     fetchOrders();
   }, [fetchOrders]);
 
-  const openQuickActions = async (orderId: string, e: React.MouseEvent) => {
+  const openExpanded = async (orderId: string, mode: 'actions' | 'reviews', e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    if (expandedActions === orderId) {
-      setExpandedActions(null);
+    if (expandedId === orderId && expandMode === mode) {
+      setExpandedId(null);
+      setExpandMode(null);
       setActionOrder(null);
       return;
     }
     try {
       const res = await orderService.getOrder(orderId);
       setActionOrder(res.data || null);
-      setExpandedActions(orderId);
+      setExpandedId(orderId);
+      setExpandMode(mode);
     } catch {
-      setExpandedActions(null);
+      setExpandedId(null);
+      setExpandMode(null);
     }
   };
 
@@ -125,21 +130,52 @@ export default function MyOrders() {
                     {preview?.name || 'Order'}
                     {order.itemCount > 1 && ` + ${order.itemCount - 1} more`}
                   </h3>
-                  <div className="flex items-center gap-3 mt-1 text-xs text-gray-500">
+                  <div className="flex flex-wrap items-center gap-3 mt-1 text-xs text-gray-500">
                     <span className="flex items-center gap-1">
                       <Calendar className="w-3 h-3" />
                       {new Date(order.createdAt).toLocaleDateString('en-IN')}
                     </span>
                     <span className="font-bold text-heading">{formatINR(order.total)}</span>
                   </div>
+                  
+                  {order.status === 'delivered' && preview && (
+                    <div className="mt-3 flex items-center gap-1.5 group/stars cursor-pointer" onClick={(e) => openExpanded(order._id, 'reviews', e)}>
+                      <div className="flex gap-0.5">
+                        {[1, 2, 3, 4, 5].map((s) => (
+                          <Star 
+                            key={s} 
+                            className={`w-4 h-4 transition-colors ${
+                              preview.rating && s <= preview.rating
+                                ? 'fill-amber-400 text-amber-400' 
+                                : 'text-gray-300 group-hover/stars:text-amber-400 group-hover/stars:fill-amber-400'
+                            }`} 
+                          />
+                        ))}
+                      </div>
+                      <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest group-hover/stars:text-amber-600 ml-1">
+                        {preview.rating ? 'Review Submitted' : 'Rate Order'}
+                      </span>
+                    </div>
+                  )}
                 </div>
 
                 <ChevronRight className="w-5 h-5 text-gray-300 group-hover:text-heading shrink-0" />
               </Link>
 
+              {expandedId === order._id && actionOrder && expandMode === 'reviews' && (
+                <div className="px-4 sm:px-5 pb-5">
+                  <OrderItemReviews 
+                    order={actionOrder} 
+                    onReviewSubmitted={() => {
+                      fetchOrders();
+                    }} 
+                  />
+                </div>
+              )}
+
               {hasActions && (
                 <div className="px-4 sm:px-5 pb-4 border-t border-gray-100 pt-3">
-                  {expandedActions === order._id && actionOrder ? (
+                  {expandedId === order._id && actionOrder && expandMode === 'actions' ? (
                     <OrderActionButtons
                       order={actionOrder}
                       onUpdated={(updated) => {
@@ -152,7 +188,7 @@ export default function MyOrders() {
                   ) : (
                     <button
                       type="button"
-                      onClick={(e) => openQuickActions(order._id, e)}
+                      onClick={(e) => openExpanded(order._id, 'actions', e)}
                       className="text-xs font-bold text-amber-900 hover:underline uppercase tracking-wider"
                     >
                       Cancel / Return options

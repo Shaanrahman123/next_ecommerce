@@ -109,7 +109,7 @@ export default function TrendingSlider({ items, theme }: TrendingSliderProps) {
                     )}
                   </div>
                   <div className="p-3 border-t border-amber-100/50">
-                    <h3 className="text-xs lg:text-sm font-semibold text-heading leading-tight line-clamp-2">
+                    <h3 className="text-xs lg:text-sm font-semibold text-heading leading-tight truncate">
                       {item.title}
                     </h3>
                     {item.subtitle && (

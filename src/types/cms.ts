@@ -12,3 +12,23 @@ export interface HeroSlideFormPayload {
   sortOrder?: number;
   isActive?: boolean;
 }
+
+// CMS Pages
+export interface CmsPage {
+  _id: string;
+  slug: string;
+  title: string;
+  metaDescription?: string;
+  content: string;
+  isPublished: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CmsPageFormPayload {
+  slug: string;
+  title: string;
+  metaDescription?: string;
+  content: string;
+  isPublished: boolean;
+}

@@ -36,7 +36,7 @@ export default function CartPage() {
 
   if (!productsLoading && items.length === 0) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center px-4">
+      <div className="min-h-[60vh] bg-white flex flex-col items-center pt-24 lg:pt-32 px-4">
         <div className="text-center max-w-md w-full animate-fade-in">
           <div className="w-20 h-20 bg-amber-50 rounded-2xl border border-amber-200/60 flex items-center justify-center mx-auto mb-6">
             <ShoppingBag className="w-9 h-9 text-amber-700/40" />

@@ -187,11 +187,9 @@ export default function OrderDetails({ orderId }: OrderDetailsProps) {
         )}
 
         {/* Action buttons — inline on all screen sizes */}
-        {showActions && (
-          <div className="mt-5 pt-4 border-t border-amber-100">
-            <OrderActionButtons order={order} onUpdated={setOrder} layout="row" />
-          </div>
-        )}
+        <div className="mt-5 pt-4 border-t border-amber-100">
+          <OrderActionButtons order={order} onUpdated={setOrder} layout="row" />
+        </div>
       </div>
 
       {/* ── Main grid ── */}

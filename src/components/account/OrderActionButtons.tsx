@@ -1,9 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { XCircle, RotateCcw, Loader2 } from 'lucide-react';
+import { XCircle, RotateCcw, Loader2, Headphones } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import AlertModal from '@/components/ui/AlertModal';
+import Link from 'next/link';
 import { orderService } from '@/services/order.service';
 import type { OrderSummary } from '@/types/order';
 
@@ -47,8 +48,6 @@ export default function OrderActionButtons({
   const actions = order.actions;
   const canCancel = actions?.canCancel ?? false;
   const canReturn = actions?.canReturn ?? false;
-
-  if (!canCancel && !canReturn) return null;
 
   const btnSize = size === 'sm' ? 'sm' : 'md';
 
@@ -124,6 +123,18 @@ export default function OrderActionButtons({
             Return Order
           </Button>
         )}
+        <Link href={`/account?section=support&action=create&orderId=${order._id}`} className="block">
+          <Button
+            type="button"
+            variant="premium-soft"
+            size={btnSize}
+            fullWidth
+            className="uppercase tracking-wider text-[10px] font-bold"
+          >
+            <Headphones className="w-4 h-4 mr-1.5 shrink-0" />
+            Raise Ticket
+          </Button>
+        </Link>
       </div>
 
       {modal && (

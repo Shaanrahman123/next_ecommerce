@@ -23,20 +23,16 @@ export default function WishlistPage() {
 
     if (items.length === 0) {
         return (
-            <div className="min-h-[70vh] flex items-center justify-center px-4 bg-gray-50">
+            <div className="min-h-[60vh] bg-white flex flex-col items-center pt-24 lg:pt-32 px-4">
                 <div className="text-center max-w-md w-full animate-fade-in">
-                    <div className="w-16 h-16 bg-white rounded-lg border border-gray-300 flex items-center justify-center mx-auto mb-6 shadow-none group">
-                        <Heart className="w-8 h-8 text-gray-200 group-hover:text-heading transition-colors duration-500" />
+                    <div className="w-20 h-20 bg-amber-50 rounded-2xl border border-amber-200/60 flex items-center justify-center mx-auto mb-6">
+                        <Heart className="w-9 h-9 text-amber-700/40" />
                     </div>
-                    <h1 className="text-page-title text-gray-900 mb-2 uppercase tracking-tight">
-                        Wishlist is empty
-                    </h1>
-                    <p className="text-small text-gray-500 mb-8 uppercase tracking-widest font-bold">
-                        Looks like you haven't added any premium pieces yet.
-                    </p>
+                    <h1 className="text-2xl font-bold text-heading mb-2">Your wishlist is empty</h1>
+                    <p className="text-sm text-gray-500 mb-8">Save your favorite premium pieces here.</p>
                     <Link href="/products">
-                        <Button className="w-full h-12 bg-primary text-on-primary rounded-md font-black uppercase tracking-widest text-[10px] hover:bg-primary-hover transition-all">
-                            Explore Collection
+                        <Button variant="premium" size="lg" fullWidth className="uppercase tracking-widest text-xs">
+                            Start Shopping
                         </Button>
                     </Link>
                 </div>

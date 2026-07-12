@@ -85,7 +85,7 @@ export function serializeOrder(doc: Record<string, unknown>) {
   };
 }
 
-export function serializeOrderListItem(doc: Record<string, unknown>) {
+export function serializeOrderListItem(doc: Record<string, unknown>, previewRating?: number) {
   const items = (doc.items as Record<string, unknown>[]) || [];
   const first = items[0];
   const itemCount = items.reduce((sum, i) => sum + Number(i.quantity || 0), 0);
@@ -104,6 +104,7 @@ export function serializeOrderListItem(doc: Record<string, unknown>) {
           name: String(first.name),
           image: String(first.image),
           quantity: Number(first.quantity),
+          rating: previewRating,
         }
       : undefined,
     actions: { canCancel: actions.canCancel, canReturn: actions.canReturn },
